@@ -8,7 +8,7 @@
 <h1 class="font-weight-bold">Zhu Zhenfang (朱振方)</h1> <!-- 显示用户要求的拼音名字，更符合截图的样式  -->
 <p class="mb-1 text-muted">AI Entrepreneur</p>
 <p class="mb-1 text-primary font-weight-bold">中国科学技术大学 (USTC)</p>
-<p class="mb-3"><a href="mailto:zhuzhenfang@ustc.edu" class="text-muted">zhuzhenfang@ustc.edu</a></p>
+<p class="mb-3 text-muted">zhuzhenfang@ustc.edu</p>
 <!-- Social Icons -->
 <div class="d-flex justify-content-center h3">
 <a href="mailto:xavier.zf@proton.me" class="text-dark mx-2" title="Email"><i class="bi bi-envelope-fill"></i></a>
@@ -77,4 +77,3 @@ I am open to collaborations - just drop me an email if you have any interesting 
 </div>
 </div>
 </div>
-
