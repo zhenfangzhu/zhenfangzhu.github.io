@@ -269,6 +269,7 @@ h1 span {
 
 .portrait-wrap {
     margin: 0;
+    transform: translateX(-20px);
 }
 
 .portrait-wrap img {
@@ -555,6 +556,7 @@ h1 span {
 
     .portrait-wrap {
         width: min(82vw, 340px);
+        transform: none;
     }
 
     .profile-facts {

@@ -114,6 +114,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("const CONTENT_VERSION", scripts)
         self.assertIn("?v=${CONTENT_VERSION}", scripts)
 
+    def test_portrait_is_shifted_left_on_desktop(self):
+        css = read("static/css/main.css")
+        self.assertIn("transform: translateX(-20px)", css)
+
 
 if __name__ == "__main__":
     unittest.main()
