@@ -163,6 +163,14 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("const CONTENT_VERSION", scripts)
         self.assertIn("?v=${CONTENT_VERSION}", scripts)
 
+    def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
+        index = read("index.html")
+        scripts = read("static/js/scripts.js")
+        version = "2026071604"
+        self.assertIn(f'static/css/main.css?v={version}', index)
+        self.assertIn(f'static/js/scripts.js?v={version}', index)
+        self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
+
     def test_portrait_keeps_vertical_composition(self):
         css = read("static/css/main.css")
         self.assertIn("object-fit: contain", css)
