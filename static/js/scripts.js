@@ -1,65 +1,82 @@
+const CONTENT_DIRECTORY = 'contents/';
+const SECTIONS = [
+    { file: 'home.md', target: 'home-md' },
+    { file: 'publications.md', target: 'publications-md' },
+    { file: 'awards.md', target: 'awards-md' },
+];
 
+async function fetchText(path) {
+    const response = await fetch(path);
+    if (!response.ok) {
+        throw new Error(`Unable to load ${path} (${response.status})`);
+    }
+    return response.text();
+}
 
-const content_dir = 'contents/'
-const config_file = 'config.yml'
-const section_names = ['home', 'publications', 'awards']
+function showLoadError(targetId) {
+    const target = document.getElementById(targetId);
+    if (target) {
+        target.innerHTML = '<p class="content-error" role="status">This section could not be loaded. Please refresh the page.</p>';
+    }
+}
 
-
-window.addEventListener('DOMContentLoaded', event => {
-
-    // Activate Bootstrap scrollspy on the main nav element
-    const mainNav = document.body.querySelector('#mainNav');
-    if (mainNav) {
-        new bootstrap.ScrollSpy(document.body, {
-            target: '#mainNav',
-            offset: 74,
+async function loadConfig() {
+    try {
+        const yaml = await fetchText(`${CONTENT_DIRECTORY}config.yml`);
+        const config = jsyaml.load(yaml);
+        Object.entries(config).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.innerHTML = value;
+            }
         });
-    };
+    } catch (error) {
+        console.error(error);
+    }
+}
 
-    // Collapse responsive navbar when toggler is visible
-    const navbarToggler = document.body.querySelector('.navbar-toggler');
-    const responsiveNavItems = [].slice.call(
-        document.querySelectorAll('#navbarResponsive .nav-link')
-    );
-    responsiveNavItems.map(function (responsiveNavItem) {
-        responsiveNavItem.addEventListener('click', () => {
-            if (window.getComputedStyle(navbarToggler).display !== 'none') {
-                navbarToggler.click();
+async function loadSection({ file, target }) {
+    try {
+        const markdown = await fetchText(`${CONTENT_DIRECTORY}${file}`);
+        document.getElementById(target).innerHTML = marked.parse(markdown);
+    } catch (error) {
+        console.error(error);
+        showLoadError(target);
+    }
+}
+
+function initializeNavigation() {
+    const mainNav = document.getElementById('mainNav');
+    if (mainNav) {
+        bootstrap.ScrollSpy.getOrCreateInstance(document.body, {
+            target: '#mainNav',
+            rootMargin: '-20% 0px -70%',
+            smoothScroll: false,
+        });
+    }
+
+    const toggler = document.querySelector('.navbar-toggler');
+    document.querySelectorAll('#navbarResponsive .nav-link').forEach((link) => {
+        link.addEventListener('click', () => {
+            if (toggler && window.getComputedStyle(toggler).display !== 'none') {
+                bootstrap.Collapse.getOrCreateInstance('#navbarResponsive').hide();
             }
         });
     });
+}
 
+window.addEventListener('DOMContentLoaded', async () => {
+    marked.use({ mangle: false, headerIds: false });
 
-    // Yaml
-    fetch(content_dir + config_file)
-        .then(response => response.text())
-        .then(text => {
-            const yml = jsyaml.load(text);
-            Object.keys(yml).forEach(key => {
-                try {
-                    document.getElementById(key).innerHTML = yml[key];
-                } catch {
-                    console.log("Unknown id and value: " + key + "," + yml[key].toString())
-                }
+    await Promise.all([loadConfig(), ...SECTIONS.map(loadSection)]);
 
-            })
-        })
-        .catch(error => console.log(error));
+    document.querySelectorAll('#current-year').forEach((element) => {
+        element.textContent = new Date().getFullYear();
+    });
 
+    if (window.MathJax?.typesetPromise) {
+        await window.MathJax.typesetPromise();
+    }
 
-    // Marked
-    marked.use({ mangle: false, headerIds: false })
-    section_names.forEach((name, idx) => {
-        fetch(content_dir + name + '.md')
-            .then(response => response.text())
-            .then(markdown => {
-                const html = marked.parse(markdown);
-                document.getElementById(name + '-md').innerHTML = html;
-            }).then(() => {
-                // MathJax
-                MathJax.typeset();
-            })
-            .catch(error => console.log(error));
-    })
-
-}); 
+    initializeNavigation();
+});
