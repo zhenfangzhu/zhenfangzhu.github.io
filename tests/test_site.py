@@ -126,6 +126,20 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertIn(rule, css)
 
+    def test_bilingual_profile_visual_contract(self):
+        css = read("static/css/main.css")
+        for rule in (
+            "--color-paper: #f7f8fa",
+            "--color-heading: #15181d",
+            "--color-accent: #1f6faf",
+            'grid-template-columns: 260px minmax(0, 1fr)',
+            ".contact-strip",
+            ".interest-row",
+            ".education-row",
+            "object-fit: contain",
+        ):
+            self.assertIn(rule, css.lower())
+
     def test_single_mathjax_runtime(self):
         index = read("index.html")
         self.assertLessEqual(index.count("MathJax-script"), 1)
