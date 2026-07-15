@@ -47,13 +47,14 @@ class SiteContractTests(unittest.TestCase):
 
     def test_navigation_and_sections_match_new_information_architecture(self):
         index = read("index.html")
-        for section_id in ("about", "focus", "highlights"):
+        for section_id in ("about", "interests", "education", "contact"):
             self.assertIn(f'id="{section_id}"', index)
             self.assertIn(f'href="#{section_id}"', index)
-        self.assertNotIn('href="#publications"', index)
-        self.assertNotIn('href="#awards"', index)
+        for legacy_id in ("focus", "highlights", "publications", "awards"):
+            self.assertNotIn(f'id="{legacy_id}"', index)
 
     def test_content_has_no_placeholders_or_empty_links(self):
+        index = read("index.html")
         content = "\n".join(read(path) for path in (
             "contents/home.md",
             "contents/publications.md",
@@ -61,13 +62,31 @@ class SiteContractTests(unittest.TestCase):
         ))
         self.assertNotRegex(content, r"\[List your|href=[\"']#[\"']")
         for phrase in (
-            "Research × Engineering × Entrepreneurship",
-            "AI Infrastructure",
-            "LLM Systems",
-            "Open-source Engineering",
-            "University of Science and Technology of China",
+            "I studied at the University of Science and Technology of China",
+            "我本科毕业于中国科学技术大学",
+            "Software Systems / 软件系统",
+            "Language Model Applications / 语言模型应用",
+            "Developer Tools &amp; Open Source / 开发者工具与开源",
+            "2019–2023",
         ):
-            self.assertIn(phrase, content)
+            self.assertIn(phrase, index + content)
+
+    def test_copy_is_factual_and_not_marketing_style(self):
+        text = "\n".join((
+            read("index.html"),
+            read("contents/home.md"),
+            read("contents/publications.md"),
+            read("contents/awards.md"),
+        )).lower()
+        for phrase in (
+            "ambitious ai systems",
+            "high-impact technical ventures",
+            "shape the future",
+            "research × engineering × entrepreneurship",
+            "venture building",
+        ):
+            self.assertNotIn(phrase, text)
+        self.assertLessEqual(len(re.findall(r"\bai\b", text)), 3)
 
     def test_external_links_are_safe_and_email_is_preserved(self):
         home = read("contents/home.md")
@@ -115,9 +134,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("const CONTENT_VERSION", scripts)
         self.assertIn("?v=${CONTENT_VERSION}", scripts)
 
-    def test_portrait_is_shifted_left_on_desktop(self):
+    def test_portrait_keeps_vertical_composition(self):
         css = read("static/css/main.css")
-        self.assertIn("transform: translateX(-20px)", css)
+        self.assertIn("object-fit: contain", css)
+        self.assertNotIn("aspect-ratio: 1", css)
 
 
 if __name__ == "__main__":
