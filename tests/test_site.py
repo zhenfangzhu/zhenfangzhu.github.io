@@ -140,6 +140,17 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertIn(rule, css.lower())
 
+    def test_navigation_uses_opaque_surface_and_accessible_brand_target(self):
+        css = read("static/css/main.css")
+        nav = re.search(r"\.site-nav\s*\{([^}]*)\}", css, re.DOTALL)
+        brand = re.search(r"\.navbar-brand\s*\{([^}]*)\}", css, re.DOTALL)
+        self.assertIsNotNone(nav)
+        self.assertIsNotNone(brand)
+        self.assertIn("background: var(--color-paper)", nav.group(1))
+        self.assertNotIn("backdrop-filter", nav.group(1))
+        for rule in ("display: inline-flex", "align-items: center", "min-height: 44px"):
+            self.assertIn(rule, brand.group(1))
+
     def test_single_mathjax_runtime(self):
         index = read("index.html")
         self.assertLessEqual(index.count("MathJax-script"), 1)

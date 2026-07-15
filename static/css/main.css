@@ -76,11 +76,13 @@ a:hover {
 .site-nav {
     min-height: var(--nav-height);
     border-bottom: 1px solid var(--color-border);
-    background: rgba(247, 248, 250, 0.96);
-    backdrop-filter: blur(12px);
+    background: var(--color-paper);
 }
 
 .navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--color-heading);
     font-size: 1.05rem;
     font-weight: 650;
