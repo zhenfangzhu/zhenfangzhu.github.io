@@ -343,7 +343,7 @@ git commit -m "Style bilingual academic profile"
 
 ---
 
-### Task 4: Bust caches, perform browser QA, and publish
+### Task 4: Bust caches and perform browser QA
 
 **Files:**
 - Modify: `index.html`
@@ -355,7 +355,7 @@ git commit -m "Style bilingual academic profile"
 
 **Interfaces:**
 - Consumes: completed static page from Tasks 2–3.
-- Produces: deployable GitHub Pages files and visual QA evidence.
+- Produces: reviewed, deployable GitHub Pages files and visual QA evidence. The controller merges and publishes only after the final whole-branch review.
 
 - [ ] **Step 1: Update mutable asset versions**
 
@@ -394,15 +394,13 @@ git status --short
 
 Expected: all tests pass, no whitespace errors, and only intended files/screenshots are modified or untracked.
 
-- [ ] **Step 6: Commit and push**
+- [ ] **Step 6: Commit the final task**
 
 ```bash
 git add index.html static/js/scripts.js docs/design-references/zhuzhenfang
 git commit -m "Finalize bilingual profile and visual QA"
-git push origin main
 ```
 
-- [ ] **Step 7: Verify the live deployment**
+- [ ] **Step 7: Verify the task branch is ready for final review**
 
-Poll `https://zhuzhenfangx.github.io/` until its HTML references version `2026071604`, then inspect the live page at desktop and mobile widths. Confirm the computed layout has no horizontal overflow and the visible email is exactly `zhuzhenfang@ustc.edu`.
-
+Confirm the local branch HTML references version `2026071604`, the computed layout has no horizontal overflow, and the visible email is exactly `zhuzhenfang@ustc.edu`. After the final whole-branch review is approved, the controller merges the feature branch into `main`, pushes `main`, polls `https://zhuzhenfangx.github.io/` for version `2026071604`, and repeats the desktop/mobile smoke check on the live deployment.
