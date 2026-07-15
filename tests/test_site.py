@@ -73,6 +73,7 @@ class SiteContractTests(unittest.TestCase):
         home = read("contents/home.md")
         index = read("index.html")
         self.assertIn("mailto:zhuzhenfang@ustc.edu", home)
+        self.assertIn("<span>zhuzhenfang@ustc.edu</span>", index)
         self.assertEqual(index.count('href="https://github.com/zhuzhenfangx"'), 2)
         for tag in re.findall(r'<a\s+[^>]*target="_blank"[^>]*>', index + home):
             self.assertIn('rel="noopener noreferrer"', tag)
