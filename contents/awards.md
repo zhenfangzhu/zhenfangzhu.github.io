@@ -7,8 +7,3 @@
     </div>
   </li>
 </ol>
-
-<div class="contact-closing">
-  <p>For relevant technical or product conversations, feel free to get in touch.</p>
-  <p lang="zh-CN">欢迎就相关技术或产品问题与我交流。</p>
-</div>

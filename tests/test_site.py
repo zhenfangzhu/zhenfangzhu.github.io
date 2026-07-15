@@ -64,6 +64,7 @@ class SiteContractTests(unittest.TestCase):
             "contents/publications.md",
             "contents/awards.md",
         ))
+        visible_text = re.sub(r"</?span(?:\s+[^>]*)?>", "", index + content)
         self.assertNotRegex(content, r"\[List your|href=[\"']#[\"']")
         for phrase in (
             "I studied at the University of Science and Technology of China",
@@ -73,12 +74,13 @@ class SiteContractTests(unittest.TestCase):
             "Developer Tools &amp; Open Source / 开发者工具与开源",
             "2019–2023",
         ):
-            self.assertIn(phrase, index + content)
+            self.assertIn(phrase, visible_text)
 
     def test_copy_is_factual_and_not_marketing_style(self):
+        home = read("contents/home.md")
         text = "\n".join((
             read("index.html"),
-            read("contents/home.md"),
+            home,
             read("contents/publications.md"),
             read("contents/awards.md"),
         )).lower()
@@ -91,15 +93,51 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertNotIn(phrase, text)
         self.assertLessEqual(len(re.findall(r"\bai\b", text)), 3)
+        self.assertIn("Contact details are below.", home)
+        self.assertIn("联系方式见下方。", home)
 
     def test_external_links_are_safe_and_email_is_preserved(self):
         home = read("contents/home.md")
         index = read("index.html")
-        self.assertIn("mailto:zhuzhenfang@ustc.edu", home)
+        combined = index + "\n" + home
+        contact_strip = re.search(r'<div class="contact-strip">(.*?)</div>', index, re.DOTALL)
+        self.assertIsNotNone(contact_strip)
+        self.assertEqual(combined.count('href="mailto:zhuzhenfang@ustc.edu"'), 1)
+        self.assertEqual(combined.count('href="https://github.com/zhuzhenfangx"'), 1)
+        self.assertIn('href="mailto:zhuzhenfang@ustc.edu"', contact_strip.group(1))
+        self.assertIn('href="https://github.com/zhuzhenfangx"', contact_strip.group(1))
         self.assertIn("<span>zhuzhenfang@ustc.edu</span>", index)
-        self.assertEqual(index.count('href="https://github.com/zhuzhenfangx"'), 2)
-        for tag in re.findall(r'<a\s+[^>]*target="_blank"[^>]*>', index + home):
+        for tag in re.findall(r'<a\s+[^>]*target="_blank"[^>]*>', combined):
             self.assertIn('rel="noopener noreferrer"', tag)
+
+    def test_dynamic_markdown_marks_chinese_fragments_with_language(self):
+        home = read("contents/home.md")
+        interests = read("contents/publications.md")
+        self.assertIn('## About / <span lang="zh-CN">关于</span>', home)
+        for label in ("软件系统", "语言模型应用", "开发者工具与开源"):
+            self.assertIn(f'/ <span lang="zh-CN">{label}</span></strong>', interests)
+        self.assertEqual(interests.count('<span lang="zh-CN">'), 3)
+
+    def test_interest_supporting_copy_selector_only_targets_direct_spans(self):
+        css = read("static/css/main.css")
+        self.assertIn(".interest-row > span", css)
+        self.assertNotRegex(css, r"\.interest-row\s+span\s*\{")
+
+    def test_inter_font_request_matches_site_typography(self):
+        index = read("index.html")
+        self.assertIn("family=Inter:wght@400;500;600;700&amp;display=swap", index)
+        self.assertNotIn("Mulish", index)
+        self.assertNotIn("Newsreader", index)
+
+    def test_theme_color_matches_paper_surface(self):
+        index = read("index.html")
+        self.assertIn('<meta name="theme-color" content="#f7f8fa">', index)
+
+    def test_redundant_hidden_contact_copy_is_absent(self):
+        awards = read("contents/awards.md")
+        css = read("static/css/main.css")
+        self.assertNotIn("contact-closing", awards)
+        self.assertNotIn(".contact-closing", css)
 
     def test_text_and_focus_colors_meet_wcag_contrast(self):
         css = read("static/css/main.css")
