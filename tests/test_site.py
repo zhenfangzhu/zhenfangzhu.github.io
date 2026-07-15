@@ -44,6 +44,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertRegex(index, r'<img[^>]+alt="Portrait of Zhu Zhenfang"')
         self.assertEqual(index.count("<h1"), 1)
         self.assertIn('aria-label="Primary navigation"', index)
+        self.assertIn('class="profile-intro"', index)
+        self.assertIn('class="contact-strip"', index)
+        self.assertIn('lang="zh-CN"', index)
+        self.assertRegex(index, r'<img[^>]+width="[0-9]+"[^>]+height="[0-9]+"')
 
     def test_navigation_and_sections_match_new_information_architecture(self):
         index = read("index.html")

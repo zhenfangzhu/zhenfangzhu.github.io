@@ -1,26 +1,14 @@
-<div class="timeline">
-  <article class="timeline-item">
-    <p class="timeline-date">Present</p>
+<ol class="education-list">
+  <li class="education-row">
+    <time>2019–2023</time>
     <div>
-      <h3>AI Entrepreneurship</h3>
-      <p>Working at the intersection of research insight, systems engineering, and product validation.</p>
+      <p>B.S., University of Science and Technology of China</p>
+      <p lang="zh-CN">中国科学技术大学 本科</p>
     </div>
-  </article>
+  </li>
+</ol>
 
-  <article class="timeline-item">
-    <p class="timeline-date">2019–2023</p>
-    <div>
-      <h3>University of Science and Technology of China</h3>
-      <p>Bachelor's degree · USTC</p>
-    </div>
-  </article>
-
-  <article class="timeline-item">
-    <p class="timeline-date">Open</p>
-    <div>
-      <h3>Research &amp; Technical Collaboration</h3>
-      <p>Interested in conversations around AI infrastructure, LLM systems, and high-impact technical ventures.</p>
-      <a class="text-link" href="mailto:zhuzhenfang@ustc.edu">Start a conversation <span aria-hidden="true">→</span></a>
-    </div>
-  </article>
+<div class="contact-closing">
+  <p>For relevant technical or product conversations, feel free to get in touch.</p>
+  <p lang="zh-CN">欢迎就相关技术或产品问题与我交流。</p>
 </div>
