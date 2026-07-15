@@ -1,4 +1,5 @@
 const CONTENT_DIRECTORY = 'contents/';
+const CONTENT_VERSION = '2026071602';
 const SECTIONS = [
     { file: 'home.md', target: 'home-md' },
     { file: 'publications.md', target: 'publications-md' },
@@ -6,7 +7,7 @@ const SECTIONS = [
 ];
 
 async function fetchText(path) {
-    const response = await fetch(path);
+    const response = await fetch(`${path}?v=${CONTENT_VERSION}`);
     if (!response.ok) {
         throw new Error(`Unable to load ${path} (${response.status})`);
     }

@@ -106,6 +106,14 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         self.assertLessEqual(index.count("MathJax-script"), 1)
 
+    def test_mutable_assets_use_cache_busting_versions(self):
+        index = read("index.html")
+        scripts = read("static/js/scripts.js")
+        self.assertRegex(index, r'static/css/main\.css\?v=\d{8,}')
+        self.assertRegex(index, r'static/js/scripts\.js\?v=\d{8,}')
+        self.assertIn("const CONTENT_VERSION", scripts)
+        self.assertIn("?v=${CONTENT_VERSION}", scripts)
+
 
 if __name__ == "__main__":
     unittest.main()
