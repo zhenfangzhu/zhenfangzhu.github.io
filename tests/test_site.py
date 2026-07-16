@@ -29,13 +29,16 @@ def css_variable(css: str, name: str) -> str:
 
 
 class SiteContractTests(unittest.TestCase):
-    def test_active_github_pages_domain_is_canonical_everywhere(self):
+    def test_custom_domain_is_canonical_everywhere(self):
         index = read("index.html")
         sitemap = read("sitemap.xml")
-        self.assertIn('<link rel="canonical" href="https://zhuzhenfangx.github.io/">', index)
-        self.assertIn('content="https://zhuzhenfangx.github.io/"', index)
-        self.assertIn("<loc>https://zhuzhenfangx.github.io/</loc>", sitemap)
-        self.assertNotIn("https://zhuzhenfang.github.io/", index + sitemap)
+        self.assertTrue((ROOT / "CNAME").is_file(), "CNAME must exist for GitHub Pages")
+        cname = read("CNAME")
+        self.assertEqual(cname.strip(), "zhuzhenfang.com")
+        self.assertIn('<link rel="canonical" href="https://zhuzhenfang.com/">', index)
+        self.assertIn('content="https://zhuzhenfang.com/"', index)
+        self.assertIn("<loc>https://zhuzhenfang.com/</loc>", sitemap)
+        self.assertNotIn("zhuzhenfangx.github.io", index + sitemap)
 
     def test_page_has_semantic_accessible_landmarks(self):
         index = read("index.html")
