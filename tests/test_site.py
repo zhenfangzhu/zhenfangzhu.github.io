@@ -31,11 +31,13 @@ def css_variable(css: str, name: str) -> str:
 class SiteContractTests(unittest.TestCase):
     def test_custom_domain_is_canonical_everywhere(self):
         index = read("index.html")
+        about = read("about/index.html")
         sitemap = read("sitemap.xml")
         self.assertTrue((ROOT / "CNAME").is_file(), "CNAME must exist for GitHub Pages")
         cname = read("CNAME")
         self.assertEqual(cname.strip(), "zhuzhenfang.com")
         self.assertIn('<link rel="canonical" href="https://zhuzhenfang.com/">', index)
+        self.assertIn('<link rel="canonical" href="https://zhuzhenfang.com/about/">', about)
         self.assertIn('content="https://zhuzhenfang.com/"', index)
         self.assertIn("<loc>https://zhuzhenfang.com/</loc>", sitemap)
         self.assertNotIn("zhuzhenfangx.github.io", index + sitemap)
@@ -56,6 +58,8 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         for section_id in ("about", "interests", "education", "contact"):
             self.assertIn(f'id="{section_id}"', index)
+        self.assertIn('href="/about/"', index)
+        for section_id in ("interests", "education", "contact"):
             self.assertIn(f'href="#{section_id}"', index)
         for legacy_id in ("focus", "highlights", "publications", "awards"):
             self.assertNotIn(f'id="{legacy_id}"', index)
@@ -70,14 +74,33 @@ class SiteContractTests(unittest.TestCase):
         visible_text = re.sub(r"</?span(?:\s+[^>]*)?>", "", index + content)
         self.assertNotRegex(content, r"\[List your|href=[\"']#[\"']")
         for phrase in (
-            "I studied at the University of Science and Technology of China",
-            "我本科毕业于中国科学技术大学",
+            "University of Science and Technology of China from 2019 to 2023",
+            "我于2019年至2023年就读于中国科学技术大学",
             "Software Systems / 软件系统",
             "Language Model Applications / 语言模型应用",
             "Developer Tools &amp; Open Source / 开发者工具与开源",
             "2019–2023",
+            "Bachelor of Science",
+            "理学学士",
         ):
             self.assertIn(phrase, visible_text)
+
+    def test_about_page_has_searchable_identity_and_education(self):
+        about = read("about/index.html")
+        for phrase in (
+            "朱振方",
+            "Xavier",
+            "Zhu Zhenfang",
+            "中国科学技术大学",
+            "University of Science and Technology of China",
+            "2019",
+            "2023",
+            "理学学士",
+            "Bachelor of Science",
+        ):
+            self.assertIn(phrase, about)
+        self.assertIn('"@type": "Person"', about)
+        self.assertIn('"hasCredential"', about)
 
     def test_copy_is_factual_and_not_marketing_style(self):
         home = read("contents/home.md")
