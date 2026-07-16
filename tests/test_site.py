@@ -89,7 +89,6 @@ class SiteContractTests(unittest.TestCase):
         about = read("about/index.html")
         for phrase in (
             "朱振方",
-            "Xavier",
             "Zhu Zhenfang",
             "中国科学技术大学",
             "University of Science and Technology of China",
@@ -101,6 +100,7 @@ class SiteContractTests(unittest.TestCase):
             self.assertIn(phrase, about)
         self.assertIn('"@type": "Person"', about)
         self.assertIn('"hasCredential"', about)
+        self.assertNotIn("Xavier", read("index.html") + about)
 
     def test_copy_is_factual_and_not_marketing_style(self):
         home = read("contents/home.md")
