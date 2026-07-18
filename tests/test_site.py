@@ -61,6 +61,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('href="/about/"', index)
         for section_id in ("interests", "education", "contact"):
             self.assertIn(f'href="#{section_id}"', index)
+        self.assertIn('href="/founder-dna/"', index)
         for legacy_id in ("focus", "highlights", "publications", "awards"):
             self.assertNotIn(f'id="{legacy_id}"', index)
 
@@ -221,6 +222,19 @@ class SiteContractTests(unittest.TestCase):
     def test_single_mathjax_runtime(self):
         index = read("index.html")
         self.assertLessEqual(index.count("MathJax-script"), 1)
+
+    def test_founder_dna_is_deployable_and_keeps_data_local(self):
+        app = read("founder-dna/index.html")
+        sitemap = read("sitemap.xml")
+        self.assertIn("Founder DNA 创始人禀赋测试", app)
+        self.assertIn('<link rel="canonical" href="https://zhuzhenfang.com/founder-dna/">', app)
+        self.assertIn("localStorage.getItem(STORAGE_KEY)", app)
+        self.assertIn("localStorage.setItem(STORAGE_KEY", app)
+        self.assertNotIn("fetch(", app)
+        self.assertNotIn("XMLHttpRequest", app)
+        self.assertNotIn("WebSocket", app)
+        self.assertIn('href="/" aria-label="返回朱振方个人主页"', app)
+        self.assertIn("<loc>https://zhuzhenfang.com/founder-dna/</loc>", sitemap)
 
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")
