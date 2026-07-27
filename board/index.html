@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="朱振方的公开共享白板。无需登录，打开即可编辑，内容会自动保存并同步给所有访客。">
+    <meta name="author" content="朱振方 (Zhu Zhenfang)">
+    <meta name="theme-color" content="#f4f1e8">
+
+    <title>公开白板 | 朱振方</title>
+    <link rel="canonical" href="https://zhuzhenfang.com/board/">
+    <meta property="og:title" content="公开白板 | 朱振方">
+    <meta property="og:description" content="无需登录，打开即可共同编辑的公开白板。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://zhuzhenfang.com/board/">
+
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico?v=2026071601">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/apple-touch-icon.png?v=2026071601">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600&amp;display=swap" rel="stylesheet">
+    <link href="/static/css/board.css?v=2026072701" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script defer src="/static/js/board-config.js?v=2026072701"></script>
+    <script defer src="/static/js/board.js?v=2026072701"></script>
+</head>
+<body>
+    <header class="board-header">
+        <a class="board-home" href="/" aria-label="返回朱振方个人主页">
+            <span aria-hidden="true">←</span>
+            <span>zhuzhenfang.com</span>
+        </a>
+        <div class="board-status" id="board-status" role="status" aria-live="polite">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="status-text">正在连接</span>
+        </div>
+    </header>
+
+    <main class="board-shell">
+        <section class="board-intro" aria-labelledby="board-title">
+            <p class="board-kicker">PUBLIC BOARD · 公开共享</p>
+            <h1 id="board-title">白板</h1>
+            <p>无需登录，直接输入。内容会自动保存，所有打开此页面的人都能看到。</p>
+        </section>
+
+        <section class="paper" aria-label="共享白板编辑区">
+            <label class="sr-only" for="board-editor">公开共享白板内容</label>
+            <textarea
+                id="board-editor"
+                maxlength="20000"
+                spellcheck="true"
+                placeholder="在这里写点什么……"
+                disabled
+            ></textarea>
+            <footer class="paper-footer">
+                <span id="updated-at">尚未保存</span>
+                <span><span id="character-count">0</span> / 20,000</span>
+            </footer>
+        </section>
+
+        <aside class="board-notice">
+            <strong>请注意</strong>
+            <span>这是公开页面，请勿填写密码、手机号、身份证号等隐私信息。多人同时输入时，以最后一次保存为准。</span>
+        </aside>
+    </main>
+
+    <noscript>此白板需要启用 JavaScript 才能保存和同步内容。</noscript>
+</body>
+</html>

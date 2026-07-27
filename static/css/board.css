@@ -1,0 +1,240 @@
+:root {
+    --ink: #1b1d1f;
+    --muted: #6d706f;
+    --accent: #185f8d;
+    --paper: #fffef9;
+    --canvas: #f4f1e8;
+    --line: #d9d4c8;
+    --green: #2b7a56;
+    --amber: #9a6819;
+    --red: #a8423c;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    background:
+        linear-gradient(rgba(27, 29, 31, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(27, 29, 31, 0.035) 1px, transparent 1px),
+        var(--canvas);
+    background-size: 24px 24px;
+    color: var(--ink);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+}
+
+:focus-visible {
+    outline: 3px solid rgba(24, 95, 141, 0.3);
+    outline-offset: 4px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.board-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: min(100% - 40px, 1040px);
+    min-height: 72px;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(27, 29, 31, 0.14);
+}
+
+.board-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 44px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.board-home:hover {
+    color: var(--accent);
+}
+
+.board-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 0 4px rgba(154, 104, 25, 0.1);
+}
+
+.board-status[data-state="ready"] .status-dot,
+.board-status[data-state="saved"] .status-dot {
+    background: var(--green);
+    box-shadow: 0 0 0 4px rgba(43, 122, 86, 0.1);
+}
+
+.board-status[data-state="saving"] .status-dot {
+    background: var(--amber);
+}
+
+.board-status[data-state="error"] .status-dot {
+    background: var(--red);
+    box-shadow: 0 0 0 4px rgba(168, 66, 60, 0.1);
+}
+
+.board-shell {
+    width: min(100% - 40px, 900px);
+    margin: 0 auto;
+    padding: clamp(3.2rem, 8vw, 6.5rem) 0 4rem;
+}
+
+.board-intro {
+    max-width: 680px;
+    margin-bottom: 2rem;
+}
+
+.board-kicker {
+    margin: 0 0 0.7rem;
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.board-intro h1 {
+    margin: 0;
+    font-family: "Noto Serif SC", "Songti SC", serif;
+    font-size: clamp(2.7rem, 8vw, 5rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
+}
+
+.board-intro > p:last-child {
+    margin: 1rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.paper {
+    overflow: hidden;
+    border: 1px solid rgba(27, 29, 31, 0.14);
+    border-radius: 4px;
+    background: var(--paper);
+    box-shadow: 0 20px 60px rgba(52, 45, 31, 0.09);
+}
+
+#board-editor {
+    display: block;
+    width: 100%;
+    min-height: min(58vh, 620px);
+    resize: vertical;
+    padding: clamp(1.4rem, 4vw, 2.5rem);
+    border: 0;
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 31px,
+            rgba(27, 29, 31, 0.075) 32px
+        );
+    color: var(--ink);
+    font: 400 clamp(1rem, 2vw, 1.08rem) / 2 Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    outline: 0;
+}
+
+#board-editor:disabled {
+    cursor: wait;
+    opacity: 0.62;
+}
+
+#board-editor::placeholder {
+    color: #9c9a91;
+}
+
+.paper-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem clamp(1.4rem, 4vw, 2.5rem);
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.72rem;
+}
+
+.board-notice {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem 1rem;
+    margin-top: 1.4rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.7;
+}
+
+.board-notice strong {
+    color: var(--ink);
+}
+
+noscript {
+    display: block;
+    margin: 1rem auto;
+    color: var(--red);
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .board-header,
+    .board-shell {
+        width: min(100% - 28px, 900px);
+    }
+
+    .board-header {
+        min-height: 64px;
+    }
+
+    .board-status {
+        font-size: 0.72rem;
+    }
+
+    .board-intro {
+        margin-bottom: 1.4rem;
+    }
+
+    #board-editor {
+        min-height: 56vh;
+    }
+
+    .board-notice {
+        grid-template-columns: 1fr;
+        gap: 0.2rem;
+    }
+}

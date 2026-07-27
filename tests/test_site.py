@@ -62,8 +62,29 @@ class SiteContractTests(unittest.TestCase):
         for section_id in ("interests", "education", "contact"):
             self.assertIn(f'href="#{section_id}"', index)
         self.assertIn('href="/founder-dna/"', index)
+        self.assertIn('href="/board/"', index)
         for legacy_id in ("focus", "highlights", "publications", "awards"):
             self.assertNotIn(f'id="{legacy_id}"', index)
+
+    def test_public_board_has_durable_shared_storage_contract(self):
+        board = read("board/index.html")
+        board_js = read("static/js/board.js")
+        config = read("static/js/board-config.js")
+        schema = read("supabase/board.sql")
+        sitemap = read("sitemap.xml")
+
+        self.assertIn('<link rel="canonical" href="https://zhuzhenfang.com/board/">', board)
+        self.assertIn('id="board-editor"', board)
+        self.assertIn('maxlength="20000"', board)
+        self.assertIn("supabase.co", config)
+        self.assertIn("sb_publishable_", config)
+        self.assertNotIn("sb_secret_", config)
+        self.assertIn('.from("public_boards")', board_js)
+        self.assertIn('"postgres_changes"', board_js)
+        self.assertIn("enable row level security", schema.lower())
+        self.assertIn("Anyone can read the public board", schema)
+        self.assertIn("Anyone can update the public board", schema)
+        self.assertIn("<loc>https://zhuzhenfang.com/board/</loc>", sitemap)
 
     def test_content_has_no_placeholders_or_empty_links(self):
         index = read("index.html")
