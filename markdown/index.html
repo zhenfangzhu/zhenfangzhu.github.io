@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="免费的在线 Markdown 编辑器，支持实时预览、自动保存、复制 HTML、下载 Markdown 与打印 PDF。">
+    <meta name="author" content="朱振方 (Zhu Zhenfang)">
+    <meta name="theme-color" content="#0b0f14">
+
+    <title>Markdown Lab｜在线 Markdown 编辑器</title>
+    <link rel="canonical" href="https://zhuzhenfang.com/markdown/">
+    <meta property="og:title" content="Markdown Lab｜在线 Markdown 编辑器">
+    <meta property="og:description" content="打开即用的极简 Markdown 编辑器：实时预览、自动保存、复制 HTML 与下载文档。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://zhuzhenfang.com/markdown/">
+
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico?v=2026071601">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/apple-touch-icon.png?v=2026071601">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/styles/github-dark.min.css" rel="stylesheet">
+    <link href="/static/css/markdown.css?v=2026072801" rel="stylesheet">
+    <script defer src="/static/js/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/lib/common.min.js"></script>
+    <script defer src="/static/js/markdown.js?v=2026072801"></script>
+</head>
+<body>
+    <a class="skip-link" href="#editor">跳到编辑区</a>
+
+    <header class="app-header">
+        <a class="brand" href="/" aria-label="返回朱振方个人主页">
+            <span class="brand-mark" aria-hidden="true">&gt;_</span>
+            <span>markdown.lab</span>
+        </a>
+        <div class="header-meta" aria-label="文档状态">
+            <span id="save-status" role="status" aria-live="polite">本地草稿已就绪</span>
+            <span class="live-dot" aria-hidden="true"></span>
+        </div>
+        <div class="header-actions">
+            <button class="ui-button" id="theme-toggle" type="button" aria-label="切换明暗主题">LIGHT</button>
+            <button class="ui-button ui-button--accent" id="download-button" type="button">下载 .md</button>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <section class="command-bar" aria-label="编辑器操作">
+            <div class="format-actions" role="toolbar" aria-label="Markdown 格式">
+                <button type="button" data-command="heading" title="二级标题">H2</button>
+                <button type="button" data-command="bold" title="加粗"><strong>B</strong></button>
+                <button type="button" data-command="italic" title="斜体"><em>I</em></button>
+                <button type="button" data-command="link" title="链接">LINK</button>
+                <button type="button" data-command="code" title="行内代码">CODE</button>
+                <button type="button" data-command="codeblock" title="代码块">{ }</button>
+                <button type="button" data-command="quote" title="引用">&gt;</button>
+                <button type="button" data-command="list" title="无序列表">LIST</button>
+                <button type="button" data-command="task" title="任务清单">TASK</button>
+                <button type="button" data-command="table" title="表格">TABLE</button>
+            </div>
+            <div class="document-actions">
+                <button type="button" id="sample-button">示例</button>
+                <button type="button" id="copy-markdown-button">复制 Markdown</button>
+                <button type="button" id="copy-html-button">复制 HTML</button>
+                <button type="button" id="print-button">打印 / PDF</button>
+                <button class="danger-button" type="button" id="clear-button">清空</button>
+            </div>
+        </section>
+
+        <nav class="mobile-tabs" aria-label="移动端视图切换">
+            <button type="button" data-view="editor" aria-pressed="true">编辑</button>
+            <button type="button" data-view="preview" aria-pressed="false">预览</button>
+        </nav>
+
+        <section class="workspace" data-mobile-view="editor">
+            <section class="workspace-panel editor-panel" aria-labelledby="editor-title">
+                <header class="panel-header">
+                    <div>
+                        <span class="file-dot" aria-hidden="true"></span>
+                        <h1 id="editor-title">untitled.md</h1>
+                    </div>
+                    <span id="cursor-position">Ln 1, Col 1</span>
+                </header>
+                <label class="sr-only" for="editor">Markdown 文档内容</label>
+                <textarea id="editor" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+                <footer class="panel-status">
+                    <span>UTF-8</span>
+                    <span>Markdown</span>
+                    <span id="document-stats">0 字 · 0 字符</span>
+                </footer>
+            </section>
+
+            <section class="workspace-panel preview-panel" aria-labelledby="preview-title">
+                <header class="panel-header">
+                    <div>
+                        <span class="preview-icon" aria-hidden="true"></span>
+                        <h2 id="preview-title">PREVIEW</h2>
+                    </div>
+                    <span>实时渲染</span>
+                </header>
+                <article class="markdown-preview" id="preview" aria-live="polite"></article>
+                <footer class="panel-status">
+                    <span>GFM</span>
+                    <span>安全预览</span>
+                    <span>草稿仅保存在本机</span>
+                </footer>
+            </section>
+        </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
