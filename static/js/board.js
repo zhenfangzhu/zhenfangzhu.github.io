@@ -159,7 +159,7 @@
             encoder.encode(pin),
             "PBKDF2",
             false,
-            ["deriveKey"]
+            ["deriveBits"]
         );
         const material = new Uint8Array(await window.crypto.subtle.deriveBits(
             {

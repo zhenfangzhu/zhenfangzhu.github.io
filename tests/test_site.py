@@ -122,6 +122,8 @@ class SiteContractTests(unittest.TestCase):
 
         self.assertIn("deriveRoomCredentials(pin)", board_js)
         self.assertIn("window.crypto.subtle.deriveBits", board_js)
+        self.assertIn('["deriveBits"]', board_js)
+        self.assertNotIn('["deriveKey"]', board_js)
         self.assertIn("这个 PIN 已被使用，请换一个。", board_js)
         self.assertIn('.rpc("save_private_board"', board_js)
         self.assertIn('.rpc("read_private_board"', board_js)
