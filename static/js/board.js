@@ -10,61 +10,48 @@
     const modeTabs = Array.from(document.querySelectorAll(".mode-tab"));
     const publicMode = document.getElementById("public-mode");
     const privateMode = document.getElementById("private-mode");
-    const privateCreate = document.getElementById("private-create");
-    const privateRead = document.getElementById("private-read");
-    const privateNoteForm = document.getElementById("private-note-form");
-    const privateContent = document.getElementById("private-content");
-    const privateCharacterCount = document.getElementById("private-character-count");
-    const privatePassword = document.getElementById("private-password");
-    const privateExpiry = document.getElementById("private-expiry");
-    const createMessage = document.getElementById("create-message");
-    const createNoteButton = document.getElementById("create-note-button");
-    const shareResult = document.getElementById("share-result");
-    const shareLink = document.getElementById("share-link");
-    const copyShareLink = document.getElementById("copy-share-link");
-    const createAnotherNote = document.getElementById("create-another-note");
-    const unlockNoteForm = document.getElementById("unlock-note-form");
-    const unlockPassword = document.getElementById("unlock-password");
-    const unlockMessage = document.getElementById("unlock-message");
-    const unlockNoteButton = document.getElementById("unlock-note-button");
-    const privateNoteExpiry = document.getElementById("private-note-expiry");
-    const decryptedNote = document.getElementById("decrypted-note");
-    const decryptedContent = document.getElementById("decrypted-content");
+    const privateGate = document.getElementById("private-gate");
+    const privateRoomForm = document.getElementById("private-room-form");
+    const privateRoomPassword = document.getElementById("private-room-password");
+    const privateRoomExpiry = document.getElementById("private-room-expiry");
+    const roomMessage = document.getElementById("room-message");
+    const enterRoomButton = document.getElementById("enter-room-button");
+    const newRoomPrompt = document.getElementById("new-room-prompt");
+    const createPrivateRoom = document.getElementById("create-private-room");
+    const privateWorkspace = document.getElementById("private-workspace");
+    const privateRoomExpiryText = document.getElementById("private-room-expiry-text");
+    const privateBoardEditor = document.getElementById("private-board-editor");
+    const privateSaveStatus = document.getElementById("private-save-status");
+    const privateBoardCharacterCount = document.getElementById("private-board-character-count");
+    const lockPrivateRoomButton = document.getElementById("lock-private-room");
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
-    const PBKDF2_ITERATIONS = 250000;
-    const NOTE_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const PBKDF2_ITERATIONS = 600000;
+    const KDF_CONTEXT = encoder.encode("zhuzhenfang.com/private-board/v1");
 
     let client;
     let saveTimer;
     let localRevision = 0;
     let lastSavedContent = "";
     let localDirty = false;
-    let encryptedRecord = null;
+    let privateSaveTimer;
+    let privateRevision = 0;
+    let privateLastSavedContent = "";
+    let privateDirty = false;
+    let privateRoomId = "";
+    let privateRoomKey = null;
+    let privateRoomSalt = null;
+    let privateTtlDays = 30;
+    let privateRoomExists = false;
 
     function setStatus(state, text) {
         status.dataset.state = state;
         statusText.textContent = text;
     }
 
-    function formatTime(value) {
-        if (!value) return "尚未保存";
-        return `更新于 ${new Intl.DateTimeFormat("zh-CN", {
-            month: "numeric",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
-        }).format(new Date(value))}`;
-    }
-
-    function updateCount() {
-        characterCount.textContent = editor.value.length.toLocaleString("zh-CN");
-    }
-
-    function setFormMessage(element, text, state) {
-        element.textContent = text;
-        element.dataset.state = state || "";
+    function setFormMessage(text, state) {
+        roomMessage.textContent = text;
+        roomMessage.dataset.state = state || "";
     }
 
     function setMode(mode) {
@@ -78,6 +65,36 @@
             tab.setAttribute("aria-selected", String(isActive));
             tab.tabIndex = isActive ? 0 : -1;
         });
+    }
+
+    function formatTime(value) {
+        if (!value) return "尚未保存";
+        return `更新于 ${new Intl.DateTimeFormat("zh-CN", {
+            month: "numeric",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }).format(new Date(value))}`;
+    }
+
+    function formatExpiry(value) {
+        if (!value) return "输入内容后会自动加密保存。";
+        return `内容将于 ${new Intl.DateTimeFormat("zh-CN", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }).format(new Date(value))} 过期。`;
+    }
+
+    function updateCount() {
+        characterCount.textContent = editor.value.length.toLocaleString("zh-CN");
+    }
+
+    function updatePrivateCount() {
+        privateBoardCharacterCount.textContent = privateBoardEditor.value.length.toLocaleString("zh-CN");
     }
 
     function bytesToBase64(bytes) {
@@ -96,36 +113,65 @@
         return Uint8Array.from(binary, (character) => character.charCodeAt(0));
     }
 
-    async function deriveEncryptionKey(password, salt, usages) {
-        const sourceKey = await window.crypto.subtle.importKey(
+    function bytesToHex(bytes) {
+        return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+    }
+
+    function sameBytes(first, second) {
+        if (first.length !== second.length) return false;
+        let difference = 0;
+
+        for (let index = 0; index < first.length; index += 1) {
+            difference |= first[index] ^ second[index];
+        }
+
+        return difference === 0;
+    }
+
+    async function deriveRoomCredentials(password) {
+        const passwordKey = await window.crypto.subtle.importKey(
             "raw",
             encoder.encode(password),
             "PBKDF2",
             false,
-            ["deriveKey"]
+            ["deriveBits"]
         );
-
-        return window.crypto.subtle.deriveKey(
+        const derivedBuffer = await window.crypto.subtle.deriveBits(
             {
                 name: "PBKDF2",
-                salt,
+                salt: KDF_CONTEXT,
                 iterations: PBKDF2_ITERATIONS,
                 hash: "SHA-256"
             },
-            sourceKey,
+            passwordKey,
+            512
+        );
+        const derived = new Uint8Array(derivedBuffer);
+        const roomBytes = derived.slice(0, 32);
+        const keyBytes = derived.slice(32, 64);
+        const key = await window.crypto.subtle.importKey(
+            "raw",
+            keyBytes,
             {
                 name: "AES-GCM",
                 length: 256
             },
             false,
-            usages
+            ["encrypt", "decrypt"]
         );
+
+        keyBytes.fill(0);
+        derived.fill(0);
+
+        return {
+            roomId: bytesToHex(roomBytes),
+            key,
+            salt: KDF_CONTEXT.slice()
+        };
     }
 
-    async function encryptContent(content, password) {
-        const salt = window.crypto.getRandomValues(new Uint8Array(16));
+    async function encryptPrivateContent(content) {
         const iv = window.crypto.getRandomValues(new Uint8Array(12));
-        const key = await deriveEncryptionKey(password, salt, ["encrypt"]);
         const plaintext = encoder.encode(JSON.stringify({
             version: 1,
             content
@@ -135,209 +181,181 @@
                 name: "AES-GCM",
                 iv
             },
-            key,
+            privateRoomKey,
             plaintext
         );
 
         return {
             ciphertext: bytesToBase64(new Uint8Array(ciphertext)),
             iv: bytesToBase64(iv),
-            salt: bytesToBase64(salt)
+            salt: bytesToBase64(privateRoomSalt)
         };
     }
 
-    async function decryptContent(record, password) {
-        const salt = base64ToBytes(record.salt);
-        const iv = base64ToBytes(record.iv);
-        const ciphertext = base64ToBytes(record.ciphertext);
-        const key = await deriveEncryptionKey(password, salt, ["decrypt"]);
+    async function decryptPrivateContent(record) {
+        const storedSalt = base64ToBytes(record.salt);
+        if (!sameBytes(storedSalt, privateRoomSalt)) {
+            throw new Error("Invalid encrypted payload");
+        }
+
         const plaintext = await window.crypto.subtle.decrypt(
             {
                 name: "AES-GCM",
-                iv
+                iv: base64ToBytes(record.iv)
             },
-            key,
-            ciphertext
+            privateRoomKey,
+            base64ToBytes(record.ciphertext)
         );
         const payload = JSON.parse(decoder.decode(plaintext));
 
         if (payload.version !== 1 || typeof payload.content !== "string") {
-            throw new Error("Unsupported encrypted note");
+            throw new Error("Unsupported encrypted board");
         }
 
         return payload.content;
     }
 
-    function noteIdFromHash() {
-        const parameters = new URLSearchParams(window.location.hash.slice(1));
-        const noteId = parameters.get("note") || "";
-        return NOTE_ID_PATTERN.test(noteId) ? noteId : "";
+    function openPrivateWorkspace(content, expiresAt, exists) {
+        privateRoomExists = exists;
+        privateLastSavedContent = content;
+        privateDirty = false;
+        privateBoardEditor.value = content;
+        updatePrivateCount();
+        privateGate.hidden = true;
+        privateWorkspace.hidden = false;
+        privateRoomExpiryText.textContent = formatExpiry(expiresAt);
+        privateSaveStatus.textContent = exists ? "已在本地解密" : "输入内容后自动保存";
+        privateBoardEditor.focus();
     }
 
-    function buildShareUrl(noteId) {
-        const url = new URL("/board/", window.location.origin);
-        url.hash = new URLSearchParams({ note: noteId }).toString();
-        return url.toString();
+    function clearPrivateSession() {
+        clearTimeout(privateSaveTimer);
+        privateRevision = 0;
+        privateLastSavedContent = "";
+        privateDirty = false;
+        privateRoomId = "";
+        privateRoomKey = null;
+        if (privateRoomSalt) privateRoomSalt.fill(0);
+        privateRoomSalt = null;
+        privateRoomExists = false;
+        privateBoardEditor.value = "";
+        updatePrivateCount();
+        privateWorkspace.hidden = true;
+        privateGate.hidden = false;
+        privateRoomForm.reset();
+        privateRoomExpiry.value = "30";
+        newRoomPrompt.hidden = true;
+        setFormMessage("");
     }
 
-    function formatExpiry(value) {
-        return `有效期至 ${new Intl.DateTimeFormat("zh-CN", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
-        }).format(new Date(value))}`;
-    }
+    async function savePrivateBoard(revision) {
+        if (!privateRoomKey || !privateRoomId) return false;
 
-    async function loadEncryptedNote(noteId) {
-        setMode("private");
-        privateCreate.hidden = true;
-        privateRead.hidden = false;
-        unlockNoteForm.hidden = false;
-        decryptedNote.hidden = true;
-        unlockNoteButton.disabled = true;
-        setFormMessage(unlockMessage, "正在读取加密便签……");
-
-        if (!client) {
-            setFormMessage(unlockMessage, "服务暂时无法连接，请刷新重试。", "error");
-            return;
+        const content = privateBoardEditor.value;
+        if (privateRoomExists && content === privateLastSavedContent) {
+            privateDirty = false;
+            privateSaveStatus.textContent = "已保存并加密";
+            return true;
         }
 
-        const { data, error } = await client
-            .rpc("read_private_note", { p_note_id: noteId })
-            .maybeSingle();
-
-        if (error) {
-            console.error("Encrypted note lookup failed", error);
-            setFormMessage(unlockMessage, "读取失败，请稍后再试。", "error");
-            return;
-        }
-
-        if (!data) {
-            privateNoteExpiry.textContent = "这张便签已过期，或者分享链接无效。";
-            setFormMessage(unlockMessage, "无法找到可用的加密便签。", "error");
-            return;
-        }
-
-        encryptedRecord = data;
-        privateNoteExpiry.textContent = `${formatExpiry(data.expires_at)}。请输入发送者提供的密码。`;
-        unlockNoteButton.disabled = false;
-        setFormMessage(unlockMessage, "");
-        unlockPassword.focus();
-    }
-
-    async function createEncryptedNote(event) {
-        event.preventDefault();
-
-        const content = privateContent.value.trim();
-        const password = privatePassword.value;
-        const ttlDays = Number(privateExpiry.value);
-
-        if (!content) {
-            setFormMessage(createMessage, "请先输入便签内容。", "error");
-            privateContent.focus();
-            return;
-        }
-
-        if (password.length < 8) {
-            setFormMessage(createMessage, "密码至少需要 8 个字符。", "error");
-            privatePassword.focus();
-            return;
-        }
-
-        if (!client || !window.crypto || !window.crypto.subtle) {
-            setFormMessage(createMessage, "当前浏览器无法创建加密便签。", "error");
-            return;
-        }
-
-        createNoteButton.disabled = true;
-        setFormMessage(createMessage, "正在本地加密……");
+        privateSaveStatus.textContent = "正在本地加密……";
 
         try {
-            const encrypted = await encryptContent(content, password);
-            setFormMessage(createMessage, "正在保存密文……");
+            const encrypted = await encryptPrivateContent(content);
+            privateSaveStatus.textContent = "正在保存密文……";
 
-            const { data, error } = await client.rpc("create_private_note", {
+            const { data, error } = await client.rpc("save_private_board", {
+                p_room_id: privateRoomId,
                 p_ciphertext: encrypted.ciphertext,
                 p_iv: encrypted.iv,
                 p_salt: encrypted.salt,
-                p_ttl_days: ttlDays
+                p_ttl_days: privateTtlDays
             });
 
             if (error) throw error;
 
-            shareLink.value = buildShareUrl(data);
-            privateNoteForm.hidden = true;
-            shareResult.hidden = false;
-            privatePassword.value = "";
-            privateContent.value = "";
-            privateCharacterCount.textContent = "0";
-            setFormMessage(createMessage, "");
-            shareLink.focus();
+            if (revision === privateRevision) {
+                privateRoomExists = true;
+                privateLastSavedContent = content;
+                privateDirty = false;
+                privateSaveStatus.textContent = "已保存并加密";
+                privateRoomExpiryText.textContent = formatExpiry(data);
+            }
+
+            return true;
         } catch (error) {
-            console.error("Encrypted note creation failed", error);
-            setFormMessage(createMessage, "创建失败，请稍后重试。", "error");
-        } finally {
-            createNoteButton.disabled = false;
+            privateSaveStatus.textContent = "保存失败，请稍后重试";
+            return false;
         }
     }
 
-    async function unlockEncryptedNote(event) {
+    function schedulePrivateSave() {
+        privateRevision += 1;
+        const revision = privateRevision;
+        clearTimeout(privateSaveTimer);
+        privateSaveStatus.textContent = "等待加密保存";
+        privateSaveTimer = window.setTimeout(() => savePrivateBoard(revision), 700);
+    }
+
+    async function lockPrivateRoom(saveFirst) {
+        clearTimeout(privateSaveTimer);
+        if (saveFirst && privateDirty) {
+            await savePrivateBoard(privateRevision);
+        }
+        clearPrivateSession();
+    }
+
+    async function enterPrivateRoom(event) {
         event.preventDefault();
 
-        if (!encryptedRecord) {
-            setFormMessage(unlockMessage, "这张便签当前无法读取。", "error");
+        const password = privateRoomPassword.value;
+        if (password.length < 12) {
+            setFormMessage("密码至少需要 12 个字符。", "error");
+            privateRoomPassword.focus();
             return;
         }
 
-        const password = unlockPassword.value;
-        if (password.length < 8) {
-            setFormMessage(unlockMessage, "请输入发送者提供的完整密码。", "error");
+        if (!client || !window.crypto || !window.crypto.subtle) {
+            setFormMessage("当前浏览器无法进入私密白板。", "error");
             return;
         }
 
-        unlockNoteButton.disabled = true;
-        setFormMessage(unlockMessage, "正在本地解密……");
+        enterRoomButton.disabled = true;
+        newRoomPrompt.hidden = true;
+        setFormMessage("正在安全验证……");
 
         try {
-            const content = await decryptContent(encryptedRecord, password);
-            decryptedContent.textContent = content;
-            unlockNoteForm.hidden = true;
-            decryptedNote.hidden = false;
-            unlockPassword.value = "";
-            setFormMessage(unlockMessage, "");
+            const credentials = await deriveRoomCredentials(password);
+            privateRoomPassword.value = "";
+            privateRoomId = credentials.roomId;
+            privateRoomKey = credentials.key;
+            privateRoomSalt = credentials.salt;
+            privateTtlDays = Number(privateRoomExpiry.value);
+
+            const { data, error } = await client
+                .rpc("read_private_board", { p_room_id: privateRoomId })
+                .maybeSingle();
+
+            if (error) throw error;
+
+            if (!data) {
+                setFormMessage("没有找到对应的私密白板。请检查密码，或用此密码新建。");
+                newRoomPrompt.hidden = false;
+                return;
+            }
+
+            const content = await decryptPrivateContent(data);
+            setFormMessage("");
+            openPrivateWorkspace(content, data.expires_at, true);
         } catch (error) {
-            console.warn("Encrypted note could not be decrypted");
-            setFormMessage(unlockMessage, "密码不正确，请重新输入。", "error");
-            unlockPassword.select();
+            privateRoomId = "";
+            privateRoomKey = null;
+            if (privateRoomSalt) privateRoomSalt.fill(0);
+            privateRoomSalt = null;
+            setFormMessage("无法进入，请检查密码后重试。", "error");
         } finally {
-            unlockNoteButton.disabled = false;
+            enterRoomButton.disabled = false;
         }
-    }
-
-    async function copyLink() {
-        try {
-            await navigator.clipboard.writeText(shareLink.value);
-            copyShareLink.textContent = "已复制";
-        } catch (error) {
-            shareLink.select();
-            document.execCommand("copy");
-            copyShareLink.textContent = "已复制";
-        }
-
-        window.setTimeout(() => {
-            copyShareLink.textContent = "复制链接";
-        }, 1800);
-    }
-
-    function resetPrivateCreator() {
-        privateNoteForm.reset();
-        privateNoteForm.hidden = false;
-        shareResult.hidden = true;
-        privateCharacterCount.textContent = "0";
-        setFormMessage(createMessage, "");
-        privateContent.focus();
     }
 
     async function saveBoard(revision) {
@@ -424,12 +442,12 @@
 
     async function start() {
         updateCount();
-        privateCharacterCount.textContent = privateContent.value.length.toLocaleString("zh-CN");
+        updatePrivateCount();
 
         if (!config.supabaseUrl || !config.supabaseAnonKey || !window.supabase) {
             setStatus("error", "白板正在配置中");
             updatedAt.textContent = "暂时无法编辑";
-            setFormMessage(createMessage, "加密便签正在配置中。", "error");
+            setFormMessage("私密白板正在配置中。", "error");
             return;
         }
 
@@ -437,15 +455,9 @@
             client = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
             await loadBoard();
             subscribe();
-
-            const noteId = noteIdFromHash();
-            if (noteId) {
-                await loadEncryptedNote(noteId);
-            }
         } catch (error) {
-            console.error("Board initialization failed", error);
             setStatus("error", "连接失败，请刷新重试");
-            setFormMessage(createMessage, "服务连接失败，请刷新重试。", "error");
+            setFormMessage("服务连接失败，请刷新重试。", "error");
         }
     }
 
@@ -455,15 +467,21 @@
         scheduleSave();
     });
 
-    modeTabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-            const mode = tab.dataset.mode;
-            setMode(mode);
+    privateBoardEditor.addEventListener("input", () => {
+        privateDirty = true;
+        updatePrivateCount();
+        schedulePrivateSave();
+    });
 
-            if (mode === "private" && !noteIdFromHash()) {
-                privateCreate.hidden = false;
-                privateRead.hidden = true;
+    modeTabs.forEach((tab) => {
+        tab.addEventListener("click", async () => {
+            const mode = tab.dataset.mode;
+
+            if (mode === "public" && privateRoomKey) {
+                await lockPrivateRoom(true);
             }
+
+            setMode(mode);
         });
     });
 
@@ -478,22 +496,19 @@
         });
     });
 
-    privateContent.addEventListener("input", () => {
-        privateCharacterCount.textContent = privateContent.value.length.toLocaleString("zh-CN");
+    privateRoomForm.addEventListener("submit", enterPrivateRoom);
+
+    createPrivateRoom.addEventListener("click", () => {
+        newRoomPrompt.hidden = true;
+        setFormMessage("");
+        openPrivateWorkspace("", null, false);
     });
 
-    privateNoteForm.addEventListener("submit", createEncryptedNote);
-    unlockNoteForm.addEventListener("submit", unlockEncryptedNote);
-    copyShareLink.addEventListener("click", copyLink);
-    createAnotherNote.addEventListener("click", resetPrivateCreator);
-
-    window.addEventListener("hashchange", () => {
-        const noteId = noteIdFromHash();
-        if (noteId) loadEncryptedNote(noteId);
-    });
+    lockPrivateRoomButton.addEventListener("click", () => lockPrivateRoom(true));
 
     window.addEventListener("beforeunload", () => {
         clearTimeout(saveTimer);
+        clearTimeout(privateSaveTimer);
     });
 
     start();

@@ -86,17 +86,18 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("Anyone can update the public board", schema)
         self.assertIn("<loc>https://zhuzhenfang.com/board/</loc>", sitemap)
 
-    def test_private_notes_are_encrypted_locally_and_not_publicly_listable(self):
+    def test_private_boards_are_password_derived_and_not_publicly_listable(self):
         board = read("board/index.html")
         board_js = read("static/js/board.js")
-        schema = read("supabase/private-notes.sql")
+        schema = read("supabase/private-boards.sql")
 
         for fragment in (
             'id="private-mode"',
-            'id="private-note-form"',
-            'id="unlock-note-form"',
-            'id="private-password"',
-            'id="private-expiry"',
+            'id="private-room-form"',
+            'id="private-room-password"',
+            'id="private-workspace"',
+            'id="private-board-editor"',
+            'id="lock-private-room"',
         ):
             self.assertIn(fragment, board)
 
@@ -104,21 +105,24 @@ class SiteContractTests(unittest.TestCase):
             '"PBKDF2"',
             '"SHA-256"',
             '"AES-GCM"',
-            "250000",
+            "600000",
+            "deriveRoomCredentials",
             "window.crypto.subtle.encrypt",
             "window.crypto.subtle.decrypt",
         ):
             self.assertIn(crypto_contract, board_js)
 
-        self.assertIn('.rpc("create_private_note"', board_js)
-        self.assertIn('.rpc("read_private_note"', board_js)
+        self.assertIn('.rpc("save_private_board"', board_js)
+        self.assertIn('.rpc("read_private_board"', board_js)
         self.assertNotIn("p_password", board_js)
-        self.assertNotIn("privatePassword.value,", board_js)
-        self.assertIn('new URLSearchParams({ note: noteId })', board_js)
+        self.assertNotIn("localStorage", board_js)
+        self.assertNotIn("sessionStorage", board_js)
+        self.assertNotIn("location.hash", board_js)
+        self.assertNotIn("console.", board_js)
 
         self.assertIn("enable row level security", schema.lower())
         self.assertIn(
-            "revoke all on table public.private_notes from public, anon, authenticated",
+            "revoke all on table public.private_boards from public, anon, authenticated",
             schema.lower(),
         )
         self.assertNotIn("create policy", schema.lower())

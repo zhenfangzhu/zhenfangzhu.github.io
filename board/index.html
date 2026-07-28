@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="朱振方的在线白板：公开共享编辑，或用密码创建端到端加密便签。">
+    <meta name="description" content="朱振方的在线白板：公开共享编辑，或使用相同密码进入加密私密白板。">
     <meta name="author" content="朱振方 (Zhu Zhenfang)">
     <meta name="theme-color" content="#f4f1e8">
 
     <title>白板 | 朱振方</title>
     <link rel="canonical" href="https://zhuzhenfang.com/board/">
     <meta property="og:title" content="白板 | 朱振方">
-    <meta property="og:description" content="公开共享白板与密码加密便签。">
+    <meta property="og:description" content="公开共享白板与密码加密私密白板。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://zhuzhenfang.com/board/">
 
@@ -19,10 +19,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600&amp;display=swap" rel="stylesheet">
-    <link href="/static/css/board.css?v=2026072801" rel="stylesheet">
+    <link href="/static/css/board.css?v=2026072802" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script defer src="/static/js/board-config.js?v=2026072801"></script>
-    <script defer src="/static/js/board.js?v=2026072801"></script>
+    <script defer src="/static/js/board-config.js?v=2026072802"></script>
+    <script defer src="/static/js/board.js?v=2026072802"></script>
 </head>
 <body>
     <header class="board-header">
@@ -40,7 +40,7 @@
         <section class="board-intro" aria-labelledby="board-title">
             <p class="board-kicker">PUBLIC OR PRIVATE · 自由选择</p>
             <h1 id="board-title">白板</h1>
-            <p>公开协作，或创建一张只有知道密码的人才能查看的加密便签。</p>
+            <p>公开协作，或使用相同密码进入只有指定人能查看的私密白板。</p>
         </section>
 
         <div class="mode-tabs" role="tablist" aria-label="白板类型">
@@ -93,116 +93,81 @@
         </section>
 
         <section id="private-mode" role="tabpanel" aria-labelledby="private-tab" hidden>
-            <div class="private-card" id="private-create">
+            <div class="private-card" id="private-gate">
                 <header class="private-card-header">
                     <span class="lock-mark" aria-hidden="true">⌁</span>
                     <div>
-                        <p class="private-eyebrow">ENCRYPTED NOTE</p>
-                        <h2>创建加密便签</h2>
-                        <p>正文在你的设备上加密后再保存，密码不会上传。</p>
+                        <p class="private-eyebrow">PASSWORD ROOM</p>
+                        <h2>进入私密白板</h2>
+                        <p>输入相同密码的人，会进入同一块白板。</p>
                     </div>
                 </header>
 
-                <form id="private-note-form">
-                    <div class="field">
-                        <div class="field-heading">
-                            <label for="private-content">便签内容</label>
-                            <span><span id="private-character-count">0</span> / 20,000</span>
-                        </div>
-                        <textarea
-                            id="private-content"
-                            maxlength="20000"
-                            spellcheck="true"
-                            placeholder="输入只想让指定的人看到的内容……"
-                            required
-                        ></textarea>
-                    </div>
-
+                <form id="private-room-form">
                     <div class="private-options">
                         <div class="field">
-                            <label for="private-password">查看密码</label>
+                            <label for="private-room-password">房间密码</label>
                             <div class="password-field">
                                 <input
-                                    id="private-password"
+                                    id="private-room-password"
                                     type="password"
-                                    minlength="8"
+                                    minlength="12"
                                     maxlength="128"
-                                    autocomplete="new-password"
-                                    placeholder="至少 8 个字符"
+                                    autocomplete="current-password"
+                                    placeholder="至少 12 个字符"
                                     required
                                 >
-                                <button class="password-toggle" type="button" data-password-target="private-password" aria-label="显示密码">显示</button>
+                                <button class="password-toggle" type="button" data-password-target="private-room-password" aria-label="显示密码">显示</button>
                             </div>
                         </div>
 
                         <div class="field">
-                            <label for="private-expiry">自动过期</label>
-                            <select id="private-expiry">
+                            <label for="private-room-expiry">多久未更新后清除</label>
+                            <select id="private-room-expiry">
                                 <option value="1">1 天后</option>
-                                <option value="7" selected>7 天后</option>
-                                <option value="30">30 天后</option>
+                                <option value="7">7 天后</option>
+                                <option value="30" selected>30 天后</option>
                             </select>
                         </div>
                     </div>
 
-                    <p class="form-message" id="create-message" role="status" aria-live="polite"></p>
-                    <button class="primary-button" id="create-note-button" type="submit">加密并生成链接</button>
+                    <p class="form-message" id="room-message" role="status" aria-live="polite"></p>
+                    <button class="primary-button" id="enter-room-button" type="submit">用密码进入</button>
                 </form>
 
-                <section class="share-result" id="share-result" aria-labelledby="share-result-title" hidden>
-                    <p class="result-check" aria-hidden="true">✓</p>
-                    <h3 id="share-result-title">加密便签已创建</h3>
-                    <p>把链接发给对方，再通过另一个渠道告诉对方密码。</p>
-                    <div class="share-link-row">
-                        <input id="share-link" type="text" readonly aria-label="加密便签分享链接">
-                        <button class="secondary-button" id="copy-share-link" type="button">复制链接</button>
-                    </div>
-                    <button class="text-button" id="create-another-note" type="button">再创建一张</button>
+                <section class="new-room-prompt" id="new-room-prompt" aria-labelledby="new-room-title" hidden>
+                    <h3 id="new-room-title">这个密码还没有白板</h3>
+                    <p>如果这是你准备使用的新密码，可以用它创建一块空白的私密白板。</p>
+                    <button class="secondary-button" id="create-private-room" type="button">用这个密码新建</button>
                 </section>
             </div>
 
-            <div class="private-card" id="private-read" hidden>
-                <header class="private-card-header">
-                    <span class="lock-mark" aria-hidden="true">⌁</span>
+            <div class="private-card private-workspace" id="private-workspace" hidden>
+                <header class="private-workspace-header">
                     <div>
-                        <p class="private-eyebrow">PRIVATE LINK</p>
-                        <h2>这是一张加密便签</h2>
-                        <p id="private-note-expiry">请输入发送者提供的密码。</p>
+                        <p class="private-eyebrow">ENCRYPTED BOARD</p>
+                        <h2>私密白板</h2>
+                        <p id="private-room-expiry-text">内容只会以密文形式保存。</p>
                     </div>
+                    <button class="text-button lock-room-button" id="lock-private-room" type="button">退出并锁定</button>
                 </header>
 
-                <form id="unlock-note-form">
-                    <div class="field">
-                        <label for="unlock-password">查看密码</label>
-                        <div class="password-field">
-                            <input
-                                id="unlock-password"
-                                type="password"
-                                minlength="8"
-                                maxlength="128"
-                                autocomplete="current-password"
-                                placeholder="输入相同密码"
-                                required
-                            >
-                            <button class="password-toggle" type="button" data-password-target="unlock-password" aria-label="显示密码">显示</button>
-                        </div>
-                    </div>
-                    <p class="form-message" id="unlock-message" role="status" aria-live="polite"></p>
-                    <button class="primary-button" id="unlock-note-button" type="submit">解锁便签</button>
-                </form>
-
-                <section class="decrypted-note" id="decrypted-note" aria-labelledby="decrypted-note-title" hidden>
-                    <div class="decrypted-note-heading">
-                        <h3 id="decrypted-note-title">便签内容</h3>
-                        <span>已在本地解密</span>
-                    </div>
-                    <pre id="decrypted-content"></pre>
-                </section>
+                <label class="sr-only" for="private-board-editor">私密白板内容</label>
+                <textarea
+                    id="private-board-editor"
+                    maxlength="20000"
+                    spellcheck="true"
+                    placeholder="在这块私密白板里写点什么……"
+                ></textarea>
+                <footer class="private-paper-footer">
+                    <span id="private-save-status">尚未保存</span>
+                    <span><span id="private-board-character-count">0</span> / 20,000</span>
+                </footer>
             </div>
 
             <aside class="board-notice private-notice">
                 <strong>安全提示</strong>
-                <span>请设置不易猜到的密码，并把链接和密码分开发送。密码无法找回，过期后的便签无法查看。</span>
+                <span>密码不会上传；系统用密码派生密钥，再用 AES-GCM 加密正文。请使用至少 12 位且不易猜到的密码，知道密码的人都可以查看和编辑。</span>
             </aside>
         </section>
     </main>
