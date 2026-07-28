@@ -8,6 +8,8 @@
     --green: #2b7a56;
     --amber: #9a6819;
     --red: #a8423c;
+    --blue-soft: #e8f0f5;
+    --green-soft: #eaf3ee;
 }
 
 *,
@@ -142,6 +144,55 @@ a {
     margin: 1rem 0 0;
     color: var(--muted);
     font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.mode-tabs {
+    display: inline-grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 1.25rem;
+    padding: 4px;
+    border: 1px solid rgba(27, 29, 31, 0.12);
+    border-radius: 10px;
+    background: rgba(255, 254, 249, 0.7);
+}
+
+.mode-tab {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.65rem 1rem;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.mode-tab:hover {
+    color: var(--ink);
+}
+
+.mode-tab.is-active {
+    background: var(--ink);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(27, 29, 31, 0.15);
+}
+
+.tab-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+[role="tabpanel"][hidden],
+[hidden] {
+    display: none !important;
 }
 
 .paper {
@@ -204,6 +255,295 @@ a {
     color: var(--ink);
 }
 
+.private-card {
+    overflow: hidden;
+    padding: clamp(1.4rem, 4vw, 2.5rem);
+    border: 1px solid rgba(27, 29, 31, 0.14);
+    border-radius: 10px;
+    background: var(--paper);
+    box-shadow: 0 20px 60px rgba(52, 45, 31, 0.09);
+}
+
+.private-card-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: start;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.lock-mark {
+    display: grid;
+    width: 46px;
+    height: 46px;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--green-soft);
+    color: var(--green);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.private-eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--green);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+}
+
+.private-card-header h2 {
+    margin: 0;
+    font-family: "Noto Serif SC", "Songti SC", serif;
+    font-size: clamp(1.45rem, 4vw, 2rem);
+    font-weight: 600;
+}
+
+.private-card-header p:last-child {
+    margin: 0.55rem 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.65;
+}
+
+#private-note-form,
+#unlock-note-form {
+    padding-top: 1.6rem;
+}
+
+.field {
+    min-width: 0;
+}
+
+.field + .field {
+    margin-top: 1.2rem;
+}
+
+.field label,
+.field-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.55rem;
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.field-heading span {
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 500;
+}
+
+#private-content,
+.password-field input,
+.field select,
+.share-link-row input {
+    width: 100%;
+    border: 1px solid rgba(27, 29, 31, 0.2);
+    border-radius: 7px;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+}
+
+#private-content {
+    display: block;
+    min-height: 220px;
+    resize: vertical;
+    padding: 1rem;
+    line-height: 1.75;
+}
+
+#private-content::placeholder,
+.password-field input::placeholder {
+    color: #8b8d8c;
+}
+
+.private-options {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(150px, 0.8fr);
+    gap: 1rem;
+    margin-top: 1.2rem;
+}
+
+.private-options .field + .field {
+    margin-top: 0;
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field input {
+    min-height: 48px;
+    padding: 0.7rem 4.2rem 0.7rem 0.85rem;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    min-width: 54px;
+    min-height: 42px;
+    padding: 0 0.7rem;
+    border: 0;
+    border-radius: 5px;
+    background: var(--blue-soft);
+    color: var(--accent);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.field select {
+    min-height: 48px;
+    padding: 0.7rem 2.4rem 0.7rem 0.85rem;
+    cursor: pointer;
+}
+
+.primary-button,
+.secondary-button,
+.text-button {
+    min-height: 44px;
+    border: 0;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.primary-button {
+    width: 100%;
+    margin-top: 0.9rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 7px;
+    background: var(--ink);
+    color: #fff;
+}
+
+.primary-button:hover {
+    background: var(--accent);
+}
+
+.primary-button:disabled {
+    cursor: wait;
+    opacity: 0.58;
+}
+
+.secondary-button {
+    flex: 0 0 auto;
+    padding: 0.7rem 1rem;
+    border-radius: 7px;
+    background: var(--accent);
+    color: #fff;
+}
+
+.text-button {
+    margin-top: 0.8rem;
+    padding: 0.4rem 0;
+    background: transparent;
+    color: var(--accent);
+}
+
+.form-message {
+    min-height: 1.25rem;
+    margin: 0.9rem 0 0;
+    color: var(--muted);
+    font-size: 0.76rem;
+}
+
+.form-message[data-state="error"] {
+    color: var(--red);
+}
+
+.form-message[data-state="success"] {
+    color: var(--green);
+}
+
+.share-result {
+    margin-top: 1.6rem;
+    padding: 1.4rem;
+    border: 1px solid rgba(43, 122, 86, 0.22);
+    border-radius: 8px;
+    background: var(--green-soft);
+}
+
+.result-check {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    margin: 0 0 0.75rem;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-weight: 700;
+}
+
+.share-result h3,
+.decrypted-note h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.share-result > p:not(.result-check) {
+    margin: 0.45rem 0 1rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.65;
+}
+
+.share-link-row {
+    display: flex;
+    gap: 0.55rem;
+}
+
+.share-link-row input {
+    min-width: 0;
+    min-height: 44px;
+    padding: 0.65rem 0.75rem;
+    color: #474a49;
+    font-size: 0.76rem;
+}
+
+.decrypted-note {
+    margin-top: 1.5rem;
+    border: 1px solid rgba(43, 122, 86, 0.22);
+    border-radius: 8px;
+    background: var(--green-soft);
+}
+
+.decrypted-note-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(43, 122, 86, 0.16);
+}
+
+.decrypted-note-heading span {
+    color: var(--green);
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+#decrypted-content {
+    overflow-wrap: anywhere;
+    margin: 0;
+    padding: 1.1rem;
+    color: var(--ink);
+    font: 400 0.95rem / 1.8 Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    white-space: pre-wrap;
+}
+
+.private-notice {
+    margin-top: 1.2rem;
+}
+
 noscript {
     display: block;
     margin: 1rem auto;
@@ -229,12 +569,50 @@ noscript {
         margin-bottom: 1.4rem;
     }
 
+    .mode-tabs {
+        display: grid;
+        width: 100%;
+    }
+
     #board-editor {
         min-height: 56vh;
+    }
+
+    .private-options {
+        grid-template-columns: 1fr;
+    }
+
+    .private-options .field + .field {
+        margin-top: 0.2rem;
+    }
+
+    .share-link-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .private-card-header {
+        grid-template-columns: 1fr;
+    }
+
+    .lock-mark {
+        width: 40px;
+        height: 40px;
     }
 
     .board-notice {
         grid-template-columns: 1fr;
         gap: 0.2rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
     }
 }

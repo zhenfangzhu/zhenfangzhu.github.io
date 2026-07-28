@@ -86,6 +86,46 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("Anyone can update the public board", schema)
         self.assertIn("<loc>https://zhuzhenfang.com/board/</loc>", sitemap)
 
+    def test_private_notes_are_encrypted_locally_and_not_publicly_listable(self):
+        board = read("board/index.html")
+        board_js = read("static/js/board.js")
+        schema = read("supabase/private-notes.sql")
+
+        for fragment in (
+            'id="private-mode"',
+            'id="private-note-form"',
+            'id="unlock-note-form"',
+            'id="private-password"',
+            'id="private-expiry"',
+        ):
+            self.assertIn(fragment, board)
+
+        for crypto_contract in (
+            '"PBKDF2"',
+            '"SHA-256"',
+            '"AES-GCM"',
+            "250000",
+            "window.crypto.subtle.encrypt",
+            "window.crypto.subtle.decrypt",
+        ):
+            self.assertIn(crypto_contract, board_js)
+
+        self.assertIn('.rpc("create_private_note"', board_js)
+        self.assertIn('.rpc("read_private_note"', board_js)
+        self.assertNotIn("p_password", board_js)
+        self.assertNotIn("privatePassword.value,", board_js)
+        self.assertIn('new URLSearchParams({ note: noteId })', board_js)
+
+        self.assertIn("enable row level security", schema.lower())
+        self.assertIn(
+            "revoke all on table public.private_notes from public, anon, authenticated",
+            schema.lower(),
+        )
+        self.assertNotIn("create policy", schema.lower())
+        self.assertIn("security definer", schema.lower())
+        self.assertIn("p_ttl_days not in (1, 7, 30)", schema)
+        self.assertNotIn("password", schema.lower())
+
     def test_content_has_no_placeholders_or_empty_links(self):
         index = read("index.html")
         content = "\n".join(read(path) for path in (
