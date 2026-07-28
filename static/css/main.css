@@ -336,108 +336,6 @@ h2 {
     color: var(--color-muted);
 }
 
-.tools-section {
-    border-top: 1px solid var(--color-border);
-    background: var(--color-heading);
-    color: #dce4ea;
-}
-
-.tools-heading {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 2rem;
-}
-
-.tools-heading h2,
-.tools-heading h2 span {
-    color: #fff;
-}
-
-.tools-heading > p {
-    max-width: 34ch;
-    margin: 0 0 0.2rem;
-    color: #b7c2cb;
-    text-align: right;
-}
-
-.section-eyebrow {
-    margin: 0 0 0.65rem;
-    color: #79d7b0;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.13em;
-}
-
-.tools-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid #46515b;
-    border-left: 1px solid #46515b;
-}
-
-.tool-card {
-    position: relative;
-    display: flex;
-    min-height: 280px;
-    flex-direction: column;
-    padding: 1.5rem;
-    border-right: 1px solid #46515b;
-    border-bottom: 1px solid #46515b;
-    color: #dce4ea;
-    text-decoration: none;
-    transition: background-color 180ms ease, color 180ms ease;
-}
-
-.tool-card:hover {
-    background: #202831;
-    color: #fff;
-}
-
-.tool-card--featured {
-    background: #1b252d;
-}
-
-.tool-index,
-.tool-status,
-.tool-link {
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.09em;
-}
-
-.tool-index {
-    color: #91a0ac;
-}
-
-.tool-status {
-    position: absolute;
-    top: 1.3rem;
-    right: 1.3rem;
-    padding: 0.22rem 0.45rem;
-    border: 1px solid #79d7b0;
-    color: #79d7b0;
-}
-
-.tool-card strong {
-    margin-top: auto;
-    color: #fff;
-    font-size: 1.35rem;
-    letter-spacing: -0.02em;
-}
-
-.tool-card > span[lang] {
-    min-height: 3.7em;
-    margin-top: 0.7rem;
-    color: #b7c2cb;
-    font-size: 0.9rem;
-}
-
-.tool-link {
-    margin-top: 1.4rem;
-    color: #79d7b0;
-}
-
 .profile-contact {
     padding: 5.5rem 0 6rem;
     border-top: 1px solid var(--color-border);
@@ -576,24 +474,6 @@ h2 {
     .education-row {
         grid-template-columns: 1fr;
         gap: 0.5rem;
-    }
-
-    .tools-heading {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .tools-heading > p {
-        text-align: left;
-    }
-
-    .tools-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .tool-card {
-        min-height: 230px;
     }
 
     .contact-strip {

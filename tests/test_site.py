@@ -56,14 +56,13 @@ class SiteContractTests(unittest.TestCase):
 
     def test_navigation_and_sections_match_new_information_architecture(self):
         index = read("index.html")
-        for section_id in ("about", "interests", "education", "tools", "contact"):
+        for section_id in ("about", "interests", "education", "contact"):
             self.assertIn(f'id="{section_id}"', index)
         self.assertIn('href="/about/"', index)
-        for section_id in ("interests", "education", "tools", "contact"):
+        for section_id in ("interests", "education", "contact"):
             self.assertIn(f'href="#{section_id}"', index)
         self.assertIn('href="/founder-dna/"', index)
         self.assertIn('href="/board/"', index)
-        self.assertIn('href="/markdown/"', index)
         for legacy_id in ("focus", "highlights", "publications", "awards"):
             self.assertNotIn(f'id="{legacy_id}"', index)
 
@@ -86,28 +85,6 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("Anyone can read the public board", schema)
         self.assertIn("Anyone can update the public board", schema)
         self.assertIn("<loc>https://zhuzhenfang.com/board/</loc>", sitemap)
-
-    def test_markdown_lab_is_private_by_default_and_exportable(self):
-        app = read("markdown/index.html")
-        app_js = read("static/js/markdown.js")
-        app_css = read("static/css/markdown.css")
-        sitemap = read("sitemap.xml")
-
-        self.assertIn('<link rel="canonical" href="https://zhuzhenfang.com/markdown/">', app)
-        self.assertIn('id="editor"', app)
-        self.assertIn('id="preview"', app)
-        self.assertIn("localStorage.setItem(STORAGE_KEY", app_js)
-        self.assertIn("DOMPurify.sanitize", app_js)
-        self.assertIn("marked.parse", app_js)
-        self.assertIn("ClipboardItem", app_js)
-        self.assertIn('anchor.download = "document.md"', app_js)
-        self.assertIn("window.print()", app_js)
-        self.assertNotIn("fetch(", app_js)
-        self.assertNotIn("supabase", app_js.lower())
-        self.assertIn("@media (max-width: 900px)", app_css)
-        self.assertIn("@media (prefers-reduced-motion: reduce)", app_css)
-        self.assertIn("@media print", app_css)
-        self.assertIn("<loc>https://zhuzhenfang.com/markdown/</loc>", sitemap)
 
     def test_content_has_no_placeholders_or_empty_links(self):
         index = read("index.html")
@@ -291,7 +268,7 @@ class SiteContractTests(unittest.TestCase):
     def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")
-        version = "2026072801"
+        version = "2026071604"
         self.assertIn(f'static/css/main.css?v={version}', index)
         self.assertIn(f'static/js/scripts.js?v={version}', index)
         self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
