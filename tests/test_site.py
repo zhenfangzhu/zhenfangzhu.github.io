@@ -94,7 +94,11 @@ class SiteContractTests(unittest.TestCase):
         for fragment in (
             'id="private-mode"',
             'id="private-room-form"',
+            'id="private-room-code"',
             'id="private-room-password"',
+            'id="private-create-panel"',
+            'id="create-room-form"',
+            'id="new-room-code"',
             'id="private-workspace"',
             'id="private-board-editor"',
             'id="lock-private-room"',
@@ -107,11 +111,15 @@ class SiteContractTests(unittest.TestCase):
             '"AES-GCM"',
             "600000",
             "deriveRoomCredentials",
+            "generateRoomCode",
+            "ROOM_CODE_LENGTH = 12",
             "window.crypto.subtle.encrypt",
             "window.crypto.subtle.decrypt",
         ):
             self.assertIn(crypto_contract, board_js)
 
+        self.assertIn("deriveRoomCredentials(roomCode, password)", board_js)
+        self.assertIn("currentRoomCode", board_js)
         self.assertIn('.rpc("save_private_board"', board_js)
         self.assertIn('.rpc("read_private_board"', board_js)
         self.assertNotIn("p_password", board_js)

@@ -307,7 +307,8 @@ a {
     line-height: 1.65;
 }
 
-#private-room-form {
+#private-room-form,
+#create-room-form {
     padding-top: 1.6rem;
 }
 
@@ -337,7 +338,8 @@ a {
 }
 
 .password-field input,
-.field select {
+.field select,
+.text-input {
     width: 100%;
     border: 1px solid rgba(27, 29, 31, 0.2);
     border-radius: 7px;
@@ -348,6 +350,27 @@ a {
 
 .password-field input::placeholder {
     color: #8b8d8c;
+}
+
+.join-options {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.85fr) minmax(0, 1.4fr);
+    gap: 1rem;
+}
+
+.join-options .field + .field {
+    margin-top: 0;
+}
+
+.text-input {
+    min-height: 48px;
+    padding: 0.7rem 0.85rem;
+}
+
+.room-code-input {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .private-options {
@@ -451,24 +474,43 @@ a {
     color: var(--green);
 }
 
-.new-room-prompt {
-    margin-top: 1.6rem;
-    padding: 1.4rem;
-    border: 1px solid rgba(24, 95, 141, 0.2);
-    border-radius: 8px;
-    background: var(--blue-soft);
+.create-room-entry {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.78rem;
 }
 
-.new-room-prompt h3 {
-    margin: 0;
+.create-room-entry .text-button {
+    min-height: 36px;
+    margin-top: 0;
+}
+
+.generated-code-row {
+    display: flex;
+    gap: 0.55rem;
+}
+
+.generated-code-row input {
+    min-width: 0;
+    background: var(--green-soft);
+    color: var(--green);
     font-size: 1rem;
 }
 
-.new-room-prompt p {
-    margin: 0.45rem 0 1rem;
-    color: var(--muted);
-    font-size: 0.78rem;
-    line-height: 1.65;
+.confirm-password-field {
+    max-width: calc((100% - 1rem) * 0.68);
+    margin-top: 1.2rem;
+}
+
+.back-to-join {
+    display: block;
+    margin: 0.65rem auto 0;
 }
 
 .private-workspace-header {
@@ -492,6 +534,31 @@ a {
     color: var(--muted);
     font-size: 0.75rem;
     line-height: 1.6;
+}
+
+.active-room-code {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.65rem;
+    font-size: 0.74rem;
+}
+
+.active-room-code span {
+    color: var(--muted);
+}
+
+.active-room-code strong {
+    color: var(--green);
+    font-size: 0.86rem;
+    letter-spacing: 0.08em;
+}
+
+.active-room-code .text-button {
+    min-height: 32px;
+    margin-top: 0;
+    padding: 0 0.25rem;
+    font-size: 0.72rem;
 }
 
 #private-board-editor {
@@ -576,8 +643,25 @@ noscript {
         grid-template-columns: 1fr;
     }
 
+    .join-options {
+        grid-template-columns: 1fr;
+    }
+
     .private-options .field + .field {
         margin-top: 0.2rem;
+    }
+
+    .join-options .field + .field {
+        margin-top: 0.2rem;
+    }
+
+    .generated-code-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .confirm-password-field {
+        max-width: none;
     }
 
     .private-card-header {

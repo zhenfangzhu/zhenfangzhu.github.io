@@ -19,10 +19,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600&amp;display=swap" rel="stylesheet">
-    <link href="/static/css/board.css?v=2026072802" rel="stylesheet">
+    <link href="/static/css/board.css?v=2026072803" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script defer src="/static/js/board-config.js?v=2026072802"></script>
-    <script defer src="/static/js/board.js?v=2026072802"></script>
+    <script defer src="/static/js/board-config.js?v=2026072803"></script>
+    <script defer src="/static/js/board.js?v=2026072803"></script>
 </head>
 <body>
     <header class="board-header">
@@ -99,12 +99,27 @@
                     <div>
                         <p class="private-eyebrow">PASSWORD ROOM</p>
                         <h2>进入私密白板</h2>
-                        <p>输入相同密码的人，会进入同一块白板。</p>
+                        <p>输入房间号和密码，进入对应的独立白板。</p>
                     </div>
                 </header>
 
                 <form id="private-room-form">
-                    <div class="private-options">
+                    <div class="join-options">
+                        <div class="field">
+                            <label for="private-room-code">房间号</label>
+                            <input
+                                class="text-input room-code-input"
+                                id="private-room-code"
+                                type="text"
+                                minlength="14"
+                                maxlength="14"
+                                autocomplete="off"
+                                autocapitalize="characters"
+                                placeholder="例如 ABCD-EFGH-JKLM"
+                                required
+                            >
+                        </div>
+
                         <div class="field">
                             <label for="private-room-password">房间密码</label>
                             <div class="password-field">
@@ -120,10 +135,57 @@
                                 <button class="password-toggle" type="button" data-password-target="private-room-password" aria-label="显示密码">显示</button>
                             </div>
                         </div>
+                    </div>
+
+                    <p class="form-message" id="room-message" role="status" aria-live="polite"></p>
+                    <button class="primary-button" id="enter-room-button" type="submit">进入房间</button>
+                </form>
+
+                <div class="create-room-entry">
+                    <span>还没有房间？</span>
+                    <button class="text-button" id="show-create-room" type="button">创建新房间</button>
+                </div>
+            </div>
+
+            <div class="private-card" id="private-create-panel" hidden>
+                <header class="private-card-header">
+                    <span class="lock-mark" aria-hidden="true">＋</span>
+                    <div>
+                        <p class="private-eyebrow">NEW PRIVATE ROOM</p>
+                        <h2>创建独立房间</h2>
+                        <p>系统会生成唯一房间号；即使密码相同，不同房间也不会混在一起。</p>
+                    </div>
+                </header>
+
+                <form id="create-room-form">
+                    <div class="field">
+                        <label for="new-room-code">新房间号</label>
+                        <div class="generated-code-row">
+                            <input class="text-input room-code-input" id="new-room-code" type="text" readonly>
+                            <button class="secondary-button" id="regenerate-room-code" type="button">换一个</button>
+                        </div>
+                    </div>
+
+                    <div class="private-options">
+                        <div class="field">
+                            <label for="new-room-password">设置密码</label>
+                            <div class="password-field">
+                                <input
+                                    id="new-room-password"
+                                    type="password"
+                                    minlength="12"
+                                    maxlength="128"
+                                    autocomplete="new-password"
+                                    placeholder="至少 12 个字符"
+                                    required
+                                >
+                                <button class="password-toggle" type="button" data-password-target="new-room-password" aria-label="显示密码">显示</button>
+                            </div>
+                        </div>
 
                         <div class="field">
-                            <label for="private-room-expiry">多久未更新后清除</label>
-                            <select id="private-room-expiry">
+                            <label for="new-room-expiry">多久未更新后清除</label>
+                            <select id="new-room-expiry">
                                 <option value="1">1 天后</option>
                                 <option value="7">7 天后</option>
                                 <option value="30" selected>30 天后</option>
@@ -131,15 +193,26 @@
                         </div>
                     </div>
 
-                    <p class="form-message" id="room-message" role="status" aria-live="polite"></p>
-                    <button class="primary-button" id="enter-room-button" type="submit">用密码进入</button>
-                </form>
+                    <div class="field confirm-password-field">
+                        <label for="confirm-room-password">确认密码</label>
+                        <div class="password-field">
+                            <input
+                                id="confirm-room-password"
+                                type="password"
+                                minlength="12"
+                                maxlength="128"
+                                autocomplete="new-password"
+                                placeholder="再次输入密码"
+                                required
+                            >
+                            <button class="password-toggle" type="button" data-password-target="confirm-room-password" aria-label="显示密码">显示</button>
+                        </div>
+                    </div>
 
-                <section class="new-room-prompt" id="new-room-prompt" aria-labelledby="new-room-title" hidden>
-                    <h3 id="new-room-title">这个密码还没有白板</h3>
-                    <p>如果这是你准备使用的新密码，可以用它创建一块空白的私密白板。</p>
-                    <button class="secondary-button" id="create-private-room" type="button">用这个密码新建</button>
-                </section>
+                    <p class="form-message" id="create-room-message" role="status" aria-live="polite"></p>
+                    <button class="primary-button" id="create-room-button" type="submit">创建并进入房间</button>
+                    <button class="text-button back-to-join" id="back-to-join" type="button">返回进入房间</button>
+                </form>
             </div>
 
             <div class="private-card private-workspace" id="private-workspace" hidden>
@@ -147,6 +220,11 @@
                     <div>
                         <p class="private-eyebrow">ENCRYPTED BOARD</p>
                         <h2>私密白板</h2>
+                        <div class="active-room-code">
+                            <span>房间号</span>
+                            <strong id="private-room-code-display"></strong>
+                            <button class="text-button" id="copy-room-code" type="button">复制</button>
+                        </div>
                         <p id="private-room-expiry-text">内容只会以密文形式保存。</p>
                     </div>
                     <button class="text-button lock-room-button" id="lock-private-room" type="button">退出并锁定</button>
@@ -167,7 +245,7 @@
 
             <aside class="board-notice private-notice">
                 <strong>安全提示</strong>
-                <span>密码不会上传；系统用密码派生密钥，再用 AES-GCM 加密正文。请使用至少 12 位且不易猜到的密码，知道密码的人都可以查看和编辑。</span>
+                <span>每个房间都有独立房间号。密码不会上传；系统用“房间号 + 密码”派生密钥，再用 AES-GCM 加密正文。知道两者的人都可以查看和编辑。</span>
             </aside>
         </section>
     </main>

@@ -11,14 +11,25 @@
     const publicMode = document.getElementById("public-mode");
     const privateMode = document.getElementById("private-mode");
     const privateGate = document.getElementById("private-gate");
+    const privateCreatePanel = document.getElementById("private-create-panel");
+    const privateWorkspace = document.getElementById("private-workspace");
     const privateRoomForm = document.getElementById("private-room-form");
+    const privateRoomCode = document.getElementById("private-room-code");
     const privateRoomPassword = document.getElementById("private-room-password");
-    const privateRoomExpiry = document.getElementById("private-room-expiry");
     const roomMessage = document.getElementById("room-message");
     const enterRoomButton = document.getElementById("enter-room-button");
-    const newRoomPrompt = document.getElementById("new-room-prompt");
-    const createPrivateRoom = document.getElementById("create-private-room");
-    const privateWorkspace = document.getElementById("private-workspace");
+    const showCreateRoomButton = document.getElementById("show-create-room");
+    const createRoomForm = document.getElementById("create-room-form");
+    const newRoomCode = document.getElementById("new-room-code");
+    const newRoomPassword = document.getElementById("new-room-password");
+    const confirmRoomPassword = document.getElementById("confirm-room-password");
+    const newRoomExpiry = document.getElementById("new-room-expiry");
+    const createRoomMessage = document.getElementById("create-room-message");
+    const createRoomButton = document.getElementById("create-room-button");
+    const regenerateRoomCode = document.getElementById("regenerate-room-code");
+    const backToJoin = document.getElementById("back-to-join");
+    const privateRoomCodeDisplay = document.getElementById("private-room-code-display");
+    const copyRoomCodeButton = document.getElementById("copy-room-code");
     const privateRoomExpiryText = document.getElementById("private-room-expiry-text");
     const privateBoardEditor = document.getElementById("private-board-editor");
     const privateSaveStatus = document.getElementById("private-save-status");
@@ -27,7 +38,8 @@
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     const PBKDF2_ITERATIONS = 600000;
-    const KDF_CONTEXT = encoder.encode("zhuzhenfang.com/private-board/v1");
+    const ROOM_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    const ROOM_CODE_LENGTH = 12;
 
     let client;
     let saveTimer;
@@ -43,6 +55,7 @@
     let privateRoomSalt = null;
     let privateTtlDays = 30;
     let privateRoomExists = false;
+    let currentRoomCode = "";
 
     function setStatus(state, text) {
         status.dataset.state = state;
@@ -52,6 +65,11 @@
     function setFormMessage(text, state) {
         roomMessage.textContent = text;
         roomMessage.dataset.state = state || "";
+    }
+
+    function setCreateMessage(text, state) {
+        createRoomMessage.textContent = text;
+        createRoomMessage.dataset.state = state || "";
     }
 
     function setMode(mode) {
@@ -128,30 +146,70 @@
         return difference === 0;
     }
 
-    async function deriveRoomCredentials(password) {
+    function normalizeRoomCode(value) {
+        return value
+            .toUpperCase()
+            .split("")
+            .filter((character) => ROOM_CODE_ALPHABET.includes(character))
+            .join("")
+            .slice(0, ROOM_CODE_LENGTH);
+    }
+
+    function formatRoomCode(value) {
+        const normalized = normalizeRoomCode(value);
+        return [
+            normalized.slice(0, 4),
+            normalized.slice(4, 8),
+            normalized.slice(8, 12)
+        ].filter(Boolean).join("-");
+    }
+
+    function generateRoomCode() {
+        const random = window.crypto.getRandomValues(new Uint8Array(ROOM_CODE_LENGTH));
+        const normalized = Array.from(
+            random,
+            (value) => ROOM_CODE_ALPHABET[value & 31]
+        ).join("");
+        return formatRoomCode(normalized);
+    }
+
+    function ttlFromRecord(record) {
+        const duration = new Date(record.expires_at) - new Date(record.updated_at);
+        const days = duration / 86400000;
+        return [1, 7, 30].reduce((nearest, option) => (
+            Math.abs(option - days) < Math.abs(nearest - days) ? option : nearest
+        ), 30);
+    }
+
+    async function deriveRoomCredentials(roomCode, password) {
+        const normalizedCode = normalizeRoomCode(roomCode);
+        if (normalizedCode.length !== ROOM_CODE_LENGTH) {
+            throw new Error("Invalid room code");
+        }
+
+        const roomDigest = new Uint8Array(await window.crypto.subtle.digest(
+            "SHA-256",
+            encoder.encode(`zhuzhenfang.com/private-room/${normalizedCode}`)
+        ));
+        const salt = new Uint8Array(await window.crypto.subtle.digest(
+            "SHA-256",
+            encoder.encode(`zhuzhenfang.com/private-key/${normalizedCode}`)
+        ));
         const passwordKey = await window.crypto.subtle.importKey(
             "raw",
             encoder.encode(password),
             "PBKDF2",
             false,
-            ["deriveBits"]
+            ["deriveKey"]
         );
-        const derivedBuffer = await window.crypto.subtle.deriveBits(
+        const key = await window.crypto.subtle.deriveKey(
             {
                 name: "PBKDF2",
-                salt: KDF_CONTEXT,
+                salt,
                 iterations: PBKDF2_ITERATIONS,
                 hash: "SHA-256"
             },
             passwordKey,
-            512
-        );
-        const derived = new Uint8Array(derivedBuffer);
-        const roomBytes = derived.slice(0, 32);
-        const keyBytes = derived.slice(32, 64);
-        const key = await window.crypto.subtle.importKey(
-            "raw",
-            keyBytes,
             {
                 name: "AES-GCM",
                 length: 256
@@ -160,13 +218,11 @@
             ["encrypt", "decrypt"]
         );
 
-        keyBytes.fill(0);
-        derived.fill(0);
-
         return {
-            roomId: bytesToHex(roomBytes),
+            roomId: bytesToHex(roomDigest),
             key,
-            salt: KDF_CONTEXT.slice()
+            salt,
+            displayCode: formatRoomCode(normalizedCode)
         };
     }
 
@@ -220,12 +276,42 @@
         privateLastSavedContent = content;
         privateDirty = false;
         privateBoardEditor.value = content;
+        privateRoomCodeDisplay.textContent = currentRoomCode;
         updatePrivateCount();
         privateGate.hidden = true;
+        privateCreatePanel.hidden = true;
         privateWorkspace.hidden = false;
         privateRoomExpiryText.textContent = formatExpiry(expiresAt);
-        privateSaveStatus.textContent = exists ? "已在本地解密" : "输入内容后自动保存";
+        privateSaveStatus.textContent = exists ? "已在本地解密" : "正在创建";
         privateBoardEditor.focus();
+    }
+
+    function showJoinPanel() {
+        privateCreatePanel.hidden = true;
+        privateWorkspace.hidden = true;
+        privateGate.hidden = false;
+        setCreateMessage("");
+        privateRoomCode.focus();
+    }
+
+    function showCreatePanel() {
+        privateGate.hidden = true;
+        privateWorkspace.hidden = true;
+        privateCreatePanel.hidden = false;
+        createRoomForm.reset();
+        newRoomExpiry.value = "30";
+        newRoomCode.value = generateRoomCode();
+        setCreateMessage("");
+        newRoomPassword.focus();
+    }
+
+    function clearPrivateCredentials() {
+        privateRoomId = "";
+        privateRoomKey = null;
+        if (privateRoomSalt) privateRoomSalt.fill(0);
+        privateRoomSalt = null;
+        privateRoomExists = false;
+        currentRoomCode = "";
     }
 
     function clearPrivateSession() {
@@ -233,19 +319,17 @@
         privateRevision = 0;
         privateLastSavedContent = "";
         privateDirty = false;
-        privateRoomId = "";
-        privateRoomKey = null;
-        if (privateRoomSalt) privateRoomSalt.fill(0);
-        privateRoomSalt = null;
-        privateRoomExists = false;
+        clearPrivateCredentials();
         privateBoardEditor.value = "";
+        privateRoomCodeDisplay.textContent = "";
         updatePrivateCount();
         privateWorkspace.hidden = true;
+        privateCreatePanel.hidden = true;
         privateGate.hidden = false;
         privateRoomForm.reset();
-        privateRoomExpiry.value = "30";
-        newRoomPrompt.hidden = true;
+        createRoomForm.reset();
         setFormMessage("");
+        setCreateMessage("");
     }
 
     async function savePrivateBoard(revision) {
@@ -308,7 +392,15 @@
     async function enterPrivateRoom(event) {
         event.preventDefault();
 
+        const roomCode = formatRoomCode(privateRoomCode.value);
         const password = privateRoomPassword.value;
+
+        if (normalizeRoomCode(roomCode).length !== ROOM_CODE_LENGTH) {
+            setFormMessage("请输入完整的 12 位房间号。", "error");
+            privateRoomCode.focus();
+            return;
+        }
+
         if (password.length < 12) {
             setFormMessage("密码至少需要 12 个字符。", "error");
             privateRoomPassword.focus();
@@ -321,16 +413,15 @@
         }
 
         enterRoomButton.disabled = true;
-        newRoomPrompt.hidden = true;
         setFormMessage("正在安全验证……");
 
         try {
-            const credentials = await deriveRoomCredentials(password);
+            const credentials = await deriveRoomCredentials(roomCode, password);
             privateRoomPassword.value = "";
             privateRoomId = credentials.roomId;
             privateRoomKey = credentials.key;
             privateRoomSalt = credentials.salt;
-            privateTtlDays = Number(privateRoomExpiry.value);
+            currentRoomCode = credentials.displayCode;
 
             const { data, error } = await client
                 .rpc("read_private_board", { p_room_id: privateRoomId })
@@ -339,23 +430,101 @@
             if (error) throw error;
 
             if (!data) {
-                setFormMessage("没有找到对应的私密白板。请检查密码，或用此密码新建。");
-                newRoomPrompt.hidden = false;
+                clearPrivateCredentials();
+                setFormMessage("没有找到这个房间，可能已过期或房间号有误。", "error");
                 return;
             }
 
-            const content = await decryptPrivateContent(data);
-            setFormMessage("");
-            openPrivateWorkspace(content, data.expires_at, true);
+            try {
+                const content = await decryptPrivateContent(data);
+                privateTtlDays = ttlFromRecord(data);
+                setFormMessage("");
+                openPrivateWorkspace(content, data.expires_at, true);
+            } catch (error) {
+                clearPrivateCredentials();
+                setFormMessage("密码不正确，请重新输入。", "error");
+                privateRoomPassword.focus();
+            }
         } catch (error) {
-            privateRoomId = "";
-            privateRoomKey = null;
-            if (privateRoomSalt) privateRoomSalt.fill(0);
-            privateRoomSalt = null;
-            setFormMessage("无法进入，请检查密码后重试。", "error");
+            clearPrivateCredentials();
+            setFormMessage("暂时无法进入，请稍后重试。", "error");
         } finally {
             enterRoomButton.disabled = false;
         }
+    }
+
+    async function createNewPrivateRoom(event) {
+        event.preventDefault();
+
+        const roomCode = newRoomCode.value;
+        const password = newRoomPassword.value;
+        const confirmation = confirmRoomPassword.value;
+
+        if (password.length < 12) {
+            setCreateMessage("密码至少需要 12 个字符。", "error");
+            newRoomPassword.focus();
+            return;
+        }
+
+        if (password !== confirmation) {
+            setCreateMessage("两次输入的密码不一致。", "error");
+            confirmRoomPassword.focus();
+            return;
+        }
+
+        createRoomButton.disabled = true;
+        setCreateMessage("正在创建独立房间……");
+
+        try {
+            const credentials = await deriveRoomCredentials(roomCode, password);
+            newRoomPassword.value = "";
+            confirmRoomPassword.value = "";
+
+            const { data: existing, error: lookupError } = await client
+                .rpc("read_private_board", { p_room_id: credentials.roomId })
+                .maybeSingle();
+
+            if (lookupError) throw lookupError;
+            if (existing) {
+                newRoomCode.value = generateRoomCode();
+                setCreateMessage("房间号刚好重复，已自动换了一个，请再次创建。", "error");
+                return;
+            }
+
+            privateRoomId = credentials.roomId;
+            privateRoomKey = credentials.key;
+            privateRoomSalt = credentials.salt;
+            currentRoomCode = credentials.displayCode;
+            privateTtlDays = Number(newRoomExpiry.value);
+            privateRevision = 1;
+            privateDirty = true;
+            openPrivateWorkspace("", null, false);
+
+            const saved = await savePrivateBoard(privateRevision);
+            if (!saved) {
+                clearPrivateSession();
+                showCreatePanel();
+                setCreateMessage("创建失败，请稍后重试。", "error");
+            }
+        } catch (error) {
+            clearPrivateCredentials();
+            setCreateMessage("创建失败，请稍后重试。", "error");
+        } finally {
+            createRoomButton.disabled = false;
+        }
+    }
+
+    async function copyRoomCode() {
+        try {
+            await navigator.clipboard.writeText(currentRoomCode);
+            copyRoomCodeButton.textContent = "已复制";
+        } catch (error) {
+            copyRoomCodeButton.textContent = "请手动复制";
+        }
+
+        window.setTimeout(() => {
+            copyRoomCodeButton.textContent = "复制";
+        }, 1800);
     }
 
     async function saveBoard(revision) {
@@ -473,6 +642,10 @@
         schedulePrivateSave();
     });
 
+    privateRoomCode.addEventListener("input", () => {
+        privateRoomCode.value = formatRoomCode(privateRoomCode.value);
+    });
+
     modeTabs.forEach((tab) => {
         tab.addEventListener("click", async () => {
             const mode = tab.dataset.mode;
@@ -497,13 +670,13 @@
     });
 
     privateRoomForm.addEventListener("submit", enterPrivateRoom);
-
-    createPrivateRoom.addEventListener("click", () => {
-        newRoomPrompt.hidden = true;
-        setFormMessage("");
-        openPrivateWorkspace("", null, false);
+    createRoomForm.addEventListener("submit", createNewPrivateRoom);
+    showCreateRoomButton.addEventListener("click", showCreatePanel);
+    backToJoin.addEventListener("click", showJoinPanel);
+    regenerateRoomCode.addEventListener("click", () => {
+        newRoomCode.value = generateRoomCode();
     });
-
+    copyRoomCodeButton.addEventListener("click", copyRoomCode);
     lockPrivateRoomButton.addEventListener("click", () => lockPrivateRoom(true));
 
     window.addEventListener("beforeunload", () => {
