@@ -14,22 +14,19 @@
     const privateCreatePanel = document.getElementById("private-create-panel");
     const privateWorkspace = document.getElementById("private-workspace");
     const privateRoomForm = document.getElementById("private-room-form");
-    const privateRoomCode = document.getElementById("private-room-code");
     const privateRoomPassword = document.getElementById("private-room-password");
+    const noRoomLink = document.getElementById("no-room-link");
     const roomMessage = document.getElementById("room-message");
     const enterRoomButton = document.getElementById("enter-room-button");
     const showCreateRoomButton = document.getElementById("show-create-room");
     const createRoomForm = document.getElementById("create-room-form");
-    const newRoomCode = document.getElementById("new-room-code");
     const newRoomPassword = document.getElementById("new-room-password");
     const confirmRoomPassword = document.getElementById("confirm-room-password");
     const newRoomExpiry = document.getElementById("new-room-expiry");
     const createRoomMessage = document.getElementById("create-room-message");
     const createRoomButton = document.getElementById("create-room-button");
-    const regenerateRoomCode = document.getElementById("regenerate-room-code");
     const backToJoin = document.getElementById("back-to-join");
-    const privateRoomCodeDisplay = document.getElementById("private-room-code-display");
-    const copyRoomCodeButton = document.getElementById("copy-room-code");
+    const copyRoomLinkButton = document.getElementById("copy-room-link");
     const privateRoomExpiryText = document.getElementById("private-room-expiry-text");
     const privateBoardEditor = document.getElementById("private-board-editor");
     const privateSaveStatus = document.getElementById("private-save-status");
@@ -37,9 +34,9 @@
     const lockPrivateRoomButton = document.getElementById("lock-private-room");
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
-    const PBKDF2_ITERATIONS = 600000;
-    const ROOM_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    const ROOM_CODE_LENGTH = 12;
+    const PBKDF2_ITERATIONS = 1000000;
+    const ROOM_TOKEN_PATTERN = /^[0-9a-f]{32}$/;
+    const PIN_PATTERN = /^[0-9]{4}$/;
 
     let client;
     let saveTimer;
@@ -55,7 +52,7 @@
     let privateRoomSalt = null;
     let privateTtlDays = 30;
     let privateRoomExists = false;
-    let currentRoomCode = "";
+    let currentRoomToken = "";
 
     function setStatus(state, text) {
         status.dataset.state = state;
@@ -146,31 +143,20 @@
         return difference === 0;
     }
 
-    function normalizeRoomCode(value) {
-        return value
-            .toUpperCase()
-            .split("")
-            .filter((character) => ROOM_CODE_ALPHABET.includes(character))
-            .join("")
-            .slice(0, ROOM_CODE_LENGTH);
+    function generateRoomToken() {
+        return bytesToHex(window.crypto.getRandomValues(new Uint8Array(16)));
     }
 
-    function formatRoomCode(value) {
-        const normalized = normalizeRoomCode(value);
-        return [
-            normalized.slice(0, 4),
-            normalized.slice(4, 8),
-            normalized.slice(8, 12)
-        ].filter(Boolean).join("-");
+    function roomTokenFromHash() {
+        const parameters = new URLSearchParams(window.location.hash.slice(1));
+        const token = (parameters.get("room") || "").toLowerCase();
+        return ROOM_TOKEN_PATTERN.test(token) ? token : "";
     }
 
-    function generateRoomCode() {
-        const random = window.crypto.getRandomValues(new Uint8Array(ROOM_CODE_LENGTH));
-        const normalized = Array.from(
-            random,
-            (value) => ROOM_CODE_ALPHABET[value & 31]
-        ).join("");
-        return formatRoomCode(normalized);
+    function buildRoomUrl(token) {
+        const url = new URL("/board/", window.location.origin);
+        url.hash = new URLSearchParams({ room: token }).toString();
+        return url.toString();
     }
 
     function ttlFromRecord(record) {
@@ -181,23 +167,22 @@
         ), 30);
     }
 
-    async function deriveRoomCredentials(roomCode, password) {
-        const normalizedCode = normalizeRoomCode(roomCode);
-        if (normalizedCode.length !== ROOM_CODE_LENGTH) {
-            throw new Error("Invalid room code");
+    async function deriveRoomCredentials(roomToken, pin) {
+        if (!ROOM_TOKEN_PATTERN.test(roomToken) || !PIN_PATTERN.test(pin)) {
+            throw new Error("Invalid room credentials");
         }
 
         const roomDigest = new Uint8Array(await window.crypto.subtle.digest(
             "SHA-256",
-            encoder.encode(`zhuzhenfang.com/private-room/${normalizedCode}`)
+            encoder.encode(`zhuzhenfang.com/quick-room/${roomToken}`)
         ));
         const salt = new Uint8Array(await window.crypto.subtle.digest(
             "SHA-256",
-            encoder.encode(`zhuzhenfang.com/private-key/${normalizedCode}`)
+            encoder.encode(`zhuzhenfang.com/quick-key/${roomToken}`)
         ));
-        const passwordKey = await window.crypto.subtle.importKey(
+        const pinKey = await window.crypto.subtle.importKey(
             "raw",
-            encoder.encode(password),
+            encoder.encode(pin),
             "PBKDF2",
             false,
             ["deriveKey"]
@@ -209,7 +194,7 @@
                 iterations: PBKDF2_ITERATIONS,
                 hash: "SHA-256"
             },
-            passwordKey,
+            pinKey,
             {
                 name: "AES-GCM",
                 length: 256
@@ -221,8 +206,7 @@
         return {
             roomId: bytesToHex(roomDigest),
             key,
-            salt,
-            displayCode: formatRoomCode(normalizedCode)
+            salt
         };
     }
 
@@ -276,7 +260,6 @@
         privateLastSavedContent = content;
         privateDirty = false;
         privateBoardEditor.value = content;
-        privateRoomCodeDisplay.textContent = currentRoomCode;
         updatePrivateCount();
         privateGate.hidden = true;
         privateCreatePanel.hidden = true;
@@ -287,11 +270,19 @@
     }
 
     function showJoinPanel() {
+        const hasRoomLink = Boolean(roomTokenFromHash());
         privateCreatePanel.hidden = true;
         privateWorkspace.hidden = true;
         privateGate.hidden = false;
+        privateRoomForm.hidden = !hasRoomLink;
+        noRoomLink.hidden = hasRoomLink;
         setCreateMessage("");
-        privateRoomCode.focus();
+
+        if (hasRoomLink) {
+            privateRoomPassword.focus();
+        } else {
+            showCreateRoomButton.focus();
+        }
     }
 
     function showCreatePanel() {
@@ -300,7 +291,6 @@
         privateCreatePanel.hidden = false;
         createRoomForm.reset();
         newRoomExpiry.value = "30";
-        newRoomCode.value = generateRoomCode();
         setCreateMessage("");
         newRoomPassword.focus();
     }
@@ -311,7 +301,7 @@
         if (privateRoomSalt) privateRoomSalt.fill(0);
         privateRoomSalt = null;
         privateRoomExists = false;
-        currentRoomCode = "";
+        currentRoomToken = "";
     }
 
     function clearPrivateSession() {
@@ -321,15 +311,14 @@
         privateDirty = false;
         clearPrivateCredentials();
         privateBoardEditor.value = "";
-        privateRoomCodeDisplay.textContent = "";
         updatePrivateCount();
         privateWorkspace.hidden = true;
         privateCreatePanel.hidden = true;
-        privateGate.hidden = false;
         privateRoomForm.reset();
         createRoomForm.reset();
         setFormMessage("");
         setCreateMessage("");
+        showJoinPanel();
     }
 
     async function savePrivateBoard(revision) {
@@ -392,17 +381,16 @@
     async function enterPrivateRoom(event) {
         event.preventDefault();
 
-        const roomCode = formatRoomCode(privateRoomCode.value);
-        const password = privateRoomPassword.value;
+        const roomToken = roomTokenFromHash();
+        const pin = privateRoomPassword.value;
 
-        if (normalizeRoomCode(roomCode).length !== ROOM_CODE_LENGTH) {
-            setFormMessage("请输入完整的 12 位房间号。", "error");
-            privateRoomCode.focus();
+        if (!roomToken) {
+            showJoinPanel();
             return;
         }
 
-        if (password.length < 12) {
-            setFormMessage("密码至少需要 12 个字符。", "error");
+        if (!PIN_PATTERN.test(pin)) {
+            setFormMessage("请输入 4 位数字 PIN。", "error");
             privateRoomPassword.focus();
             return;
         }
@@ -416,12 +404,12 @@
         setFormMessage("正在安全验证……");
 
         try {
-            const credentials = await deriveRoomCredentials(roomCode, password);
+            const credentials = await deriveRoomCredentials(roomToken, pin);
             privateRoomPassword.value = "";
             privateRoomId = credentials.roomId;
             privateRoomKey = credentials.key;
             privateRoomSalt = credentials.salt;
-            currentRoomCode = credentials.displayCode;
+            currentRoomToken = roomToken;
 
             const { data, error } = await client
                 .rpc("read_private_board", { p_room_id: privateRoomId })
@@ -431,7 +419,7 @@
 
             if (!data) {
                 clearPrivateCredentials();
-                setFormMessage("没有找到这个房间，可能已过期或房间号有误。", "error");
+                setFormMessage("这个房间不存在或已经过期。", "error");
                 return;
             }
 
@@ -442,7 +430,7 @@
                 openPrivateWorkspace(content, data.expires_at, true);
             } catch (error) {
                 clearPrivateCredentials();
-                setFormMessage("密码不正确，请重新输入。", "error");
+                setFormMessage("PIN 不正确，请重新输入。", "error");
                 privateRoomPassword.focus();
             }
         } catch (error) {
@@ -456,18 +444,17 @@
     async function createNewPrivateRoom(event) {
         event.preventDefault();
 
-        const roomCode = newRoomCode.value;
-        const password = newRoomPassword.value;
+        const pin = newRoomPassword.value;
         const confirmation = confirmRoomPassword.value;
 
-        if (password.length < 12) {
-            setCreateMessage("密码至少需要 12 个字符。", "error");
+        if (!PIN_PATTERN.test(pin)) {
+            setCreateMessage("请输入 4 位数字 PIN。", "error");
             newRoomPassword.focus();
             return;
         }
 
-        if (password !== confirmation) {
-            setCreateMessage("两次输入的密码不一致。", "error");
+        if (pin !== confirmation) {
+            setCreateMessage("两次输入的 PIN 不一致。", "error");
             confirmRoomPassword.focus();
             return;
         }
@@ -476,28 +463,19 @@
         setCreateMessage("正在创建独立房间……");
 
         try {
-            const credentials = await deriveRoomCredentials(roomCode, password);
+            const roomToken = generateRoomToken();
+            const credentials = await deriveRoomCredentials(roomToken, pin);
             newRoomPassword.value = "";
             confirmRoomPassword.value = "";
-
-            const { data: existing, error: lookupError } = await client
-                .rpc("read_private_board", { p_room_id: credentials.roomId })
-                .maybeSingle();
-
-            if (lookupError) throw lookupError;
-            if (existing) {
-                newRoomCode.value = generateRoomCode();
-                setCreateMessage("房间号刚好重复，已自动换了一个，请再次创建。", "error");
-                return;
-            }
 
             privateRoomId = credentials.roomId;
             privateRoomKey = credentials.key;
             privateRoomSalt = credentials.salt;
-            currentRoomCode = credentials.displayCode;
+            currentRoomToken = roomToken;
             privateTtlDays = Number(newRoomExpiry.value);
             privateRevision = 1;
             privateDirty = true;
+            window.location.hash = new URLSearchParams({ room: roomToken }).toString();
             openPrivateWorkspace("", null, false);
 
             const saved = await savePrivateBoard(privateRevision);
@@ -514,16 +492,16 @@
         }
     }
 
-    async function copyRoomCode() {
+    async function copyRoomLink() {
         try {
-            await navigator.clipboard.writeText(currentRoomCode);
-            copyRoomCodeButton.textContent = "已复制";
+            await navigator.clipboard.writeText(buildRoomUrl(currentRoomToken));
+            copyRoomLinkButton.textContent = "已复制";
         } catch (error) {
-            copyRoomCodeButton.textContent = "请手动复制";
+            copyRoomLinkButton.textContent = "请从地址栏复制";
         }
 
         window.setTimeout(() => {
-            copyRoomCodeButton.textContent = "复制";
+            copyRoomLinkButton.textContent = "复制链接";
         }, 1800);
     }
 
@@ -624,6 +602,11 @@
             client = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey);
             await loadBoard();
             subscribe();
+
+            if (roomTokenFromHash()) {
+                setMode("private");
+                showJoinPanel();
+            }
         } catch (error) {
             setStatus("error", "连接失败，请刷新重试");
             setFormMessage("服务连接失败，请刷新重试。", "error");
@@ -642,10 +625,6 @@
         schedulePrivateSave();
     });
 
-    privateRoomCode.addEventListener("input", () => {
-        privateRoomCode.value = formatRoomCode(privateRoomCode.value);
-    });
-
     modeTabs.forEach((tab) => {
         tab.addEventListener("click", async () => {
             const mode = tab.dataset.mode;
@@ -655,17 +634,7 @@
             }
 
             setMode(mode);
-        });
-    });
-
-    document.querySelectorAll(".password-toggle").forEach((button) => {
-        button.addEventListener("click", () => {
-            const input = document.getElementById(button.dataset.passwordTarget);
-            const showing = input.type === "text";
-            input.type = showing ? "password" : "text";
-            button.textContent = showing ? "显示" : "隐藏";
-            button.setAttribute("aria-label", showing ? "显示密码" : "隐藏密码");
-            input.focus();
+            if (mode === "private" && !privateRoomKey) showJoinPanel();
         });
     });
 
@@ -673,11 +642,12 @@
     createRoomForm.addEventListener("submit", createNewPrivateRoom);
     showCreateRoomButton.addEventListener("click", showCreatePanel);
     backToJoin.addEventListener("click", showJoinPanel);
-    regenerateRoomCode.addEventListener("click", () => {
-        newRoomCode.value = generateRoomCode();
-    });
-    copyRoomCodeButton.addEventListener("click", copyRoomCode);
+    copyRoomLinkButton.addEventListener("click", copyRoomLink);
     lockPrivateRoomButton.addEventListener("click", () => lockPrivateRoom(true));
+
+    window.addEventListener("hashchange", () => {
+        if (!privateRoomKey) showJoinPanel();
+    });
 
     window.addEventListener("beforeunload", () => {
         clearTimeout(saveTimer);

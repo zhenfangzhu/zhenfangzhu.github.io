@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="朱振方的在线白板：公开共享编辑，或使用相同密码进入加密私密白板。">
+    <meta name="description" content="朱振方的在线白板：公开共享编辑，或通过专属链接和 4 位 PIN 进入加密私密白板。">
     <meta name="author" content="朱振方 (Zhu Zhenfang)">
     <meta name="theme-color" content="#f4f1e8">
 
     <title>白板 | 朱振方</title>
     <link rel="canonical" href="https://zhuzhenfang.com/board/">
     <meta property="og:title" content="白板 | 朱振方">
-    <meta property="og:description" content="公开共享白板与密码加密私密白板。">
+    <meta property="og:description" content="公开共享白板，以及专属链接与 4 位 PIN 保护的私密白板。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://zhuzhenfang.com/board/">
 
@@ -19,10 +19,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600&amp;display=swap" rel="stylesheet">
-    <link href="/static/css/board.css?v=2026072803" rel="stylesheet">
+    <link href="/static/css/board.css?v=2026072804" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script defer src="/static/js/board-config.js?v=2026072803"></script>
-    <script defer src="/static/js/board.js?v=2026072803"></script>
+    <script defer src="/static/js/board-config.js?v=2026072804"></script>
+    <script defer src="/static/js/board.js?v=2026072804"></script>
 </head>
 <body>
     <header class="board-header">
@@ -40,7 +40,7 @@
         <section class="board-intro" aria-labelledby="board-title">
             <p class="board-kicker">PUBLIC OR PRIVATE · 自由选择</p>
             <h1 id="board-title">白板</h1>
-            <p>公开协作，或使用相同密码进入只有指定人能查看的私密白板。</p>
+            <p>公开协作，或通过专属链接和 4 位 PIN 进入私密白板。</p>
         </section>
 
         <div class="mode-tabs" role="tablist" aria-label="白板类型">
@@ -98,53 +98,39 @@
                     <span class="lock-mark" aria-hidden="true">⌁</span>
                     <div>
                         <p class="private-eyebrow">PASSWORD ROOM</p>
-                        <h2>进入私密白板</h2>
-                        <p>输入房间号和密码，进入对应的独立白板。</p>
+                        <h2>进入快速房间</h2>
+                        <p>打开别人发来的专属链接，再输入 4 位 PIN。</p>
                     </div>
                 </header>
 
                 <form id="private-room-form">
-                    <div class="join-options">
-                        <div class="field">
-                            <label for="private-room-code">房间号</label>
-                            <input
-                                class="text-input room-code-input"
-                                id="private-room-code"
-                                type="text"
-                                minlength="14"
-                                maxlength="14"
-                                autocomplete="off"
-                                autocapitalize="characters"
-                                placeholder="例如 ABCD-EFGH-JKLM"
-                                required
-                            >
-                        </div>
-
-                        <div class="field">
-                            <label for="private-room-password">房间密码</label>
-                            <div class="password-field">
-                                <input
-                                    id="private-room-password"
-                                    type="password"
-                                    minlength="12"
-                                    maxlength="128"
-                                    autocomplete="current-password"
-                                    placeholder="至少 12 个字符"
-                                    required
-                                >
-                                <button class="password-toggle" type="button" data-password-target="private-room-password" aria-label="显示密码">显示</button>
-                            </div>
-                        </div>
+                    <div class="field pin-field">
+                        <label for="private-room-password">4 位 PIN</label>
+                        <input
+                            class="pin-input"
+                            id="private-room-password"
+                            type="password"
+                            inputmode="numeric"
+                            pattern="[0-9]{4}"
+                            minlength="4"
+                            maxlength="4"
+                            autocomplete="one-time-code"
+                            placeholder="••••"
+                            aria-describedby="pin-help"
+                            required
+                        >
+                        <p class="field-help" id="pin-help">只输入创建者设置的 4 位数字。</p>
                     </div>
 
                     <p class="form-message" id="room-message" role="status" aria-live="polite"></p>
-                    <button class="primary-button" id="enter-room-button" type="submit">进入房间</button>
+                    <button class="primary-button" id="enter-room-button" type="submit">快速进入</button>
                 </form>
 
-                <div class="create-room-entry">
-                    <span>还没有房间？</span>
-                    <button class="text-button" id="show-create-room" type="button">创建新房间</button>
+                <div class="no-room-link" id="no-room-link" hidden>
+                    <p>当前没有房间链接。你可以让创建者重新发送，或者新建一个房间。</p>
                 </div>
+
+                <button class="text-button create-room-shortcut" id="show-create-room" type="button">创建新房间</button>
             </div>
 
             <div class="private-card" id="private-create-panel" hidden>
@@ -152,35 +138,27 @@
                     <span class="lock-mark" aria-hidden="true">＋</span>
                     <div>
                         <p class="private-eyebrow">NEW PRIVATE ROOM</p>
-                        <h2>创建独立房间</h2>
-                        <p>系统会生成唯一房间号；即使密码相同，不同房间也不会混在一起。</p>
+                        <h2>创建快速房间</h2>
+                        <p>系统会生成专属链接。对方打开后，只需输入 4 位 PIN。</p>
                     </div>
                 </header>
 
                 <form id="create-room-form">
-                    <div class="field">
-                        <label for="new-room-code">新房间号</label>
-                        <div class="generated-code-row">
-                            <input class="text-input room-code-input" id="new-room-code" type="text" readonly>
-                            <button class="secondary-button" id="regenerate-room-code" type="button">换一个</button>
-                        </div>
-                    </div>
-
                     <div class="private-options">
-                        <div class="field">
-                            <label for="new-room-password">设置密码</label>
-                            <div class="password-field">
-                                <input
-                                    id="new-room-password"
-                                    type="password"
-                                    minlength="12"
-                                    maxlength="128"
-                                    autocomplete="new-password"
-                                    placeholder="至少 12 个字符"
-                                    required
-                                >
-                                <button class="password-toggle" type="button" data-password-target="new-room-password" aria-label="显示密码">显示</button>
-                            </div>
+                        <div class="field pin-field">
+                            <label for="new-room-password">设置 4 位 PIN</label>
+                            <input
+                                class="pin-input"
+                                id="new-room-password"
+                                type="password"
+                                inputmode="numeric"
+                                pattern="[0-9]{4}"
+                                minlength="4"
+                                maxlength="4"
+                                autocomplete="new-password"
+                                placeholder="••••"
+                                required
+                            >
                         </div>
 
                         <div class="field">
@@ -193,20 +171,20 @@
                         </div>
                     </div>
 
-                    <div class="field confirm-password-field">
-                        <label for="confirm-room-password">确认密码</label>
-                        <div class="password-field">
-                            <input
-                                id="confirm-room-password"
-                                type="password"
-                                minlength="12"
-                                maxlength="128"
-                                autocomplete="new-password"
-                                placeholder="再次输入密码"
-                                required
-                            >
-                            <button class="password-toggle" type="button" data-password-target="confirm-room-password" aria-label="显示密码">显示</button>
-                        </div>
+                    <div class="field confirm-password-field pin-field">
+                        <label for="confirm-room-password">确认 4 位 PIN</label>
+                        <input
+                            class="pin-input"
+                            id="confirm-room-password"
+                            type="password"
+                            inputmode="numeric"
+                            pattern="[0-9]{4}"
+                            minlength="4"
+                            maxlength="4"
+                            autocomplete="new-password"
+                            placeholder="••••"
+                            required
+                        >
                     </div>
 
                     <p class="form-message" id="create-room-message" role="status" aria-live="polite"></p>
@@ -221,9 +199,8 @@
                         <p class="private-eyebrow">ENCRYPTED BOARD</p>
                         <h2>私密白板</h2>
                         <div class="active-room-code">
-                            <span>房间号</span>
-                            <strong id="private-room-code-display"></strong>
-                            <button class="text-button" id="copy-room-code" type="button">复制</button>
+                            <span>专属房间链接</span>
+                            <button class="text-button" id="copy-room-link" type="button">复制链接</button>
                         </div>
                         <p id="private-room-expiry-text">内容只会以密文形式保存。</p>
                     </div>
@@ -245,7 +222,7 @@
 
             <aside class="board-notice private-notice">
                 <strong>安全提示</strong>
-                <span>每个房间都有独立房间号。密码不会上传；系统用“房间号 + 密码”派生密钥，再用 AES-GCM 加密正文。知道两者的人都可以查看和编辑。</span>
+                <span>每个链接都是独立房间，PIN 不会上传，正文仍以密文保存。4 位 PIN 以便捷为主，请勿存放身份证、银行卡或核心密码。</span>
             </aside>
         </section>
     </main>

@@ -338,6 +338,7 @@ a {
 }
 
 .password-field input,
+.pin-input,
 .field select,
 .text-input {
     width: 100%;
@@ -348,18 +349,9 @@ a {
     font: inherit;
 }
 
-.password-field input::placeholder {
+.password-field input::placeholder,
+.pin-input::placeholder {
     color: #8b8d8c;
-}
-
-.join-options {
-    display: grid;
-    grid-template-columns: minmax(180px, 0.85fr) minmax(0, 1.4fr);
-    gap: 1rem;
-}
-
-.join-options .field + .field {
-    margin-top: 0;
 }
 
 .text-input {
@@ -367,10 +359,23 @@ a {
     padding: 0.7rem 0.85rem;
 }
 
-.room-code-input {
+.pin-input {
+    display: block;
+    width: min(100%, 180px);
+    min-height: 52px;
+    padding: 0.7rem 0.9rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    text-align: center;
+}
+
+.field-help,
+.no-room-link p {
+    margin: 0.55rem 0 0;
+    color: var(--muted);
+    font-size: 0.74rem;
+    line-height: 1.6;
 }
 
 .private-options {
@@ -474,33 +479,20 @@ a {
     color: var(--green);
 }
 
-.create-room-entry {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.45rem;
+.no-room-link {
     margin-top: 1.2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--line);
-    color: var(--muted);
-    font-size: 0.78rem;
+    padding: 0.9rem 1rem;
+    border-radius: 7px;
+    background: var(--blue-soft);
 }
 
-.create-room-entry .text-button {
-    min-height: 36px;
-    margin-top: 0;
+.no-room-link p {
+    margin: 0;
 }
 
-.generated-code-row {
-    display: flex;
-    gap: 0.55rem;
-}
-
-.generated-code-row input {
-    min-width: 0;
-    background: var(--green-soft);
-    color: var(--green);
-    font-size: 1rem;
+.create-room-shortcut {
+    display: block;
+    margin: 0.8rem auto 0;
 }
 
 .confirm-password-field {
@@ -546,12 +538,6 @@ a {
 
 .active-room-code span {
     color: var(--muted);
-}
-
-.active-room-code strong {
-    color: var(--green);
-    font-size: 0.86rem;
-    letter-spacing: 0.08em;
 }
 
 .active-room-code .text-button {
@@ -643,21 +629,12 @@ noscript {
         grid-template-columns: 1fr;
     }
 
-    .join-options {
-        grid-template-columns: 1fr;
-    }
-
     .private-options .field + .field {
         margin-top: 0.2rem;
     }
 
-    .join-options .field + .field {
-        margin-top: 0.2rem;
-    }
-
-    .generated-code-row {
-        align-items: stretch;
-        flex-direction: column;
+    .pin-input {
+        width: 100%;
     }
 
     .confirm-password-field {
