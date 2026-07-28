@@ -370,8 +370,7 @@ a {
     text-align: center;
 }
 
-.field-help,
-.no-room-link p {
+.field-help {
     margin: 0.55rem 0 0;
     color: var(--muted);
     font-size: 0.74rem;
@@ -477,17 +476,6 @@ a {
 
 .form-message[data-state="success"] {
     color: var(--green);
-}
-
-.no-room-link {
-    margin-top: 1.2rem;
-    padding: 0.9rem 1rem;
-    border-radius: 7px;
-    background: var(--blue-soft);
-}
-
-.no-room-link p {
-    margin: 0;
 }
 
 .create-room-shortcut {

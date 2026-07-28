@@ -96,12 +96,10 @@ class SiteContractTests(unittest.TestCase):
             'id="private-room-form"',
             'id="private-room-password"',
             'pattern="[0-9]{4}"',
-            'id="no-room-link"',
             'id="private-create-panel"',
             'id="create-room-form"',
             'id="private-workspace"',
             'id="private-board-editor"',
-            'id="copy-room-link"',
             'id="lock-private-room"',
         ):
             self.assertIn(fragment, board)
@@ -115,24 +113,22 @@ class SiteContractTests(unittest.TestCase):
             '"AES-GCM"',
             "1000000",
             "deriveRoomCredentials",
-            "generateRoomToken",
-            "ROOM_TOKEN_PATTERN",
             "PIN_PATTERN",
+            "PIN_ROOM_CONTEXT",
             "window.crypto.subtle.encrypt",
             "window.crypto.subtle.decrypt",
         ):
             self.assertIn(crypto_contract, board_js)
 
-        self.assertIn("deriveRoomCredentials(roomToken, pin)", board_js)
-        self.assertIn("currentRoomToken", board_js)
-        self.assertIn("new Uint8Array(16)", board_js)
-        self.assertIn("window.location.hash", board_js)
-        self.assertIn("new URLSearchParams({ room: token })", board_js)
+        self.assertIn("deriveRoomCredentials(pin)", board_js)
+        self.assertIn("window.crypto.subtle.deriveBits", board_js)
+        self.assertIn("这个 PIN 已被使用，请换一个。", board_js)
         self.assertIn('.rpc("save_private_board"', board_js)
         self.assertIn('.rpc("read_private_board"', board_js)
         self.assertNotIn("p_password", board_js)
         self.assertNotIn("localStorage", board_js)
         self.assertNotIn("sessionStorage", board_js)
+        self.assertNotIn("location.hash", board_js)
         self.assertNotIn("location.search", board_js)
         self.assertNotIn("console.", board_js)
 

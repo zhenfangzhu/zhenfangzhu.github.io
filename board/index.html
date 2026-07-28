@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="朱振方的在线白板：公开共享编辑，或通过专属链接和 4 位 PIN 进入加密私密白板。">
+    <meta name="description" content="朱振方的在线白板：公开共享编辑，或输入 4 位 PIN 进入加密私密白板。">
     <meta name="author" content="朱振方 (Zhu Zhenfang)">
     <meta name="theme-color" content="#f4f1e8">
 
     <title>白板 | 朱振方</title>
     <link rel="canonical" href="https://zhuzhenfang.com/board/">
     <meta property="og:title" content="白板 | 朱振方">
-    <meta property="og:description" content="公开共享白板，以及专属链接与 4 位 PIN 保护的私密白板。">
+    <meta property="og:description" content="公开共享白板，以及使用 4 位 PIN 进入的加密私密白板。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://zhuzhenfang.com/board/">
 
@@ -19,10 +19,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600&amp;display=swap" rel="stylesheet">
-    <link href="/static/css/board.css?v=2026072804" rel="stylesheet">
+    <link href="/static/css/board.css?v=2026072805" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script defer src="/static/js/board-config.js?v=2026072804"></script>
-    <script defer src="/static/js/board.js?v=2026072804"></script>
+    <script defer src="/static/js/board-config.js?v=2026072805"></script>
+    <script defer src="/static/js/board.js?v=2026072805"></script>
 </head>
 <body>
     <header class="board-header">
@@ -40,7 +40,7 @@
         <section class="board-intro" aria-labelledby="board-title">
             <p class="board-kicker">PUBLIC OR PRIVATE · 自由选择</p>
             <h1 id="board-title">白板</h1>
-            <p>公开协作，或通过专属链接和 4 位 PIN 进入私密白板。</p>
+            <p>公开协作，或输入 4 位 PIN 进入对应的私密白板。</p>
         </section>
 
         <div class="mode-tabs" role="tablist" aria-label="白板类型">
@@ -99,7 +99,7 @@
                     <div>
                         <p class="private-eyebrow">PASSWORD ROOM</p>
                         <h2>进入快速房间</h2>
-                        <p>打开别人发来的专属链接，再输入 4 位 PIN。</p>
+                        <p>直接输入创建者设置的 4 位 PIN。</p>
                     </div>
                 </header>
 
@@ -126,10 +126,6 @@
                     <button class="primary-button" id="enter-room-button" type="submit">快速进入</button>
                 </form>
 
-                <div class="no-room-link" id="no-room-link" hidden>
-                    <p>当前没有房间链接。你可以让创建者重新发送，或者新建一个房间。</p>
-                </div>
-
                 <button class="text-button create-room-shortcut" id="show-create-room" type="button">创建新房间</button>
             </div>
 
@@ -139,7 +135,7 @@
                     <div>
                         <p class="private-eyebrow">NEW PRIVATE ROOM</p>
                         <h2>创建快速房间</h2>
-                        <p>系统会生成专属链接。对方打开后，只需输入 4 位 PIN。</p>
+                        <p>设置一个尚未使用的 4 位 PIN，对方进入网站后输入它即可。</p>
                     </div>
                 </header>
 
@@ -199,8 +195,7 @@
                         <p class="private-eyebrow">ENCRYPTED BOARD</p>
                         <h2>私密白板</h2>
                         <div class="active-room-code">
-                            <span>专属房间链接</span>
-                            <button class="text-button" id="copy-room-link" type="button">复制链接</button>
+                            <span>当前房间已解锁</span>
                         </div>
                         <p id="private-room-expiry-text">内容只会以密文形式保存。</p>
                     </div>
@@ -222,7 +217,7 @@
 
             <aside class="board-notice private-notice">
                 <strong>安全提示</strong>
-                <span>每个链接都是独立房间，PIN 不会上传，正文仍以密文保存。4 位 PIN 以便捷为主，请勿存放身份证、银行卡或核心密码。</span>
+                <span>同一个 PIN 对应同一个房间，PIN 不会上传，正文仍以密文保存。4 位 PIN 以便捷为主，请勿存放身份证、银行卡或核心密码。</span>
             </aside>
         </section>
     </main>
