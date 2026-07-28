@@ -550,6 +550,7 @@
     async function start() {
         updateCount();
         updatePrivateCount();
+        window.history.replaceState(null, "", "/board/");
 
         if (!config.supabaseUrl || !config.supabaseAnonKey || !window.supabase) {
             setStatus("error", "白板正在配置中");
