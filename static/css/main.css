@@ -394,8 +394,17 @@ h2 {
     font-size: 0.78rem;
 }
 
-.footer-meta {
-    letter-spacing: 0.03em;
+.footer-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 1rem;
+    letter-spacing: 0.01em;
+}
+
+.footer-stats > span + span::before {
+    margin-right: 1rem;
+    color: var(--color-border);
+    content: "/";
 }
 
 .site-footer :focus-visible {
@@ -489,6 +498,10 @@ h2 {
         align-items: flex-start;
         flex-direction: column;
         gap: 0.4rem;
+    }
+
+    .footer-stats > span + span::before {
+        display: none;
     }
 }
 

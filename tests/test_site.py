@@ -327,10 +327,23 @@ class SiteContractTests(unittest.TestCase):
     def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")
-        version = "2026071604"
+        version = "2026082501"
         self.assertIn(f'static/css/main.css?v={version}', index)
         self.assertIn(f'static/js/scripts.js?v={version}', index)
         self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
+
+    def test_homepage_has_busuanzi_site_stats(self):
+        index = read("index.html")
+        css = read("static/css/main.css")
+        self.assertIn(
+            'src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"',
+            index,
+        )
+        self.assertIn('id="busuanzi_container_site_pv"', index)
+        self.assertIn('id="busuanzi_value_site_pv"', index)
+        self.assertIn('id="busuanzi_container_site_uv"', index)
+        self.assertIn('id="busuanzi_value_site_uv"', index)
+        self.assertIn(".footer-stats", css)
 
     def test_portrait_keeps_vertical_composition(self):
         css = read("static/css/main.css")
