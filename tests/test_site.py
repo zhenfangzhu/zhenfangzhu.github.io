@@ -157,9 +157,12 @@ class SiteContractTests(unittest.TestCase):
         for phrase in (
             "I graduated from the University of Science and Technology of China",
             "我毕业于中国科学技术大学",
-            "Software Systems / 软件系统",
-            "Language Model Applications / 语言模型应用",
-            "Developer Tools &amp; Open Source / 开发者工具与开源",
+            "Software Systems",
+            "软件系统",
+            "Language Model Applications",
+            "语言模型应用",
+            "Developer Tools &amp; Open Source",
+            "开发者工具与开源",
             "2019–2023",
             "Bachelor of Science",
             "理学学士",
@@ -220,13 +223,18 @@ class SiteContractTests(unittest.TestCase):
         for tag in re.findall(r'<a\s+[^>]*target="_blank"[^>]*>', combined):
             self.assertIn('rel="noopener noreferrer"', tag)
 
-    def test_dynamic_markdown_marks_chinese_fragments_with_language(self):
+    def test_dynamic_content_has_separate_language_variants(self):
         home = read("contents/home.md")
         interests = read("contents/publications.md")
-        self.assertIn('## About / <span lang="zh-CN">关于</span>', home)
+        education = read("contents/awards.md")
+        self.assertIn('<div data-lang="en">', home)
+        self.assertIn('<div data-lang="zh" lang="zh-CN">', home)
         for label in ("软件系统", "语言模型应用", "开发者工具与开源"):
-            self.assertIn(f'/ <span lang="zh-CN">{label}</span></strong>', interests)
-        self.assertEqual(interests.count('<span lang="zh-CN">'), 3)
+            self.assertIn(f'<strong>{label}</strong>', interests)
+        self.assertIn('class="interest-list" data-lang="en"', interests)
+        self.assertIn('class="interest-list" data-lang="zh"', interests)
+        self.assertIn('class="education-list" data-lang="en"', education)
+        self.assertIn('class="education-list" data-lang="zh"', education)
 
     def test_interest_supporting_copy_selector_only_targets_direct_spans(self):
         css = read("static/css/main.css")
@@ -327,7 +335,7 @@ class SiteContractTests(unittest.TestCase):
     def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")
-        version = "2026082502"
+        version = "2026082503"
         self.assertIn(f'static/css/main.css?v={version}', index)
         self.assertIn(f'static/js/scripts.js?v={version}', index)
         self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
@@ -354,6 +362,20 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.35fr)", css)
         self.assertNotIn("For relevant technical or product conversations", index)
         self.assertNotIn("欢迎就相关技术或产品问题与我交流", index)
+
+    def test_language_switcher_changes_and_remembers_the_ui_language(self):
+        index = read("index.html")
+        about = read("about/index.html")
+        css = read("static/css/main.css")
+        language_js = read("static/js/language.js")
+        self.assertIn('class="language-select"', index)
+        self.assertIn('class="language-select"', about)
+        self.assertIn('data-lang="en"', index)
+        self.assertIn('data-lang="zh"', index)
+        self.assertIn('html[data-language="en"] [data-lang="zh"]', css)
+        self.assertIn('html[data-language="zh"] [data-lang="en"]', css)
+        self.assertIn('window.localStorage.setItem(STORAGE_KEY, nextLanguage)', language_js)
+        self.assertIn('document.documentElement.lang = nextLanguage === "zh" ? "zh-CN" : "en"', language_js)
 
     def test_portrait_keeps_vertical_composition(self):
         css = read("static/css/main.css")

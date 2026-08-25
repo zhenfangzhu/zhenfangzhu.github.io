@@ -1,5 +1,5 @@
 const CONTENT_DIRECTORY = 'contents/';
-const CONTENT_VERSION = '2026082502';
+const CONTENT_VERSION = '2026082503';
 const SECTIONS = [
     { file: 'home.md', target: 'home-md' },
     { file: 'publications.md', target: 'publications-md' },
@@ -17,7 +17,7 @@ async function fetchText(path) {
 function showLoadError(targetId) {
     const target = document.getElementById(targetId);
     if (target) {
-        target.innerHTML = '<p class="content-error" role="status">This section could not be loaded. Please refresh the page.</p>';
+        target.innerHTML = '<p class="content-error" role="status"><span data-lang="en">This section could not be loaded. Please refresh the page.</span><span data-lang="zh">这部分内容暂时没加载出来，请刷新页面。</span></p>';
     }
 }
 

@@ -13,6 +13,11 @@
     --nav-height: 68px;
 }
 
+html[data-language="en"] [data-lang="zh"],
+html[data-language="zh"] [data-lang="en"] {
+    display: none !important;
+}
+
 *,
 *::before,
 *::after {
@@ -190,13 +195,6 @@ h2 {
     line-height: 1.08;
 }
 
-.profile-name-zh {
-    margin: 0.45rem 0 0;
-    color: var(--color-heading);
-    font-size: 1.3rem;
-    font-weight: 600;
-}
-
 .profile-role {
     margin: 1.15rem 0 1.7rem;
     color: var(--color-accent-dark);
@@ -214,10 +212,6 @@ h2 {
 .profile-bio {
     margin: 0 0 0.85rem;
     font-size: 1.02rem;
-}
-
-.profile-bio-zh {
-    color: var(--color-muted);
 }
 
 .prose {
@@ -359,14 +353,44 @@ h2 {
     line-height: 1.05;
 }
 
-.contact-title-en {
-    display: block;
-    margin-top: 0.75rem;
+.language-item {
+    display: flex;
+    align-items: center;
+}
+
+.language-switcher {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 0.4rem;
     color: var(--color-muted);
-    font-size: 0.8rem;
+}
+
+.language-switcher i {
+    font-size: 1rem;
+}
+
+.language-select {
+    min-height: 36px;
+    padding: 0 0.25rem;
+    border: 0;
+    background: transparent;
+    color: var(--color-heading);
+    font: inherit;
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.language-select:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+.about-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
 }
 
 .contact-strip {
@@ -518,6 +542,10 @@ h2 {
     .contact-layout {
         grid-template-columns: 1fr;
         gap: 2.5rem;
+    }
+
+    .language-item {
+        margin-top: 0.4rem;
     }
 
     .footer-inner {
