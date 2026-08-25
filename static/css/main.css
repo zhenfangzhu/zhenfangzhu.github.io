@@ -343,36 +343,58 @@ h2 {
     scroll-margin-top: var(--nav-height);
 }
 
+.contact-layout {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.35fr);
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: center;
+}
+
 .profile-contact h2 {
-    margin-bottom: 2rem;
+    margin: 0;
+    color: var(--color-heading);
+    font-size: clamp(2.6rem, 6vw, 4.5rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+}
+
+.contact-title-en {
+    display: block;
+    margin-top: 0.75rem;
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
 .contact-strip {
     display: flex;
-    flex-wrap: wrap;
-    min-height: 64px;
-    gap: 1.5rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--color-border);
-    background: var(--color-surface);
+    flex-direction: column;
+    gap: 1.25rem;
 }
 
 .contact-strip a {
-    display: inline-flex;
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
     align-items: center;
     min-height: 44px;
+    gap: 1rem;
     overflow-wrap: anywhere;
-    font-weight: 600;
+    color: var(--color-accent);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 500;
 }
 
-.profile-contact > .site-container > p {
-    max-width: 70ch;
-    margin: 1.5rem 0 0;
+.contact-strip a:hover {
+    color: var(--color-heading);
 }
 
-.profile-contact > .site-container > p + p {
-    margin-top: 0.2rem;
-    color: var(--color-muted);
+.contact-strip i {
+    color: var(--color-heading);
+    font-size: 2rem;
+    text-align: center;
 }
 
 .site-footer {
@@ -486,12 +508,16 @@ h2 {
     }
 
     .contact-strip {
-        flex-direction: column;
-        gap: 0.25rem;
+        gap: 1rem;
     }
 
     .contact-strip a {
         width: 100%;
+    }
+
+    .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
     }
 
     .footer-inner {

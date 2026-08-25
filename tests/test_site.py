@@ -327,7 +327,7 @@ class SiteContractTests(unittest.TestCase):
     def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")
-        version = "2026082501"
+        version = "2026082502"
         self.assertIn(f'static/css/main.css?v={version}', index)
         self.assertIn(f'static/js/scripts.js?v={version}', index)
         self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
@@ -344,6 +344,16 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('id="busuanzi_container_site_uv"', index)
         self.assertIn('id="busuanzi_value_site_uv"', index)
         self.assertIn(".footer-stats", css)
+
+    def test_contact_section_uses_icon_led_split_layout(self):
+        index = read("index.html")
+        css = read("static/css/main.css")
+        self.assertIn('class="container site-container contact-layout"', index)
+        self.assertIn('class="bi bi-envelope-fill"', index)
+        self.assertIn('class="bi bi-github"', index)
+        self.assertIn("grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.35fr)", css)
+        self.assertNotIn("For relevant technical or product conversations", index)
+        self.assertNotIn("欢迎就相关技术或产品问题与我交流", index)
 
     def test_portrait_keeps_vertical_composition(self):
         css = read("static/css/main.css")
