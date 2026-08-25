@@ -335,7 +335,7 @@ class SiteContractTests(unittest.TestCase):
     def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")
-        version = "2026082503"
+        version = "2026082504"
         self.assertIn(f'static/css/main.css?v={version}', index)
         self.assertIn(f'static/js/scripts.js?v={version}', index)
         self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
@@ -368,14 +368,17 @@ class SiteContractTests(unittest.TestCase):
         about = read("about/index.html")
         css = read("static/css/main.css")
         language_js = read("static/js/language.js")
-        self.assertIn('class="language-select"', index)
-        self.assertIn('class="language-select"', about)
+        self.assertIn('class="language-toggle"', index)
+        self.assertIn('class="language-toggle"', about)
+        self.assertNotIn('class="language-select"', index)
+        self.assertNotIn('class="language-select"', about)
         self.assertIn('data-lang="en"', index)
         self.assertIn('data-lang="zh"', index)
         self.assertIn('html[data-language="en"] [data-lang="zh"]', css)
         self.assertIn('html[data-language="zh"] [data-lang="en"]', css)
         self.assertIn('window.localStorage.setItem(STORAGE_KEY, nextLanguage)', language_js)
         self.assertIn('document.documentElement.lang = nextLanguage === "zh" ? "zh-CN" : "en"', language_js)
+        self.assertIn('currentLanguage() === "zh" ? "en" : "zh"', language_js)
 
     def test_portrait_keeps_vertical_composition(self):
         css = read("static/css/main.css")

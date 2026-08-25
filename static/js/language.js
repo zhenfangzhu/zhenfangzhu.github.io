@@ -17,8 +17,10 @@
         const title = nextLanguage === "zh" ? document.body.dataset.titleZh : document.body.dataset.titleEn;
         if (title) document.title = title;
 
-        document.querySelectorAll(".language-select, [data-language-select]").forEach((select) => {
-            select.value = nextLanguage;
+        document.querySelectorAll(".language-toggle").forEach((button) => {
+            const label = nextLanguage === "zh" ? "Switch to English" : "切换到中文";
+            button.setAttribute("aria-label", label);
+            button.title = label;
         });
 
         if (remember) {
@@ -32,8 +34,11 @@
 
     window.addEventListener("DOMContentLoaded", () => {
         applyLanguage(currentLanguage(), false);
-        document.querySelectorAll(".language-select, [data-language-select]").forEach((select) => {
-            select.addEventListener("change", () => applyLanguage(select.value, true));
+        document.querySelectorAll(".language-toggle").forEach((button) => {
+            button.addEventListener("click", () => {
+                const nextLanguage = currentLanguage() === "zh" ? "en" : "zh";
+                applyLanguage(nextLanguage, true);
+            });
         });
     });
 }());
