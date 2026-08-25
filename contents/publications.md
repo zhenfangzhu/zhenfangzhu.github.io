@@ -1,29 +1,29 @@
 <ul class="interest-list" data-lang="en">
   <li class="interest-row">
     <strong>Software Systems</strong>
-    <span>system design, infrastructure, and reliable implementation.</span>
+    <span>Systems that are useful, reliable, and maintainable.</span>
   </li>
   <li class="interest-row">
     <strong>Language Model Applications</strong>
-    <span>practical experimentation and evaluation.</span>
+    <span>Practical applications and careful evaluation.</span>
   </li>
   <li class="interest-row">
     <strong>Developer Tools &amp; Open Source</strong>
-    <span>reusable tools, reproducible workflows, and public technical work.</span>
+    <span>Small tools that make real work easier.</span>
   </li>
 </ul>
 
 <ul class="interest-list" data-lang="zh" lang="zh-CN">
   <li class="interest-row">
     <strong>软件系统</strong>
-    <span>系统设计、基础设施与可靠实现。</span>
+    <span>做实用、可靠、便于维护的系统。</span>
   </li>
   <li class="interest-row">
     <strong>语言模型应用</strong>
-    <span>面向实际问题的实验与评估。</span>
+    <span>面向实际问题做应用与评估。</span>
   </li>
   <li class="interest-row">
     <strong>开发者工具与开源</strong>
-    <span>可复用工具、可复现流程与公开技术工作。</span>
+    <span>做真正能省事的小工具。</span>
   </li>
 </ul>

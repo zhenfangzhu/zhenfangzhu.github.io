@@ -1,7 +1,6 @@
 const CONTENT_DIRECTORY = 'contents/';
-const CONTENT_VERSION = '2026082504';
+const CONTENT_VERSION = '2026082505';
 const SECTIONS = [
-    { file: 'home.md', target: 'home-md' },
     { file: 'publications.md', target: 'publications-md' },
     { file: 'awards.md', target: 'awards-md' },
 ];

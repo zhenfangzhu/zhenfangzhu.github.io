@@ -56,10 +56,9 @@ class SiteContractTests(unittest.TestCase):
 
     def test_navigation_and_sections_match_new_information_architecture(self):
         index = read("index.html")
-        for section_id in ("about", "interests", "education", "contact"):
+        for section_id in ("about", "interests", "education", "tools", "contact"):
             self.assertIn(f'id="{section_id}"', index)
-        self.assertIn('href="/about/"', index)
-        for section_id in ("interests", "education", "contact"):
+        for section_id in ("interests", "education", "tools", "contact"):
             self.assertIn(f'href="#{section_id}"', index)
         self.assertIn('href="/founder-dna/"', index)
         self.assertIn('href="/board/"', index)
@@ -155,8 +154,8 @@ class SiteContractTests(unittest.TestCase):
         visible_text = re.sub(r"</?span(?:\s+[^>]*)?>", "", index + content)
         self.assertNotRegex(content, r"\[List your|href=[\"']#[\"']")
         for phrase in (
-            "I graduated from the University of Science and Technology of China",
-            "我毕业于中国科学技术大学",
+            "BSc, University of Science and Technology of China",
+            "中国科学技术大学理学学士",
             "Software Systems",
             "软件系统",
             "Language Model Applications",
@@ -335,7 +334,7 @@ class SiteContractTests(unittest.TestCase):
     def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")
-        version = "2026082504"
+        version = "2026082505"
         self.assertIn(f'static/css/main.css?v={version}', index)
         self.assertIn(f'static/js/scripts.js?v={version}', index)
         self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
