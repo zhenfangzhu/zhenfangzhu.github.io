@@ -65,7 +65,7 @@
 
     <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico?v=2026071601">
     <link rel="apple-touch-icon" sizes="180x180" href="static/assets/apple-touch-icon.png?v=2026071601">
-    <link href="static/css/home.css?v=2026082601" rel="stylesheet">
+    <link href="static/css/home.css?v=2026082602" rel="stylesheet">
 
     <script>
         (() => {
@@ -83,7 +83,7 @@
 
         })();
     </script>
-    <script defer src="static/js/language.js?v=2026082607"></script>
+    <script defer src="static/js/language.js?v=2026082608"></script>
     <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 
@@ -104,11 +104,25 @@
                                 <button class="language-toggle" type="button" aria-label="切换到中文" title="切换到中文"><span data-lang="en">中</span><span data-lang="zh">EN</span></button>
                             </nav>
                         </div>
-                        <div data-lang="en">
-                            <p>BSc, University of Science and Technology of China. I now build AI products and developer tools.</p>
-                            <p>I use this site to keep two kinds of records: what happens while I am awake, and what remains after sleep.</p>
+                        <div class="bio-view-header">
+                            <span><span data-lang="en">Bio</span><span data-lang="zh">自述</span></span>
+                            <div class="bio-view-tabs" role="tablist" aria-label="Biography length">
+                                <button id="bio-default-tab" type="button" role="tab" aria-selected="true" aria-controls="bio-default" data-bio-view="default"><span data-lang="en">Default</span><span data-lang="zh">默认</span></button>
+                                <button id="bio-long-tab" type="button" role="tab" aria-selected="false" aria-controls="bio-long" data-bio-view="long" data-lang="zh">长</button>
+                            </div>
                         </div>
-                        <div data-lang="zh" lang="zh-CN">
+                        <div class="bio-view-panel" id="bio-default" role="tabpanel" aria-labelledby="bio-default-tab">
+                            <div data-lang="en">
+                                <p>BSc, University of Science and Technology of China. I now build AI products and developer tools.</p>
+                                <p>I use this site to keep two kinds of records: what happens while I am awake, and what remains after sleep.</p>
+                            </div>
+                            <div data-lang="zh" lang="zh-CN">
+                                <p>中国科学技术大学理学学士，目前从事 AI 创业，开发 AI 产品与工具。</p>
+                                <p>这个网站保存两类记录：清醒时做过的事，以及睡醒后仍然留下的梦。</p>
+                            </div>
+                        </div>
+                        <div class="bio-view-panel" id="bio-long" role="tabpanel" aria-labelledby="bio-long-tab" hidden>
+                            <div data-lang="zh" lang="zh-CN">
                             <p>我越来越不相信，现实只发生在清醒的时候。</p>
                             <p>我们习惯把醒着时经历的一切称作“真实”：读书、工作、创业、相遇、离开…；而把睡着之后看到的人、抵达的地方、经历的故事… 统统归为“梦”。</p>
                             <p>可如果一段经历曾让你恐惧、快乐、遗憾、困惑，甚至在醒来很多年后依然记得它，那么它真的可以被简单地称为虚假吗？</p>
@@ -123,6 +137,7 @@
                             <p><strong>这里不是我的个人主页。</strong></p>
                             <p><strong>我只是此刻，站在这一边记录。</strong></p>
                             <p><strong>下一次醒来，我也许就在另一边。</strong></p>
+                            </div>
                         </div>
                     </section>
 

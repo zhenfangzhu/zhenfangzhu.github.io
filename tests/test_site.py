@@ -389,8 +389,8 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082601', index)
-        self.assertIn('static/js/language.js?v=2026082607', index)
+        self.assertIn('static/css/home.css?v=2026082602', index)
+        self.assertIn('static/js/language.js?v=2026082608', index)
 
     def test_homepage_has_busuanzi_site_stats(self):
         index = read("index.html")
@@ -449,6 +449,11 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_preserves_the_full_chinese_dream_statement(self):
         index = read("index.html")
+        default_panel = re.search(r'id="bio-default".*?id="bio-long"', index, re.DOTALL)
+        long_panel = re.search(r'id="bio-long".*?</section>', index, re.DOTALL)
+        self.assertIsNotNone(default_panel)
+        self.assertIsNotNone(long_panel)
+        self.assertIn("中国科学技术大学理学学士，目前从事 AI 创业", default_panel.group(0))
         for phrase in (
             "我越来越不相信，现实只发生在清醒的时候。",
             "它们都曾真实地经过我。",
@@ -456,7 +461,14 @@ class SiteContractTests(unittest.TestCase):
             "我只是此刻，站在这一边记录。",
             "下一次醒来，我也许就在另一边。",
         ):
-            self.assertIn(phrase, index)
+            self.assertIn(phrase, long_panel.group(0))
+            self.assertNotIn(phrase, default_panel.group(0))
+
+        self.assertIn('role="tablist"', index)
+        self.assertIn('data-bio-view="default"', index)
+        self.assertIn('data-bio-view="long"', index)
+        self.assertIn('id="bio-long" role="tabpanel"', index)
+        self.assertIn("activateBioView", read("static/js/language.js"))
 
     def test_portrait_is_sticky_and_keeps_vertical_composition(self):
         css = read("static/css/home.css")
