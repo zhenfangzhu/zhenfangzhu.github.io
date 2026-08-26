@@ -373,7 +373,7 @@ class SiteContractTests(unittest.TestCase):
 
         self.assertIn('href="/dreams/2024-10-19/"', dreams)
         self.assertIn('data-dream-link', dreams)
-        self.assertIn("共 1 个主题", dreams)
+        self.assertIn("共 4 个主题", dreams)
         self.assertIn("2024年10月19日 午觉", entry)
         self.assertIn("清醒梦", entry)
         self.assertIn("困惑", entry)
