@@ -346,6 +346,11 @@ class SiteContractTests(unittest.TestCase):
         sitemap = read("sitemap.xml")
         self.assertIn('href="/dreams/"', index)
         self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", index)
+        self.assertNotIn('id="dreams-title"', index)
+        self.assertNotIn("Waking life leaves credentials", index)
+        self.assertNotIn("清醒时留下履历、作品、关系和时间", index)
+        self.assertNotIn(">Archive<", index)
+        self.assertNotIn(">档案<", index)
         self.assertIn("Loading… 99%", dreams)
         self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", dreams)
         self.assertIn('id="topic-list"', dreams)
@@ -448,7 +453,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("site-reading-mode", language_js)
         self.assertIn('id="reality"', index)
         self.assertIn('id="dreams"', index)
-        for label in ("现实", "梦境", "实用工具", "关注方向", "教育经历", "联系方式"):
+        for label in ("现实", "实用工具", "关注方向", "教育经历", "联系方式"):
             self.assertIn(label, index)
 
     def test_homepage_preserves_the_full_chinese_dream_statement(self):
