@@ -250,15 +250,17 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn(".interest-row > span", css)
         self.assertNotRegex(css, r"\.interest-row\s+span\s*\{")
 
-    def test_inter_font_request_matches_site_typography(self):
+    def test_forum_typography_uses_fast_system_fonts(self):
         index = read("index.html")
-        self.assertIn("family=Inter:wght@400;500;600;700&amp;display=swap", index)
+        css = read("static/css/main.css")
+        self.assertNotIn("fonts.googleapis.com", index)
+        self.assertIn('--font-body: Arial, "Microsoft YaHei"', css)
         self.assertNotIn("Mulish", index)
         self.assertNotIn("Newsreader", index)
 
-    def test_theme_color_matches_paper_surface(self):
+    def test_theme_color_matches_forum_header(self):
         index = read("index.html")
-        self.assertIn('<meta name="theme-color" content="#f7f8fa">', index)
+        self.assertIn('<meta name="theme-color" content="#2c5f8f">', index)
 
     def test_redundant_hidden_contact_copy_is_absent(self):
         awards = read("contents/awards.md")
@@ -291,17 +293,20 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertIn(rule, css)
 
-    def test_bilingual_profile_visual_contract(self):
+    def test_bilingual_dream_archive_visual_contract(self):
         css = read("static/css/main.css")
         for rule in (
-            "--color-paper: #f7f8fa",
-            "--color-heading: #15181d",
-            "--color-accent: #1f6faf",
-            'grid-template-columns: 260px minmax(0, 1fr)',
+            "--color-paper: #e9eef3",
+            "--color-heading: #222b33",
+            "--color-accent: #205b91",
+            'grid-template-columns: 170px minmax(0, 1fr)',
+            ".archive-titlebar",
+            ".archive-stats",
+            ".reading-mode-switch",
             ".contact-strip",
             ".interest-row",
             ".education-row",
-            "object-fit: contain",
+            "object-fit: cover",
         ):
             self.assertIn(rule, css.lower())
 
@@ -391,7 +396,7 @@ class SiteContractTests(unittest.TestCase):
     def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")
-        version = "2026082505"
+        version = "2026082604"
         self.assertIn(f'static/css/main.css?v={version}', index)
         self.assertIn(f'static/js/scripts.js?v={version}', index)
         self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
@@ -409,13 +414,13 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('id="busuanzi_value_site_uv"', index)
         self.assertIn(".footer-stats", css)
 
-    def test_contact_section_uses_icon_led_split_layout(self):
+    def test_contact_section_uses_forum_contact_rows(self):
         index = read("index.html")
         css = read("static/css/main.css")
-        self.assertIn('class="container site-container contact-layout"', index)
+        self.assertIn('class="profile-contact"', index)
         self.assertIn('class="bi bi-envelope-fill"', index)
         self.assertIn('class="bi bi-github"', index)
-        self.assertIn("grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.35fr)", css)
+        self.assertIn("grid-template-columns: repeat(2, minmax(0, 1fr))", css)
         self.assertNotIn("For relevant technical or product conversations", index)
         self.assertNotIn("欢迎就相关技术或产品问题与我交流", index)
 
@@ -435,6 +440,23 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('window.localStorage.setItem(STORAGE_KEY, nextLanguage)', language_js)
         self.assertIn('document.documentElement.lang = nextLanguage === "zh" ? "zh-CN" : "en"', language_js)
         self.assertIn('currentLanguage() === "zh" ? "en" : "zh"', language_js)
+
+    def test_dream_and_reality_modes_share_one_factual_page(self):
+        index = read("index.html")
+        css = read("static/css/main.css")
+        language_js = read("static/js/language.js")
+
+        self.assertIn("document.documentElement.dataset.readingMode = readingMode === 'reality' ? 'reality' : 'dream'", index)
+        self.assertIn('data-set-mode="dream"', index)
+        self.assertIn('data-set-mode="reality"', index)
+        self.assertIn("如果人生是一场漫长的梦，这里保存的是我暂时记得的部分。", index)
+        self.assertIn("正在发生的梦", index)
+        self.assertIn("已经醒来的梦", index)
+        self.assertIn("梦的产物", index)
+        self.assertIn("唤醒方式", index)
+        self.assertIn('html[data-reading-mode="dream"] [data-mode="reality"]', css)
+        self.assertIn("prefers-reduced-motion: reduce", language_js)
+        self.assertIn('window.localStorage.setItem(MODE_STORAGE_KEY, nextMode)', language_js)
 
     def test_portrait_keeps_vertical_composition(self):
         css = read("static/css/main.css")
