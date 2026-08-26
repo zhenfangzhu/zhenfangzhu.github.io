@@ -44,11 +44,11 @@ class SiteContractTests(unittest.TestCase):
 
     def test_page_has_semantic_accessible_landmarks(self):
         index = read("index.html")
-        for fragment in ('href="#main-content"', "<main", "</main>", '<nav', '<footer'):
+        for fragment in ('href="#main-content"', "<main", "</main>", '<footer'):
             self.assertIn(fragment, index)
         self.assertRegex(index, r'<img[^>]+alt="Portrait of Zhu Zhenfang"')
         self.assertEqual(index.count("<h1"), 1)
-        self.assertIn('aria-label="Primary navigation"', index)
+        self.assertNotIn('aria-label="Primary navigation"', index)
         self.assertIn("profile-intro", index)
         self.assertIn("contact-strip", index)
         self.assertIn('lang="zh-CN"', index)
@@ -59,7 +59,7 @@ class SiteContractTests(unittest.TestCase):
         for section_id in ("about", "interests", "education", "tools", "contact"):
             self.assertIn(f'id="{section_id}"', index)
         for section_id in ("reality", "dreams"):
-            self.assertIn(f'href="#{section_id}"', index)
+            self.assertIn(f'id="{section_id}"', index)
         self.assertIn('href="/founder-dna/"', index)
         self.assertIn('href="/board/"', index)
         for legacy_id in ("focus", "highlights", "publications", "awards"):
@@ -308,12 +308,16 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertIn(rule, css.lower())
 
-    def test_homepage_uses_compact_in_page_navigation(self):
+    def test_homepage_uses_a_language_only_top_bar(self):
         index = read("index.html")
         css = read("static/css/home.css")
-        self.assertIn('class="compact-index"', index)
-        self.assertIn('href="#reality"', index)
-        self.assertIn('href="#dreams"', index)
+        self.assertIn('class="language-bar"', index)
+        self.assertNotIn('class="compact-index"', index)
+        self.assertNotIn('href="#reality"', index)
+        self.assertNotIn('href="#dreams"', index)
+        self.assertNotIn("Primary navigation", index)
+        self.assertNotIn(">Index<", index)
+        self.assertNotIn(">索引<", index)
         self.assertNotIn('class="site-nav', index)
         self.assertNotIn("navbar", index)
         self.assertIn("min-height: 44px", css)
@@ -389,7 +393,7 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082602', index)
+        self.assertIn('static/css/home.css?v=2026082603', index)
         self.assertIn('static/js/language.js?v=2026082608', index)
 
     def test_homepage_has_busuanzi_site_stats(self):
