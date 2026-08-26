@@ -339,6 +339,17 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("grid-template-columns: repeat(3, minmax(0, 1fr))", css)
         self.assertIn("<loc>https://zhuzhenfang.com/dreams/</loc>", sitemap)
 
+    def test_dream_entries_use_smooth_progressive_navigation(self):
+        dreams = read("dreams/index.html")
+        css = read("static/css/dreams.css")
+        navigation = read("static/js/dream-navigation.js")
+
+        self.assertIn("dream-navigation.js", dreams)
+        self.assertIn("@view-transition", css)
+        self.assertIn("prefers-reduced-motion: reduce", css)
+        self.assertIn("a[data-dream-link]", navigation)
+        self.assertIn("event.metaKey", navigation)
+
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")

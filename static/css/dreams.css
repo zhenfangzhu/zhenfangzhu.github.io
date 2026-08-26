@@ -11,6 +11,26 @@
     --dream-body: "Noto Serif SC", "Songti SC", "STSong", serif;
 }
 
+/* Browsers that support View Transitions keep the archive and a dream entry
+   visually connected during navigation. Other browsers use the JS fallback. */
+@view-transition { navigation: auto; }
+
+::view-transition-old(root) {
+    animation: dream-page-out 160ms ease-in both;
+}
+
+::view-transition-new(root) {
+    animation: dream-page-in 240ms ease-out both;
+}
+
+@keyframes dream-page-out {
+    to { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes dream-page-in {
+    from { opacity: 0; transform: translateY(10px); }
+}
+
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
@@ -23,6 +43,20 @@ body {
     font-size: 16px;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Fallback for browsers without native cross-document View Transitions. */
+.dream-is-leaving .dream-header,
+.dream-is-leaving main,
+.dream-is-leaving .dream-footer {
+    opacity: 0;
+    transform: translateY(-6px);
+}
+
+.dream-header,
+main,
+.dream-footer {
+    transition: opacity 160ms ease-in, transform 160ms ease-in;
 }
 
 a { color: inherit; }
@@ -220,6 +254,27 @@ a { color: inherit; }
 .dream-footer p { margin: 0; }
 .dream-empty-state i { font-size: 1.05rem; }
 
+/* Applied to real dream records once they are added. Keeping this here means
+   every future card gets the same clear, gentle entry behaviour. */
+.dream-card {
+    display: block;
+    min-height: 112px;
+    padding: 1rem;
+    border: 1px solid var(--dream-border);
+    background: var(--dream-surface);
+    color: var(--dream-ink);
+    text-decoration: none;
+    transition: border-color 180ms ease-out, box-shadow 180ms ease-out, transform 180ms ease-out;
+}
+
+.dream-card:hover {
+    border-color: var(--dream-accent);
+    box-shadow: 0 10px 22px rgba(75, 48, 26, 0.1);
+    transform: translateY(-2px);
+}
+
+.dream-card:active { transform: translateY(0) scale(0.99); }
+
 .dream-footer {
     display: flex;
     width: min(100% - 48px, 1220px);
@@ -253,4 +308,6 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { transition-duration: 0.01ms !important; }
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation-duration: 0.01ms; }
 }
