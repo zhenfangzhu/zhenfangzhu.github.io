@@ -329,6 +329,7 @@ class SiteContractTests(unittest.TestCase):
         css = read("static/css/dreams.css")
         sitemap = read("sitemap.xml")
         self.assertIn('href="/dreams/"', index)
+        self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", index)
         self.assertIn("Loading… 99%", dreams)
         self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", dreams)
         self.assertIn('id="dream-board"', dreams)
