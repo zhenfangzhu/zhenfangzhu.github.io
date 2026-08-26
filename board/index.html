@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="朱振方的在线白板：公开共享编辑，或输入 4 位 PIN 进入加密私密白板。">
     <meta name="author" content="朱振方 (Zhu Zhenfang)">
-    <meta name="theme-color" content="#f4f1e8">
+    <meta name="theme-color" content="#ffffff">
 
     <title>白板 | 朱振方</title>
     <link rel="canonical" href="https://zhuzhenfang.com/board/">
@@ -16,10 +16,7 @@
 
     <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico?v=2026071601">
     <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/apple-touch-icon.png?v=2026071601">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@500;600&amp;display=swap" rel="stylesheet">
-    <link href="/static/css/board.css?v=2026072805" rel="stylesheet">
+    <link href="/static/css/board.css?v=2026082702" rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="/static/js/board-config.js?v=2026072805"></script>
     <script defer src="/static/js/board.js?v=2026072807"></script>
@@ -53,7 +50,7 @@
                 aria-controls="public-mode"
                 data-mode="public"
             >
-                <span class="tab-icon" aria-hidden="true">◎</span>
+                <svg class="tab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="2.5"></circle></svg>
                 公共白板
             </button>
             <button
@@ -65,7 +62,7 @@
                 aria-controls="private-mode"
                 data-mode="private"
             >
-                <span class="tab-icon" aria-hidden="true">⌁</span>
+                <svg class="tab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
                 加密便签
             </button>
         </div>
@@ -95,7 +92,7 @@
         <section id="private-mode" role="tabpanel" aria-labelledby="private-tab" hidden>
             <div class="private-card" id="private-gate">
                 <header class="private-card-header">
-                    <span class="lock-mark" aria-hidden="true">⌁</span>
+                    <span class="lock-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
                     <div>
                         <p class="private-eyebrow">PASSWORD ROOM</p>
                         <h2>进入快速房间</h2>
@@ -131,7 +128,7 @@
 
             <div class="private-card" id="private-create-panel" hidden>
                 <header class="private-card-header">
-                    <span class="lock-mark" aria-hidden="true">＋</span>
+                    <span class="lock-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
                     <div>
                         <p class="private-eyebrow">NEW PRIVATE ROOM</p>
                         <h2>创建快速房间</h2>

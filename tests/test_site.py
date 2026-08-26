@@ -407,7 +407,7 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082712', index)
+        self.assertIn('static/css/home.css?v=2026082713', index)
         self.assertIn('static/js/language.js?v=2026082710', index)
 
     def test_homepage_has_busuanzi_site_stats(self):

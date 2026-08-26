@@ -391,6 +391,30 @@ a.index-row {
     margin-top: 1.5rem;
 }
 
+.dream-entry-row::after {
+    content: "99%";
+    color: var(--nav);
+    font-family: var(--ui-font);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.5;
+}
+
+.dream-entry-row .row-copy strong {
+    font-size: 1.08rem;
+    letter-spacing: -0.01em;
+}
+
+.board-entry-row .row-meta,
+.dream-entry-row::after {
+    transition: color 160ms ease;
+}
+
+.board-entry-row:hover .row-meta,
+.dream-entry-row:hover::after {
+    color: var(--ink);
+}
+
 .home-footer {
     display: flex;
     margin-top: clamp(4.5rem, 10vw, 7rem);
@@ -483,6 +507,11 @@ a.index-row {
     .education-row time,
     .row-meta {
         text-align: left;
+    }
+
+    .dream-entry-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
     }
 
     .home-footer {
