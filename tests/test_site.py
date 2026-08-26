@@ -188,6 +188,16 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("目前从事AI创业", about)
         self.assertIn('"jobTitle": ["AI Entrepreneur", "Software Engineer"]', about)
 
+    def test_homepage_search_title_is_only_the_chinese_name(self):
+        index = read("index.html")
+
+        self.assertIn('<title id="title">朱振方</title>', index)
+        self.assertIn('<meta property="og:title" content="朱振方">', index)
+        self.assertIn('<meta property="og:site_name" content="朱振方">', index)
+        self.assertIn('data-title-en="朱振方" data-title-zh="朱振方"', index)
+        self.assertIn('"name": "朱振方"', index)
+        self.assertNotIn("Personal Website", index)
+
     def test_copy_is_factual_and_not_marketing_style(self):
         home = read("contents/home.md")
         text = "\n".join((
