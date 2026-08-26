@@ -323,6 +323,21 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('href="/" aria-label="返回朱振方个人主页"', app)
         self.assertIn("<loc>https://zhuzhenfang.com/founder-dna/</loc>", sitemap)
 
+    def test_dream_archive_is_public_and_linked_from_the_homepage(self):
+        index = read("index.html")
+        dreams = read("dreams/index.html")
+        css = read("static/css/dreams.css")
+        sitemap = read("sitemap.xml")
+        self.assertIn('href="/dreams/"', index)
+        self.assertIn("Loading… 99%", dreams)
+        self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", dreams)
+        self.assertIn('id="dream-board"', dreams)
+        self.assertIn("清醒梦", dreams)
+        self.assertIn("层叠梦", dreams)
+        self.assertIn("假醒梦", dreams)
+        self.assertIn("grid-template-columns: repeat(3, minmax(0, 1fr))", css)
+        self.assertIn("<loc>https://zhuzhenfang.com/dreams/</loc>", sitemap)
+
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")

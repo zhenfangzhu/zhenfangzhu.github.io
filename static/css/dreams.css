@@ -1,0 +1,256 @@
+:root {
+    --dream-ink: #1d1b18;
+    --dream-muted: #6f685f;
+    --dream-paper: #fffbeb;
+    --dream-surface: #fffef9;
+    --dream-panel: #f5efe5;
+    --dream-border: #ded6c9;
+    --dream-accent: #7c3b17;
+    --dream-focus: #245d92;
+    --dream-display: "Cormorant Garamond", "Noto Serif SC", "Songti SC", serif;
+    --dream-body: "Noto Serif SC", "Songti SC", "STSong", serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+    min-width: 0;
+    margin: 0;
+    background: radial-gradient(circle at 12% 0%, rgba(173, 107, 48, 0.1), transparent 24rem), var(--dream-paper);
+    color: var(--dream-ink);
+    font-family: var(--dream-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+:focus-visible { outline: 3px solid var(--dream-focus); outline-offset: 4px; }
+
+.dream-skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    padding: 0.6rem 0.9rem;
+    background: var(--dream-ink);
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-160%);
+    transition: transform 180ms ease-out;
+}
+
+.dream-skip-link:focus { transform: translateY(0); }
+
+.dream-header {
+    display: flex;
+    width: min(100% - 48px, 1220px);
+    min-height: 76px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--dream-border);
+}
+
+.dream-home-link,
+.dream-back-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--dream-ink);
+    font-family: var(--dream-body);
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.dream-home-mark {
+    display: grid;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--dream-ink);
+    border-radius: 50%;
+    place-items: center;
+    font-family: var(--dream-display);
+    font-size: 1.15rem;
+}
+
+.dream-back-link { color: var(--dream-muted); }
+.dream-back-link:hover { color: var(--dream-accent); }
+
+.dream-hero,
+.dream-board {
+    width: min(100% - 48px, 1220px);
+    margin: 0 auto;
+}
+
+.dream-hero { padding: clamp(4rem, 10vw, 8rem) 0 clamp(3.5rem, 8vw, 6rem); }
+
+.dream-kicker,
+.dream-board__eyebrow {
+    margin: 0 0 1rem;
+    color: var(--dream-accent);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+}
+
+.dream-hero h1,
+.dream-board h2,
+.dream-column h3 {
+    margin: 0;
+    color: var(--dream-ink);
+    font-family: var(--dream-display);
+    font-weight: 600;
+}
+
+.dream-hero h1 {
+    max-width: 9ch;
+    font-size: clamp(4rem, 12vw, 9.6rem);
+    letter-spacing: -0.065em;
+    line-height: 0.82;
+}
+
+.dream-hero h1 em { color: var(--dream-accent); font-style: normal; }
+
+.dream-tagline {
+    max-width: 26ch;
+    margin: clamp(2rem, 4vw, 3rem) 0 0;
+    font-size: clamp(1.35rem, 2.4vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.45;
+}
+
+.dream-intro {
+    max-width: 45ch;
+    margin: 1.2rem 0 0;
+    color: var(--dream-muted);
+    font-size: 1rem;
+}
+
+.dream-status {
+    display: inline-flex;
+    margin: 2rem 0 0;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--dream-muted);
+    font-size: 0.88rem;
+}
+
+.dream-status span { width: 8px; height: 8px; border-radius: 50%; background: var(--dream-accent); }
+
+.dream-board {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    border: 1px solid var(--dream-border);
+    background: rgba(255, 254, 249, 0.7);
+}
+
+.dream-board__header {
+    display: flex;
+    margin-bottom: 1.75rem;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.dream-board h2 { font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1; }
+
+.dream-count {
+    margin: 0;
+    color: var(--dream-muted);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.82rem;
+}
+
+.dream-columns {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.dream-column {
+    display: flex;
+    min-height: 280px;
+    padding: 1.35rem;
+    flex-direction: column;
+    border: 1px solid var(--dream-border);
+    background: var(--dream-panel);
+}
+
+.dream-column__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.dream-column h3 { font-size: 1.9rem; line-height: 1; }
+
+.dream-column__header span {
+    color: var(--dream-muted);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.82rem;
+}
+
+.dream-column__description {
+    min-height: 3.4em;
+    margin: 1rem 0;
+    color: var(--dream-muted);
+    font-size: 0.9rem;
+}
+
+.dream-empty-state {
+    display: flex;
+    min-height: 112px;
+    margin-top: auto;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    border: 1px dashed #cfc4b5;
+    color: #8c8377;
+    font-size: 0.9rem;
+}
+
+.dream-empty-state p,
+.dream-footer p { margin: 0; }
+.dream-empty-state i { font-size: 1.05rem; }
+
+.dream-footer {
+    display: flex;
+    width: min(100% - 48px, 1220px);
+    margin: clamp(3.5rem, 7vw, 6rem) auto 0;
+    padding: 1.5rem 0 2.25rem;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid var(--dream-border);
+    color: var(--dream-muted);
+    font-size: 0.78rem;
+}
+
+@media (max-width: 767.98px) {
+    .dream-header,
+    .dream-hero,
+    .dream-board,
+    .dream-footer { width: min(100% - 32px, 1220px); }
+
+    .dream-header { min-height: 68px; }
+    .dream-back-link span { display: none; }
+    .dream-hero { padding: 4rem 0 3rem; }
+    .dream-hero h1 { font-size: clamp(3.8rem, 20vw, 6.2rem); }
+    .dream-tagline { font-size: 1.28rem; }
+    .dream-board { padding: 1rem; }
+    .dream-board__header { align-items: flex-start; flex-direction: column; }
+    .dream-columns { grid-template-columns: 1fr; }
+    .dream-column { min-height: 220px; }
+    .dream-footer { align-items: flex-start; flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
