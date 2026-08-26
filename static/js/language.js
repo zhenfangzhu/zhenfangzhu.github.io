@@ -10,7 +10,7 @@
     }
 
     function activateBioView(view) {
-        const nextView = view === "long" && currentLanguage() === "zh" ? "long" : "default";
+        const nextView = view === "long" ? "long" : "default";
         document.querySelectorAll("[data-bio-view]").forEach((button) => {
             const selected = button.dataset.bioView === nextView;
             button.setAttribute("aria-selected", String(selected));
@@ -30,14 +30,13 @@
         if (title) document.title = title;
 
         document.querySelectorAll(".language-toggle").forEach((button) => {
-            const label = nextLanguage === "zh" ? "Switch to English" : "切换到中文";
+            const label = nextLanguage === "zh" ? "选择语言" : "Choose language";
             button.setAttribute("aria-label", label);
             button.title = label;
         });
-
-        if (nextLanguage === "en") {
-            activateBioView("default");
-        }
+        document.querySelectorAll("[data-language-option]").forEach((option) => {
+            option.setAttribute("aria-checked", String(option.dataset.languageOption === nextLanguage));
+        });
 
         if (remember) {
             try {
@@ -48,13 +47,51 @@
         }
     }
 
+    function setLanguageMenuOpen(picker, open) {
+        const toggle = picker.querySelector(".language-toggle");
+        const menu = picker.querySelector(".language-menu");
+        if (!toggle || !menu) return;
+        toggle.setAttribute("aria-expanded", String(open));
+        menu.hidden = !open;
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
         applyLanguage(currentLanguage(), false);
         document.querySelectorAll(".language-toggle").forEach((button) => {
+            const picker = button.closest(".language-picker");
+            if (picker) {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    const shouldOpen = button.getAttribute("aria-expanded") !== "true";
+                    document.querySelectorAll(".language-picker").forEach((item) => setLanguageMenuOpen(item, false));
+                    setLanguageMenuOpen(picker, shouldOpen);
+                });
+                return;
+            }
             button.addEventListener("click", () => {
                 const nextLanguage = currentLanguage() === "zh" ? "en" : "zh";
                 applyLanguage(nextLanguage, true);
             });
+        });
+        document.querySelectorAll("[data-language-option]").forEach((option) => {
+            option.addEventListener("click", () => {
+                applyLanguage(option.dataset.languageOption, true);
+                const picker = option.closest(".language-picker");
+                if (picker) {
+                    setLanguageMenuOpen(picker, false);
+                    picker.querySelector(".language-toggle")?.focus();
+                }
+            });
+        });
+        document.querySelectorAll(".language-picker").forEach((picker) => {
+            picker.addEventListener("keydown", (event) => {
+                if (event.key !== "Escape") return;
+                setLanguageMenuOpen(picker, false);
+                picker.querySelector(".language-toggle")?.focus();
+            });
+        });
+        document.addEventListener("click", () => {
+            document.querySelectorAll(".language-picker").forEach((picker) => setLanguageMenuOpen(picker, false));
         });
         document.querySelectorAll("[data-bio-view]").forEach((button) => {
             button.addEventListener("click", () => activateBioView(button.dataset.bioView));

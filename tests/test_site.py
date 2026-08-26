@@ -56,8 +56,9 @@ class SiteContractTests(unittest.TestCase):
 
     def test_navigation_and_sections_match_new_information_architecture(self):
         index = read("index.html")
-        for section_id in ("about", "interests", "education", "tools", "contact"):
+        for section_id in ("about", "education", "tools", "contact"):
             self.assertIn(f'id="{section_id}"', index)
+        self.assertNotIn('id="interests"', index)
         for section_id in ("reality", "dreams"):
             self.assertIn(f'id="{section_id}"', index)
         self.assertIn('href="/founder-dna/"', index)
@@ -154,7 +155,8 @@ class SiteContractTests(unittest.TestCase):
         visible_text = re.sub(r"</?span(?:\s+[^>]*)?>", "", index + content)
         self.assertNotRegex(content, r"\[List your|href=[\"']#[\"']")
         for phrase in (
-            "BSc, University of Science and Technology of China",
+            "I am Zhu Zhenfang, a graduate of the University of Science and Technology of China",
+            "我是朱振方，本科毕业于中国科学技术大学",
             "中国科学技术大学理学学士",
             "Software Systems",
             "软件系统",
@@ -300,18 +302,22 @@ class SiteContractTests(unittest.TestCase):
             "--ink: #282828",
             "--nav: #676767",
             "width: min(100%, 600px)",
-            "@media (min-width: 1100px)",
-            "grid-template-columns: minmax(0, 1.75fr) minmax(380px, 1fr)",
+            "grid-template-columns: minmax(500px, 600px) minmax(320px, 469px)",
             ".home-visual",
-            "position: sticky",
+            "font-size: 19px",
             "object-fit: cover",
         ):
             self.assertIn(rule, css.lower())
 
-    def test_homepage_uses_a_language_only_top_bar(self):
+    def test_homepage_places_language_control_in_the_top_corner(self):
         index = read("index.html")
         css = read("static/css/home.css")
-        self.assertIn('class="language-bar"', index)
+        self.assertIn('class="bio-view-controls"', index)
+        self.assertIn('class="language-picker language-picker--corner"', index)
+        self.assertIn('class="language-menu"', index)
+        self.assertIn('data-language-option="en"', index)
+        self.assertIn('data-language-option="zh"', index)
+        self.assertNotIn('class="language-bar"', index)
         self.assertNotIn('class="compact-index"', index)
         self.assertNotIn('href="#reality"', index)
         self.assertNotIn('href="#dreams"', index)
@@ -321,6 +327,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn('class="site-nav', index)
         self.assertNotIn("navbar", index)
         self.assertIn("min-height: 44px", css)
+        self.assertIn(".language-picker--corner", css)
+        self.assertLess(index.index("language-picker--corner"), index.index('class="home-copy"'))
 
     def test_single_mathjax_runtime(self):
         index = read("index.html")
@@ -346,6 +354,7 @@ class SiteContractTests(unittest.TestCase):
         sitemap = read("sitemap.xml")
         self.assertIn('href="/dreams/"', index)
         self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", index)
+        self.assertIn("Wakefulness is a long loading screen for that 1% of sleep.", index)
         self.assertNotIn('id="dreams-title"', index)
         self.assertNotIn("Waking life leaves credentials", index)
         self.assertNotIn("清醒时留下履历、作品、关系和时间", index)
@@ -398,8 +407,8 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082603', index)
-        self.assertIn('static/js/language.js?v=2026082608', index)
+        self.assertIn('static/css/home.css?v=2026082712', index)
+        self.assertIn('static/js/language.js?v=2026082710', index)
 
     def test_homepage_has_busuanzi_site_stats(self):
         index = read("index.html")
@@ -431,7 +440,7 @@ class SiteContractTests(unittest.TestCase):
         language_js = read("static/js/language.js")
         self.assertIn('class="language-toggle"', index)
         self.assertIn('class="language-toggle"', about)
-        self.assertNotIn('class="language-select"', index)
+        self.assertIn('aria-haspopup="menu"', index)
         self.assertNotIn('class="language-select"', about)
         self.assertIn('data-lang="en"', index)
         self.assertIn('data-lang="zh"', index)
@@ -439,9 +448,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('html[data-language="zh"] [data-lang="en"]', css)
         self.assertIn('window.localStorage.setItem(STORAGE_KEY, nextLanguage)', language_js)
         self.assertIn('document.documentElement.lang = nextLanguage === "zh" ? "zh-CN" : "en"', language_js)
-        self.assertIn('currentLanguage() === "zh" ? "en" : "zh"', language_js)
+        self.assertIn('option.dataset.languageOption', language_js)
+        self.assertIn('setLanguageMenuOpen', language_js)
 
-    def test_homepage_uses_reality_navigation_without_a_mode_switch(self):
+    def test_homepage_uses_the_reduced_content_order_without_a_mode_switch(self):
         index = read("index.html")
         css = read("static/css/home.css")
         language_js = read("static/js/language.js")
@@ -453,16 +463,36 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("site-reading-mode", language_js)
         self.assertIn('id="reality"', index)
         self.assertIn('id="dreams"', index)
-        for label in ("现实", "实用工具", "关注方向", "教育经历", "联系方式"):
+        for label in ("实用工具", "教育经历", "联系方式"):
             self.assertIn(label, index)
+        homepage_body = index.split("<body", 1)[1]
+        for removed_copy in ("现实</span>", "关注方向", "Software Systems", "软件系统"):
+            self.assertNotIn(removed_copy, homepage_body)
+        self.assertLess(index.index('id="dreams"'), index.index('id="education"'))
+        self.assertLess(index.index('id="education"'), index.index('id="tools"'))
+        self.assertLess(index.index('id="tools"'), index.index('id="contact"'))
 
-    def test_homepage_preserves_the_full_chinese_dream_statement(self):
+    def test_homepage_uses_the_new_bilingual_default_bio_and_preserves_the_dream_long_view(self):
         index = read("index.html")
         default_panel = re.search(r'id="bio-default".*?id="bio-long"', index, re.DOTALL)
         long_panel = re.search(r'id="bio-long".*?</section>', index, re.DOTALL)
         self.assertIsNotNone(default_panel)
         self.assertIsNotNone(long_panel)
-        self.assertIn("中国科学技术大学理学学士，目前从事 AI 创业", default_panel.group(0))
+        for phrase in (
+            "我是朱振方，本科毕业于中国科学技术大学。",
+            "现在，我在做 AI Agent Coding。",
+            "而是敢想，敢做，敢创造。",
+            "代码会越来越便宜。",
+            "想象力不会。",
+            "你到底想做什么？",
+            "I am Zhu Zhenfang, a graduate of the University of Science and Technology of China.",
+            "Today, I work on AI Agent Coding.",
+            "Code will become cheaper and cheaper.",
+            "Imagination will not.",
+            "What do you actually want to build?",
+        ):
+            self.assertIn(phrase, default_panel.group(0))
+            self.assertNotIn(phrase, long_panel.group(0))
         for phrase in (
             "我越来越不相信，现实只发生在清醒的时候。",
             "它们都曾真实地经过我。",
@@ -477,13 +507,24 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('data-bio-view="default"', index)
         self.assertIn('data-bio-view="long"', index)
         self.assertIn('id="bio-long" role="tabpanel"', index)
+        self.assertIn('<span data-lang="en">Long</span>', index)
+        self.assertIn("both have truly passed through me.", long_panel.group(0))
         self.assertIn("activateBioView", read("static/js/language.js"))
 
-    def test_portrait_is_sticky_and_keeps_vertical_composition(self):
+    def test_portrait_is_a_compact_right_column(self):
         css = read("static/css/home.css")
-        self.assertIn("position: sticky", css)
+        index = read("index.html")
+        self.assertIn('class="home-visual"', index)
+        self.assertIn('class="home-visual-image"', index)
+        self.assertNotIn('class="profile-avatar"', index)
+        self.assertRegex(css, r"\.home-copy\s*\{[^}]*grid-column:\s*1")
+        self.assertRegex(css, r"\.home-visual\s*\{[^}]*grid-column:\s*2")
+        self.assertIn("minmax(320px, 469px)", css)
+        self.assertIn("height: min(760px", css)
+        self.assertIn("margin-top: 134px", css)
         self.assertIn("object-fit: cover", css)
-        self.assertNotIn("aspect-ratio: 1", css)
+        self.assertIn("object-position: 70% center", css)
+        self.assertIn("border-radius: 8px", css)
 
 
 if __name__ == "__main__":

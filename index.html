@@ -65,7 +65,7 @@
 
     <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico?v=2026071601">
     <link rel="apple-touch-icon" sizes="180x180" href="static/assets/apple-touch-icon.png?v=2026071601">
-    <link href="static/css/home.css?v=2026082603" rel="stylesheet">
+    <link href="static/css/home.css?v=2026082712" rel="stylesheet">
 
     <script>
         (() => {
@@ -83,7 +83,7 @@
 
         })();
     </script>
-    <script defer src="static/js/language.js?v=2026082608"></script>
+    <script defer src="static/js/language.js?v=2026082710"></script>
     <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
 
@@ -92,71 +92,100 @@
     <main class="site-shell" id="main-content">
         <article class="content-frame">
             <div class="home-layout">
+                <div class="language-picker language-picker--corner">
+                    <button class="language-toggle" type="button" aria-label="Choose language" title="Choose language" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m5 8 6 6"></path>
+                            <path d="m4 14 6-6 2-3"></path>
+                            <path d="M2 5h12"></path>
+                            <path d="M7 2h1"></path>
+                            <path d="m22 22-5-10-5 10"></path>
+                            <path d="M14 18h6"></path>
+                        </svg>
+                    </button>
+                    <div class="language-menu" id="language-menu" role="menu" aria-label="Language" hidden>
+                        <button type="button" role="menuitemradio" data-language-option="en" aria-checked="true">English</button>
+                        <button type="button" role="menuitemradio" data-language-option="zh" aria-checked="false">中文</button>
+                    </div>
+                </div>
                 <div class="home-copy">
                     <h1 class="site-title" id="profile-name"><span data-lang="en">@zhuzhenfang</span><span data-lang="zh" lang="zh-CN">@朱振方</span></h1>
 
                     <section class="bio-section profile-intro" id="about" aria-labelledby="profile-name">
-                        <div class="language-bar">
-                            <button class="language-toggle" type="button" aria-label="切换到中文" title="切换到中文"><span data-lang="en">中</span><span data-lang="zh">EN</span></button>
-                        </div>
                         <div class="bio-view-header">
                             <span><span data-lang="en">Bio</span><span data-lang="zh">自述</span></span>
-                            <div class="bio-view-tabs" role="tablist" aria-label="Biography length">
-                                <button id="bio-default-tab" type="button" role="tab" aria-selected="true" aria-controls="bio-default" data-bio-view="default"><span data-lang="en">Default</span><span data-lang="zh">默认</span></button>
-                                <button id="bio-long-tab" type="button" role="tab" aria-selected="false" aria-controls="bio-long" data-bio-view="long" data-lang="zh">长</button>
+                            <div class="bio-view-controls">
+                                <div class="bio-view-tabs" role="tablist" aria-label="Biography length">
+                                    <button id="bio-default-tab" type="button" role="tab" aria-selected="true" aria-controls="bio-default" data-bio-view="default"><span data-lang="en">Default</span><span data-lang="zh">默认</span></button>
+                                    <button id="bio-long-tab" type="button" role="tab" aria-selected="false" aria-controls="bio-long" data-bio-view="long"><span data-lang="en">Long</span><span data-lang="zh">长</span></button>
+                                </div>
                             </div>
                         </div>
                         <div class="bio-view-panel" id="bio-default" role="tabpanel" aria-labelledby="bio-default-tab">
                             <div data-lang="en">
-                                <p>BSc, University of Science and Technology of China. I now build AI products and developer tools.</p>
-                                <p>I use this site to keep two kinds of records: what happens while I am awake, and what remains after sleep.</p>
+                                <p>I am Zhu Zhenfang, a graduate of the University of Science and Technology of China. Today, I work on AI Agent Coding.</p>
+                                <p>In the past, building software was expensive. You had to know how to code, find engineers, assemble a team, and spend months turning an idea into a product.</p>
+                                <p>AI is compressing all of that. In the future, when an ordinary person has an idea, they should be able to build it directly.</p>
+                                <p>I believe the most important capability of the next generation is not learning more tools. It is the courage to imagine, to act, and to create.</p>
+                                <p><strong>Code will become cheaper and cheaper.</strong></p>
+                                <p><strong>Imagination will not.</strong></p>
+                                <p><strong>I want to lower the barrier to creating software until only one question remains: What do you actually want to build?</strong></p>
                             </div>
                             <div data-lang="zh" lang="zh-CN">
-                                <p>中国科学技术大学理学学士，目前从事 AI 创业，开发 AI 产品与工具。</p>
-                                <p>这个网站保存两类记录：清醒时做过的事，以及睡醒后仍然留下的梦。</p>
+                                <p>我是朱振方，本科毕业于中国科学技术大学。现在，我在做 AI Agent Coding。</p>
+                                <p>过去，做软件是一件很贵的事。你要会写代码，要找工程师，要组团队，要花几个月把一个想法变成产品。</p>
+                                <p>AI 正在把这一切压缩掉。未来，一个普通人有一个想法，就应该能直接把它做出来。</p>
+                                <p>我相信，下一代最重要的能力，不是学会更多工具。而是敢想，敢做，敢创造。</p>
+                                <p><strong>代码会越来越便宜。</strong></p>
+                                <p><strong>想象力不会。</strong></p>
+                                <p><strong>我想把软件创造的门槛，降到只剩下一个问题：你到底想做什么？</strong></p>
                             </div>
                         </div>
                         <div class="bio-view-panel" id="bio-long" role="tabpanel" aria-labelledby="bio-long-tab" hidden>
+                            <div data-lang="en">
+                                <p>I am increasingly unconvinced that reality happens only while we are awake.</p>
+                                <p>We are used to calling everything that happens while we are awake “real”: studying, working, building companies, meeting, parting…; while the people we see, the places we reach, and the stories we live through after falling asleep are all classified as “dreams.”</p>
+                                <p>But if an experience once made you afraid, happy, regretful, or confused, and you still remember it many years after waking, can it really be dismissed as unreal?</p>
+                                <p>So I began to see life as two parallel worlds.</p>
+                                <p>One begins when I open my eyes; the other begins when I close them.</p>
+                                <p>What happens while I am awake and what happens after I fall asleep: <strong>both have truly passed through me.</strong></p>
+                                <p>The former leaves credentials, work, relationships, and time; the latter leaves memories, emotions, and traces that cannot be proven, but cannot be denied either.</p>
+                                <p>I no longer try to decide which world is more real.</p>
+                                <p>Perhaps what we call reality is only a dream we share, while what we call a dream is a reality remembered by one person alone.</p>
+                                <p>That is why I made this website.</p>
+                                <p>To keep, in one place, the selves I have been while awake and the worlds I have reached in sleep.</p>
+                                <p><strong>This is not my personal homepage.</strong></p>
+                                <p><strong>For now, I am simply standing on this side and recording.</strong></p>
+                                <p><strong>The next time I wake, I may be on the other side.</strong></p>
+                            </div>
                             <div data-lang="zh" lang="zh-CN">
-                            <p>我越来越不相信，现实只发生在清醒的时候。</p>
-                            <p>我们习惯把醒着时经历的一切称作“真实”：读书、工作、创业、相遇、离开…；而把睡着之后看到的人、抵达的地方、经历的故事… 统统归为“梦”。</p>
-                            <p>可如果一段经历曾让你恐惧、快乐、遗憾、困惑，甚至在醒来很多年后依然记得它，那么它真的可以被简单地称为虚假吗？</p>
-                            <p>于是我开始把人生看成两个彼此平行的世界。</p>
-                            <p>一个发生在睁开眼睛之后，一个发生在闭上眼睛之后。</p>
-                            <p>醒着时发生的，和睡着后发生的，<strong>它们都曾真实地经过我。</strong></p>
-                            <p>前者留下履历、作品、关系和时间；后者留下无法证明，却同样无法否认的记忆、情绪与痕迹。</p>
-                            <p>我不再试图判断哪一个世界更加真实。</p>
-                            <p>也许所谓现实，不过是我们共同做着的一场梦；而所谓梦境，只是一场只有自己记得的现实。</p>
-                            <p>所以我做了这个网站。</p>
-                            <p>把清醒时成为过的自己，和睡梦中抵达过的世界，放在同一个地方。</p>
-                            <p><strong>这里不是我的个人主页。</strong></p>
-                            <p><strong>我只是此刻，站在这一边记录。</strong></p>
-                            <p><strong>下一次醒来，我也许就在另一边。</strong></p>
+                                <p>我越来越不相信，现实只发生在清醒的时候。</p>
+                                <p>我们习惯把醒着时经历的一切称作“真实”：读书、工作、创业、相遇、离开…；而把睡着之后看到的人、抵达的地方、经历的故事… 统统归为“梦”。</p>
+                                <p>可如果一段经历曾让你恐惧、快乐、遗憾、困惑，甚至在醒来很多年后依然记得它，那么它真的可以被简单地称为虚假吗？</p>
+                                <p>于是我开始把人生看成两个彼此平行的世界。</p>
+                                <p>一个发生在睁开眼睛之后，一个发生在闭上眼睛之后。</p>
+                                <p>醒着时发生的，和睡着后发生的，<strong>它们都曾真实地经过我。</strong></p>
+                                <p>前者留下履历、作品、关系和时间；后者留下无法证明，却同样无法否认的记忆、情绪与痕迹。</p>
+                                <p>我不再试图判断哪一个世界更加真实。</p>
+                                <p>也许所谓现实，不过是我们共同做着的一场梦；而所谓梦境，只是一场只有自己记得的现实。</p>
+                                <p>所以我做了这个网站。</p>
+                                <p>把清醒时成为过的自己，和睡梦中抵达过的世界，放在同一个地方。</p>
+                                <p><strong>这里不是我的个人主页。</strong></p>
+                                <p><strong>我只是此刻，站在这一边记录。</strong></p>
+                                <p><strong>下一次醒来，我也许就在另一边。</strong></p>
                             </div>
                         </div>
                     </section>
 
-                    <section class="world-section" id="reality" aria-labelledby="reality-title">
-                        <header class="world-heading">
-                            <h2 id="reality-title"><span data-lang="en">Reality</span><span data-lang="zh">现实</span></h2>
-                            <p class="world-intro" data-lang="en">Education, current interests, useful things, and ways to reach me.</p>
-                            <p class="world-intro" data-lang="zh">教育、正在关注的方向、做过的东西，以及联系我的方式。</p>
-                        </header>
+                    <section class="world-section dream-section" id="dreams" aria-label="梦境档案">
+                        <div class="index-list dream-index">
+                            <a class="index-row" href="/dreams/">
+                                <span class="row-copy"><strong>Loading… 99%</strong><small data-lang="en">Wakefulness is a long loading screen for that 1% of sleep.</small><small data-lang="zh">清醒是漫长的加载，为了那 1% 的睡眠。</small></span>
+                            </a>
+                        </div>
+                    </section>
 
-                        <section class="content-section" id="interests" aria-labelledby="interests-title">
-                            <h3 id="interests-title"><span data-lang="en">Focus</span><span data-lang="zh">关注方向</span></h3>
-                            <ul class="interest-list notes-list" data-lang="en">
-                                <li class="interest-row"><strong>Software Systems</strong><span>Useful, reliable, and maintainable systems.</span></li>
-                                <li class="interest-row"><strong>Language Model Applications</strong><span>Practical applications and careful evaluation.</span></li>
-                                <li class="interest-row"><strong>Developer Tools &amp; Open Source</strong><span>Small tools that make real work easier.</span></li>
-                            </ul>
-                            <ul class="interest-list notes-list" data-lang="zh" lang="zh-CN">
-                                <li class="interest-row"><strong>软件系统</strong><span>做实用、可靠、便于维护的系统。</span></li>
-                                <li class="interest-row"><strong>语言模型应用</strong><span>面向实际问题做应用与评估。</span></li>
-                                <li class="interest-row"><strong>开发者工具与开源</strong><span>做真正能省事的小工具。</span></li>
-                            </ul>
-                        </section>
-
+                    <div class="world-section content-stack" id="reality">
                         <section class="content-section" id="education" aria-labelledby="education-title">
                             <h3 id="education-title"><span data-lang="en">Education</span><span data-lang="zh">教育经历</span></h3>
                             <ol class="index-list education-list">
@@ -181,21 +210,13 @@
                                 </a>
                             </div>
                         </section>
+                    </div>
 
-                        <section class="content-section profile-contact" id="contact" aria-labelledby="contact-title">
-                            <h3 id="contact-title"><span data-lang="en">Contact</span><span data-lang="zh">联系方式</span></h3>
-                            <div class="index-list contact-strip">
-                                <a class="index-row" href="mailto:zhuzhenfang@ustc.edu"><span>zhuzhenfang@ustc.edu</span><span class="row-meta">Email</span></a>
-                                <a class="index-row" href="https://github.com/zhuzhenfangx" target="_blank" rel="noopener noreferrer"><span>github.com/zhuzhenfangx</span><span class="row-meta">GitHub</span></a>
-                            </div>
-                        </section>
-                    </section>
-
-                    <section class="world-section dream-section" id="dreams" aria-label="梦境档案">
-                        <div class="index-list dream-index">
-                            <a class="index-row" href="/dreams/">
-                                <span class="row-copy"><strong>Loading… 99%</strong><small>清醒是漫长的加载，为了那 1% 的睡眠。</small></span>
-                            </a>
+                    <section class="content-section profile-contact" id="contact" aria-labelledby="contact-title">
+                        <h3 id="contact-title"><span data-lang="en">Contact</span><span data-lang="zh">联系方式</span></h3>
+                        <div class="index-list contact-strip">
+                            <a class="index-row" href="mailto:zhuzhenfang@ustc.edu"><span>zhuzhenfang@ustc.edu</span><span class="row-meta">Email</span></a>
+                            <a class="index-row" href="https://github.com/zhuzhenfangx" target="_blank" rel="noopener noreferrer"><span>github.com/zhuzhenfangx</span><span class="row-meta">GitHub</span></a>
                         </div>
                     </section>
 
@@ -211,6 +232,7 @@
                 <aside class="home-visual" aria-label="Portrait">
                     <img class="home-visual-image" src="static/assets/img/photo.jpg" width="2358" height="2415" alt="Portrait of Zhu Zhenfang">
                 </aside>
+
             </div>
         </article>
     </main>
