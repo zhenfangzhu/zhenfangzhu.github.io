@@ -49,8 +49,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertRegex(index, r'<img[^>]+alt="Portrait of Zhu Zhenfang"')
         self.assertEqual(index.count("<h1"), 1)
         self.assertIn('aria-label="Primary navigation"', index)
-        self.assertIn('class="profile-intro"', index)
-        self.assertIn('class="contact-strip"', index)
+        self.assertIn("profile-intro", index)
+        self.assertIn("contact-strip", index)
         self.assertIn('lang="zh-CN"', index)
         self.assertRegex(index, r'<img[^>]+width="[0-9]+"[^>]+height="[0-9]+"')
 
@@ -58,7 +58,7 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         for section_id in ("about", "interests", "education", "tools", "contact"):
             self.assertIn(f'id="{section_id}"', index)
-        for section_id in ("interests", "education", "tools", "contact"):
+        for section_id in ("reality", "dreams"):
             self.assertIn(f'href="#{section_id}"', index)
         self.assertIn('href="/founder-dna/"', index)
         self.assertIn('href="/board/"', index)
@@ -222,7 +222,7 @@ class SiteContractTests(unittest.TestCase):
         home = read("contents/home.md")
         index = read("index.html")
         combined = index + "\n" + home
-        contact_strip = re.search(r'<div class="contact-strip">(.*?)</div>', index, re.DOTALL)
+        contact_strip = re.search(r'<div class="[^"]*contact-strip[^"]*">(.*?)</div>', index, re.DOTALL)
         self.assertIsNotNone(contact_strip)
         self.assertEqual(combined.count('href="mailto:zhuzhenfang@ustc.edu"'), 1)
         self.assertEqual(combined.count('href="https://github.com/zhuzhenfangx"'), 1)
@@ -250,17 +250,18 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn(".interest-row > span", css)
         self.assertNotRegex(css, r"\.interest-row\s+span\s*\{")
 
-    def test_forum_typography_uses_fast_system_fonts(self):
+    def test_homepage_uses_reference_editorial_typography_without_webfonts(self):
         index = read("index.html")
-        css = read("static/css/main.css")
+        css = read("static/css/home.css")
         self.assertNotIn("fonts.googleapis.com", index)
-        self.assertIn('--font-body: Arial, "Microsoft YaHei"', css)
+        self.assertIn('"Iowan Old Style"', css)
+        self.assertIn('"Palatino Linotype"', css)
         self.assertNotIn("Mulish", index)
         self.assertNotIn("Newsreader", index)
 
-    def test_theme_color_matches_forum_header(self):
+    def test_theme_color_matches_editorial_surface(self):
         index = read("index.html")
-        self.assertIn('<meta name="theme-color" content="#2c5f8f">', index)
+        self.assertIn('<meta name="theme-color" content="#ffffff">', index)
 
     def test_redundant_hidden_contact_copy_is_absent(self):
         awards = read("contents/awards.md")
@@ -293,32 +294,29 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertIn(rule, css)
 
-    def test_bilingual_dream_archive_visual_contract(self):
-        css = read("static/css/main.css")
+    def test_homepage_matches_editorial_reference_contract(self):
+        css = read("static/css/home.css")
         for rule in (
-            "--color-paper: #e9eef3",
-            "--color-heading: #222b33",
-            "--color-accent: #205b91",
-            'grid-template-columns: 170px minmax(0, 1fr)',
-            ".archive-titlebar",
-            ".archive-stats",
-            ".contact-strip",
-            ".interest-row",
-            ".education-row",
+            "--ink: #282828",
+            "--nav: #676767",
+            "width: min(100%, 600px)",
+            "@media (min-width: 1100px)",
+            "grid-template-columns: minmax(0, 1.75fr) minmax(380px, 1fr)",
+            ".home-visual",
+            "position: sticky",
             "object-fit: cover",
         ):
             self.assertIn(rule, css.lower())
 
-    def test_navigation_uses_opaque_surface_and_accessible_brand_target(self):
-        css = read("static/css/main.css")
-        nav = re.search(r"\.site-nav\s*\{([^}]*)\}", css, re.DOTALL)
-        brand = re.search(r"\.navbar-brand\s*\{([^}]*)\}", css, re.DOTALL)
-        self.assertIsNotNone(nav)
-        self.assertIsNotNone(brand)
-        self.assertIn("background: var(--color-paper)", nav.group(1))
-        self.assertNotIn("backdrop-filter", nav.group(1))
-        for rule in ("display: inline-flex", "align-items: center", "min-height: 44px"):
-            self.assertIn(rule, brand.group(1))
+    def test_homepage_uses_compact_in_page_navigation(self):
+        index = read("index.html")
+        css = read("static/css/home.css")
+        self.assertIn('class="compact-index"', index)
+        self.assertIn('href="#reality"', index)
+        self.assertIn('href="#dreams"', index)
+        self.assertNotIn('class="site-nav', index)
+        self.assertNotIn("navbar", index)
+        self.assertIn("min-height: 44px", css)
 
     def test_single_mathjax_runtime(self):
         index = read("index.html")
@@ -386,23 +384,17 @@ class SiteContractTests(unittest.TestCase):
 
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")
-        scripts = read("static/js/scripts.js")
-        self.assertRegex(index, r'static/css/main\.css\?v=\d{8,}')
-        self.assertRegex(index, r'static/js/scripts\.js\?v=\d{8,}')
-        self.assertIn("const CONTENT_VERSION", scripts)
-        self.assertIn("?v=${CONTENT_VERSION}", scripts)
+        self.assertRegex(index, r'static/css/home\.css\?v=\d{8,}')
+        self.assertRegex(index, r'static/js/language\.js\?v=\d{8,}')
 
-    def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
+    def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        scripts = read("static/js/scripts.js")
-        version = "2026082606"
-        self.assertIn(f'static/css/main.css?v={version}', index)
-        self.assertIn(f'static/js/scripts.js?v={version}', index)
-        self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
+        self.assertIn('static/css/home.css?v=2026082601', index)
+        self.assertIn('static/js/language.js?v=2026082607', index)
 
     def test_homepage_has_busuanzi_site_stats(self):
         index = read("index.html")
-        css = read("static/css/main.css")
+        css = read("static/css/home.css")
         self.assertIn(
             'src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"',
             index,
@@ -413,20 +405,20 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('id="busuanzi_value_site_uv"', index)
         self.assertIn(".footer-stats", css)
 
-    def test_contact_section_uses_forum_contact_rows(self):
+    def test_contact_section_uses_editorial_index_rows(self):
         index = read("index.html")
-        css = read("static/css/main.css")
-        self.assertIn('class="profile-contact"', index)
-        self.assertIn('class="bi bi-envelope-fill"', index)
-        self.assertIn('class="bi bi-github"', index)
-        self.assertIn("grid-template-columns: repeat(2, minmax(0, 1fr))", css)
+        css = read("static/css/home.css")
+        self.assertIn("profile-contact", index)
+        self.assertIn('href="mailto:zhuzhenfang@ustc.edu"', index)
+        self.assertIn('href="https://github.com/zhuzhenfangx"', index)
+        self.assertIn("grid-template-columns: minmax(0, 1fr) auto", css)
         self.assertNotIn("For relevant technical or product conversations", index)
         self.assertNotIn("欢迎就相关技术或产品问题与我交流", index)
 
     def test_language_switcher_changes_and_remembers_the_ui_language(self):
         index = read("index.html")
         about = read("about/index.html")
-        css = read("static/css/main.css")
+        css = read("static/css/home.css")
         language_js = read("static/js/language.js")
         self.assertIn('class="language-toggle"', index)
         self.assertIn('class="language-toggle"', about)
@@ -442,7 +434,7 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_reality_navigation_without_a_mode_switch(self):
         index = read("index.html")
-        css = read("static/css/main.css")
+        css = read("static/css/home.css")
         language_js = read("static/js/language.js")
 
         self.assertNotIn("data-reading-mode", index)
@@ -450,12 +442,15 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("data-mode", index)
         self.assertNotIn("reading-mode-switch", css)
         self.assertNotIn("site-reading-mode", language_js)
-        for label in ("工具", "方向", "教育", "联系", "实用工具", "关注方向", "教育经历", "联系方式"):
+        self.assertIn('id="reality"', index)
+        self.assertIn('id="dreams"', index)
+        for label in ("现实", "梦境", "实用工具", "关注方向", "教育经历", "联系方式"):
             self.assertIn(label, index)
 
-    def test_portrait_keeps_vertical_composition(self):
-        css = read("static/css/main.css")
-        self.assertIn("object-fit: contain", css)
+    def test_portrait_is_sticky_and_keeps_vertical_composition(self):
+        css = read("static/css/home.css")
+        self.assertIn("position: sticky", css)
+        self.assertIn("object-fit: cover", css)
         self.assertNotIn("aspect-ratio: 1", css)
 
 
