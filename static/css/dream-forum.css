@@ -849,3 +849,37 @@ a:hover { text-decoration-color: currentColor; }
     .bbs-thread__title { padding: 2rem 0; }
     .bbs-footer .bbs-wrap { min-height: 68px; }
 }
+
+/* Minimal archive/article structure: no site chrome, breadcrumbs, forum author
+   rail, or author column. Content itself is the navigation hierarchy. */
+.bbs-topic-columns,
+.bbs-topic {
+    grid-template-columns: minmax(0, 1fr) 90px 120px;
+}
+
+#dream-content.bbs-wrap {
+    width: min(100% - 48px, 780px);
+}
+
+.bbs-post { display: block; }
+
+.bbs-post__content {
+    max-width: 72ch;
+    margin-inline: auto;
+    padding: 0 0 3rem;
+}
+
+.bbs-post__meta { justify-content: flex-start; }
+
+@media (max-width: 767.98px) {
+    #dream-content.bbs-wrap { width: min(100% - 32px, 780px); }
+    .bbs-post__content { padding-bottom: 2.5rem; }
+}
+
+.bbs-thread__title {
+    padding: clamp(1.75rem, 4vw, 2.75rem) 0 clamp(1.5rem, 3vw, 2rem);
+}
+
+@media (max-width: 767.98px) {
+    .bbs-thread__title { padding: 1.5rem 0; }
+}
