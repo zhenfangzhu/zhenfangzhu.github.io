@@ -350,6 +350,20 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("a[data-dream-link]", navigation)
         self.assertIn("event.metaKey", navigation)
 
+    def test_first_lucid_dream_is_published_as_a_full_entry(self):
+        dreams = read("dreams/index.html")
+        entry = read("dreams/2024-10-19/index.html")
+        sitemap = read("sitemap.xml")
+
+        self.assertIn('href="/dreams/2024-10-19/"', dreams)
+        self.assertIn('data-dream-link', dreams)
+        self.assertIn("1 篇记录", dreams)
+        self.assertIn("2024年10月19日 午觉", entry)
+        self.assertIn("清醒梦", entry)
+        self.assertIn("困惑", entry)
+        self.assertIn("妈妈，你杀了爸爸。", entry)
+        self.assertIn("https://zhuzhenfang.com/dreams/2024-10-19/", sitemap)
+
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")

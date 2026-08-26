@@ -257,9 +257,10 @@ a { color: inherit; }
 /* Applied to real dream records once they are added. Keeping this here means
    every future card gets the same clear, gentle entry behaviour. */
 .dream-card {
+    position: relative;
     display: block;
     min-height: 112px;
-    padding: 1rem;
+    padding: 1.15rem 3rem 1.15rem 1.15rem;
     border: 1px solid var(--dream-border);
     background: var(--dream-surface);
     color: var(--dream-ink);
@@ -274,6 +275,141 @@ a { color: inherit; }
 }
 
 .dream-card:active { transform: translateY(0) scale(0.99); }
+
+.dream-card__date {
+    margin: 0 0 0.45rem;
+    color: var(--dream-muted);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.74rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+}
+
+.dream-card__title {
+    margin: 0;
+    font-family: var(--dream-display);
+    font-size: 1.45rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.dream-card__summary {
+    margin: 0.75rem 0 1rem;
+    color: var(--dream-muted);
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+
+.dream-card__mood {
+    display: inline-flex;
+    min-height: 28px;
+    padding: 0 0.65rem;
+    align-items: center;
+    border-radius: 999px;
+    background: #ebe3d6;
+    color: #61584e;
+    font-size: 0.75rem;
+}
+
+.dream-card__arrow {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    color: var(--dream-muted);
+}
+
+.dream-card:hover .dream-card__arrow { color: var(--dream-accent); }
+
+.dream-transition-20241019 { view-transition-name: dream-2024-10-19; }
+
+.dream-entry {
+    width: min(100% - 48px, 820px);
+    margin: 0 auto;
+    padding: clamp(4rem, 9vw, 7.5rem) 0 clamp(4rem, 8vw, 7rem);
+}
+
+.dream-entry__back {
+    display: inline-flex;
+    min-height: 44px;
+    margin-bottom: clamp(2.5rem, 7vw, 5rem);
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--dream-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.dream-entry__back:hover { color: var(--dream-accent); }
+
+.dream-entry__kicker {
+    margin: 0 0 1rem;
+    color: var(--dream-accent);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+}
+
+.dream-entry h1 {
+    margin: 0;
+    font-family: var(--dream-display);
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+}
+
+.dream-entry__meta {
+    display: grid;
+    margin: clamp(2.5rem, 6vw, 4rem) 0;
+    padding: 1.25rem 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--dream-border);
+    border-bottom: 1px solid var(--dream-border);
+}
+
+.dream-entry__meta div { padding-right: 1rem; }
+
+.dream-entry__meta dt {
+    margin-bottom: 0.25rem;
+    color: var(--dream-muted);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+}
+
+.dream-entry__meta dd { margin: 0; font-size: 0.95rem; font-weight: 600; }
+
+.dream-entry__summary {
+    margin: 0 0 clamp(3rem, 7vw, 5rem);
+    padding-left: 1.35rem;
+    border-left: 3px solid var(--dream-accent);
+    color: #3e3831;
+    font-size: clamp(1.08rem, 2vw, 1.25rem);
+    font-weight: 600;
+    line-height: 1.8;
+}
+
+.dream-entry__body { font-size: clamp(1rem, 1.5vw, 1.08rem); line-height: 2; }
+.dream-entry__body p { margin: 0 0 2rem; }
+.dream-entry__body p:last-child { margin-bottom: 0; }
+
+.dream-entry__end {
+    display: flex;
+    margin-top: clamp(3rem, 7vw, 5rem);
+    padding-top: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid var(--dream-border);
+    color: var(--dream-muted);
+    font-size: 0.8rem;
+}
 
 .dream-footer {
     display: flex;
@@ -303,6 +439,8 @@ a { color: inherit; }
     .dream-columns { grid-template-columns: 1fr; }
     .dream-column { min-height: 220px; }
     .dream-footer { align-items: flex-start; flex-direction: column; }
+    .dream-entry { width: min(100% - 32px, 820px); padding-top: 3rem; }
+    .dream-entry__meta { grid-template-columns: 1fr; gap: 1rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
