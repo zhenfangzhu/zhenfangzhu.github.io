@@ -46,7 +46,7 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         for fragment in ('href="#main-content"', "<main", "</main>", '<footer'):
             self.assertIn(fragment, index)
-        self.assertRegex(index, r'<img[^>]+alt="Portrait of Zhu Zhenfang"')
+        self.assertRegex(index, r'<img[^>]+alt="Portrait of Zhenfang Zhu"')
         self.assertEqual(index.count("<h1"), 1)
         self.assertNotIn('aria-label="Primary navigation"', index)
         self.assertIn("profile-intro", index)
@@ -155,7 +155,7 @@ class SiteContractTests(unittest.TestCase):
         visible_text = re.sub(r"</?span(?:\s+[^>]*)?>", "", index + content)
         self.assertNotRegex(content, r"\[List your|href=[\"']#[\"']")
         for phrase in (
-            "I am Zhu Zhenfang, a graduate of the University of Science and Technology of China",
+            "I am Zhenfang Zhu (Chinese: 朱振方), a graduate of the University of Science and Technology of China",
             "我是朱振方，本科毕业于中国科学技术大学",
             "中国科学技术大学理学学士",
             "Software Systems",
@@ -174,7 +174,7 @@ class SiteContractTests(unittest.TestCase):
         about = read("about/index.html")
         for phrase in (
             "朱振方",
-            "Zhu Zhenfang",
+            "Zhenfang Zhu",
             "中国科学技术大学",
             "University of Science and Technology of China",
             "2019",
@@ -190,14 +190,14 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("目前从事AI创业", about)
         self.assertIn('"jobTitle": ["AI Entrepreneur", "Software Engineer"]', about)
 
-    def test_homepage_search_title_is_only_the_chinese_name(self):
+    def test_homepage_search_title_contains_both_names(self):
         index = read("index.html")
 
-        self.assertIn('<title id="title">朱振方</title>', index)
-        self.assertIn('<meta property="og:title" content="朱振方">', index)
-        self.assertIn('<meta property="og:site_name" content="朱振方">', index)
-        self.assertIn('data-title-en="朱振方" data-title-zh="朱振方"', index)
-        self.assertIn('"name": "朱振方"', index)
+        self.assertIn('<title id="title">Zhenfang Zhu (朱振方)</title>', index)
+        self.assertIn('<meta property="og:title" content="Zhenfang Zhu (朱振方)">', index)
+        self.assertIn('<meta property="og:site_name" content="Zhenfang Zhu (朱振方)">', index)
+        self.assertIn('data-title-en="Zhenfang Zhu (朱振方)" data-title-zh="Zhenfang Zhu (朱振方)"', index)
+        self.assertIn('"name": "Zhenfang Zhu (朱振方)"', index)
         self.assertNotIn("Personal Website", index)
 
     def test_copy_is_factual_and_not_marketing_style(self):
@@ -485,7 +485,7 @@ class SiteContractTests(unittest.TestCase):
             "代码会越来越便宜。",
             "想象力不会。",
             "你到底想做什么？",
-            "I am Zhu Zhenfang, a graduate of the University of Science and Technology of China.",
+            "I am Zhenfang Zhu (Chinese: 朱振方), a graduate of the University of Science and Technology of China.",
             "Today, I work on AI Agent Coding.",
             "Code will become cheaper and cheaper.",
             "Imagination will not.",
