@@ -336,22 +336,23 @@ class SiteContractTests(unittest.TestCase):
     def test_dream_archive_is_public_and_linked_from_the_homepage(self):
         index = read("index.html")
         dreams = read("dreams/index.html")
-        css = read("static/css/dreams.css")
+        css = read("static/css/dream-forum.css")
         sitemap = read("sitemap.xml")
         self.assertIn('href="/dreams/"', index)
         self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", index)
         self.assertIn("Loading… 99%", dreams)
         self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", dreams)
-        self.assertIn('id="dream-board"', dreams)
+        self.assertIn('id="topic-list"', dreams)
         self.assertIn("清醒梦", dreams)
         self.assertIn("层叠梦", dreams)
         self.assertIn("假醒梦", dreams)
-        self.assertIn("grid-template-columns: repeat(3, minmax(0, 1fr))", css)
+        self.assertIn(".bbs-topic-list", css)
+        self.assertIn(".bbs-topic-columns", css)
         self.assertIn("<loc>https://zhuzhenfang.com/dreams/</loc>", sitemap)
 
     def test_dream_entries_use_smooth_progressive_navigation(self):
         dreams = read("dreams/index.html")
-        css = read("static/css/dreams.css")
+        css = read("static/css/dream-forum.css")
         navigation = read("static/js/dream-navigation.js")
 
         self.assertIn("dream-navigation.js", dreams)
@@ -367,12 +368,14 @@ class SiteContractTests(unittest.TestCase):
 
         self.assertIn('href="/dreams/2024-10-19/"', dreams)
         self.assertIn('data-dream-link', dreams)
-        self.assertIn("1 篇记录", dreams)
+        self.assertIn("共 1 个主题", dreams)
         self.assertIn("2024年10月19日 午觉", entry)
         self.assertIn("清醒梦", entry)
         self.assertIn("困惑", entry)
         self.assertIn("妈妈，你杀了爸爸。", entry)
         self.assertIn("https://zhuzhenfang.com/dreams/2024-10-19/", sitemap)
+        self.assertIn("bbs-post__author", entry)
+        self.assertIn("1楼", entry)
 
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")

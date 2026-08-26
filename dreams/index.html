@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Loading… 99%：朱振方的公开梦境档案。清醒是漫长的加载，为了那 1% 的睡眠。">
-    <meta name="theme-color" content="#fffbeb">
+    <meta name="theme-color" content="#e9eef3">
     <title>Loading… 99%｜公开梦境档案</title>
     <link rel="canonical" href="https://zhuzhenfang.com/dreams/">
     <meta property="og:title" content="Loading… 99%｜公开梦境档案">
@@ -12,91 +12,81 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://zhuzhenfang.com/dreams/">
     <link rel="icon" type="image/x-icon" href="../static/assets/favicon.ico?v=2026071601">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&amp;family=Noto+Serif+SC:wght@500;600;700&amp;display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="../static/css/dreams.css?v=2026082603" rel="stylesheet">
+    <link href="../static/css/dream-forum.css?v=2026082601" rel="stylesheet">
     <script defer src="../static/js/dream-navigation.js?v=2026082602"></script>
 </head>
-<body>
-    <a class="dream-skip-link" href="#dream-board">跳到梦境目录</a>
+<body class="bbs-page">
+    <a class="bbs-skip-link" href="#topic-list">跳到主题列表</a>
 
-    <header class="dream-header">
-        <a class="dream-home-link" href="/" aria-label="返回朱振方个人主页">
-            <span class="dream-home-mark" aria-hidden="true">Z</span>
-            <span>朱振方</span>
-        </a>
-        <a class="dream-back-link" href="/">
-            <i class="bi bi-arrow-left" aria-hidden="true"></i>
-            <span>个人主页</span>
-        </a>
+    <header class="bbs-topbar">
+        <div class="bbs-wrap bbs-topbar__inner">
+            <a class="bbs-brand" href="/dreams/" aria-label="Loading 99 梦境版首页">
+                <span class="bbs-brand__mark" aria-hidden="true">99</span>
+                <span>Loading… 99%</span>
+            </a>
+            <nav class="bbs-nav" aria-label="梦境版导航">
+                <a aria-current="page" href="/dreams/">梦境版</a>
+                <a href="/">朱振方的主页</a>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <section class="dream-hero" aria-labelledby="dream-title">
-            <p class="dream-kicker">PUBLIC DREAM ARCHIVE · 公开梦境档案</p>
-            <h1 id="dream-title"><span>Loading…</span> <em>99%</em></h1>
-            <p class="dream-tagline">清醒是漫长的加载，为了那 1% 的睡眠。</p>
-            <p class="dream-intro">这里公开收集醒来后还记得的片段。它们不急着被解释，先被好好留下。</p>
-            <p class="dream-status"><span aria-hidden="true"></span> 档案已开启，等待第一场梦。</p>
+    <main class="bbs-wrap">
+        <nav class="bbs-breadcrumb" aria-label="面包屑导航">
+            <a href="/">首页</a><span aria-hidden="true">›</span><span>梦境版</span>
+        </nav>
+
+        <section class="bbs-board-head" aria-labelledby="dream-title">
+            <div>
+                <p class="bbs-board-head__label">DREAM FORUM</p>
+                <h1 id="dream-title">Loading… 99%</h1>
+                <p>清醒是漫长的加载，为了那 1% 的睡眠。</p>
+            </div>
+            <dl class="bbs-board-stats" aria-label="版面统计">
+                <div><dt>主题</dt><dd>1</dd></div>
+                <div><dt>记录</dt><dd>1</dd></div>
+                <div><dt>版主</dt><dd>朱振方</dd></div>
+            </dl>
         </section>
 
-        <section class="dream-board" id="dream-board" aria-labelledby="board-title">
-            <header class="dream-board__header">
-                <div>
-                    <p class="dream-board__eyebrow">DREAM INDEX</p>
-                    <h2 id="board-title">梦的目录</h2>
-                </div>
-                <p class="dream-count">1 篇记录</p>
+        <nav class="bbs-categories" aria-label="梦境分类">
+            <a class="is-active" href="#topic-list">全部 <span>1</span></a>
+            <a href="#topic-list">清醒梦 <span>1</span></a>
+            <span>层叠梦 <b>0</b></span>
+            <span>假醒梦 <b>0</b></span>
+        </nav>
+
+        <section class="bbs-topic-list" id="topic-list" aria-labelledby="topic-list-title">
+            <header class="bbs-topic-list__header">
+                <h2 id="topic-list-title">主题列表</h2>
+                <span>共 1 个主题</span>
             </header>
 
-            <div class="dream-columns">
-                <section class="dream-column" aria-labelledby="lucid-title">
-                    <header class="dream-column__header">
-                        <h3 id="lucid-title">清醒梦</h3>
-                        <span>1</span>
-                    </header>
-                    <p class="dream-column__description">明明醒着，现实却开始有一点松动。</p>
-                    <a class="dream-card" data-dream-link href="/dreams/2024-10-19/">
-                        <p class="dream-card__date">清醒梦 · 记录 001</p>
-                        <h4 class="dream-card__title dream-transition-20241019">2024年10月19日 午觉</h4>
-                        <p class="dream-card__summary">目睹坠楼后，我转身下楼，却发现鞋上原本粘稠的鲜血消失无踪。</p>
-                        <span class="dream-card__mood">困惑</span>
-                        <span class="dream-card__arrow" aria-hidden="true"><i class="bi bi-arrow-up-right"></i></span>
-                    </a>
-                </section>
-
-                <section class="dream-column" aria-labelledby="nested-title">
-                    <header class="dream-column__header">
-                        <h3 id="nested-title">层叠梦</h3>
-                        <span>0</span>
-                    </header>
-                    <p class="dream-column__description">梦里又做了一场梦，醒来仍在故事里面。</p>
-                    <div class="dream-empty-state">
-                        <i class="bi bi-layers" aria-hidden="true"></i>
-                        <p>等待一场梦</p>
-                    </div>
-                </section>
-
-                <section class="dream-column" aria-labelledby="false-awake-title">
-                    <header class="dream-column__header">
-                        <h3 id="false-awake-title">假醒梦</h3>
-                        <span>0</span>
-                    </header>
-                    <p class="dream-column__description">以为已经醒来，故事其实还没有结束。</p>
-                    <div class="dream-empty-state">
-                        <i class="bi bi-eye" aria-hidden="true"></i>
-                        <p>等待一场梦</p>
-                    </div>
-                </section>
+            <div class="bbs-topic-columns" aria-hidden="true">
+                <span>主题</span><span>分类</span><span>作者</span><span>最后记录</span>
             </div>
+
+            <a class="bbs-topic dream-transition-20241019" data-dream-link href="/dreams/2024-10-19/">
+                <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
+                <span class="bbs-topic__main">
+                    <strong>2024年10月19日 午觉</strong>
+                    <small>目睹坠楼后，我转身下楼，却发现鞋上原本粘稠的鲜血消失无踪。</small>
+                </span>
+                <span class="bbs-topic__category">清醒梦</span>
+                <span class="bbs-topic__author">朱振方</span>
+                <time class="bbs-topic__date" datetime="2024-10-19">2024-10-19</time>
+            </a>
         </section>
+
+        <aside class="bbs-notice" aria-label="版面说明">
+            <strong>版面说明</strong>
+            <p>这里收录醒来后还记得的梦。只保留当时的叙述，不急着解释。</p>
+        </aside>
     </main>
 
-    <footer class="dream-footer">
-        <p>Loading… 99% · 朱振方的公开梦境档案</p>
-        <p>持续加载中</p>
+    <footer class="bbs-footer">
+        <div class="bbs-wrap"><span>Loading… 99%</span><span>持续加载中</span></div>
     </footer>
 </body>
 </html>
