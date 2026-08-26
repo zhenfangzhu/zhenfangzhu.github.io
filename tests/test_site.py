@@ -376,6 +376,9 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("https://zhuzhenfang.com/dreams/2024-10-19/", sitemap)
         self.assertIn("bbs-post__author", entry)
         self.assertIn("1楼", entry)
+        self.assertNotIn("<strong>朱振方</strong>", entry)
+        self.assertNotIn(">朱振方的主页<", dreams + entry)
+        self.assertIn("<dt>状态</dt><dd>公开</dd>", dreams)
 
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")
