@@ -396,7 +396,7 @@ class SiteContractTests(unittest.TestCase):
     def test_mutable_assets_refresh_atomically_for_final_profile_release(self):
         index = read("index.html")
         scripts = read("static/js/scripts.js")
-        version = "2026082604"
+        version = "2026082605"
         self.assertIn(f'static/css/main.css?v={version}', index)
         self.assertIn(f'static/js/scripts.js?v={version}', index)
         self.assertIn(f"const CONTENT_VERSION = '{version}'", scripts)
