@@ -388,7 +388,9 @@ class SiteContractTests(unittest.TestCase):
 
         self.assertIn('href="/dreams/2024-10-19/"', dreams)
         self.assertIn('data-dream-link', dreams)
-        self.assertIn("共 4 个主题", dreams)
+        self.assertIn("公开 4 条", dreams)
+        self.assertIn("全部 <span>326</span>", dreams)
+        self.assertIn("未公开 <b>322</b>", dreams)
         self.assertIn("2024年10月19日 午觉", entry)
         self.assertIn("清醒梦", entry)
         self.assertIn("困惑", entry)
@@ -402,7 +404,9 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("bbs-breadcrumb", dreams + entry)
         self.assertNotIn("<strong>朱振方</strong>", entry)
         self.assertNotIn(">朱振方的主页<", dreams + entry)
-        self.assertIn("<dt>状态</dt><dd>公开</dd>", dreams)
+        self.assertIn("<dt>全部</dt><dd>326</dd>", dreams)
+        self.assertIn("<dt>公开</dt><dd>4</dd>", dreams)
+        self.assertIn("<dt>未公开</dt><dd>322</dd>", dreams)
 
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")
