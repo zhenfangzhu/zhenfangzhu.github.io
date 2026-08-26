@@ -447,6 +447,17 @@ class SiteContractTests(unittest.TestCase):
         for label in ("现实", "梦境", "实用工具", "关注方向", "教育经历", "联系方式"):
             self.assertIn(label, index)
 
+    def test_homepage_preserves_the_full_chinese_dream_statement(self):
+        index = read("index.html")
+        for phrase in (
+            "我越来越不相信，现实只发生在清醒的时候。",
+            "它们都曾真实地经过我。",
+            "这里不是我的个人主页。",
+            "我只是此刻，站在这一边记录。",
+            "下一次醒来，我也许就在另一边。",
+        ):
+            self.assertIn(phrase, index)
+
     def test_portrait_is_sticky_and_keeps_vertical_composition(self):
         css = read("static/css/home.css")
         self.assertIn("position: sticky", css)
