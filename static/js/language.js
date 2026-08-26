@@ -2,9 +2,7 @@
     "use strict";
 
     const STORAGE_KEY = "site-language";
-    const MODE_STORAGE_KEY = "site-reading-mode";
     const supportedLanguages = new Set(["zh", "en"]);
-    const supportedModes = new Set(["dream", "reality"]);
 
     function currentLanguage() {
         const language = document.documentElement.dataset.language;
@@ -34,58 +32,13 @@
         }
     }
 
-    function currentReadingMode() {
-        const mode = document.documentElement.dataset.readingMode;
-        return supportedModes.has(mode) ? mode : "dream";
-    }
-
-    function applyReadingMode(mode, remember) {
-        const nextMode = supportedModes.has(mode) ? mode : "dream";
-        document.documentElement.dataset.readingMode = nextMode;
-
-        document.querySelectorAll("[data-set-mode]").forEach((button) => {
-            button.setAttribute("aria-pressed", String(button.dataset.setMode === nextMode));
-        });
-
-        if (remember) {
-            try {
-                window.localStorage.setItem(MODE_STORAGE_KEY, nextMode);
-            } catch (error) {
-                // The mode still changes when browser storage is unavailable.
-            }
-        }
-    }
-
-    function transitionReadingMode(mode) {
-        const nextMode = supportedModes.has(mode) ? mode : "dream";
-        if (nextMode === currentReadingMode()) return;
-
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            applyReadingMode(nextMode, true);
-            return;
-        }
-
-        document.documentElement.classList.add("is-mode-changing");
-        window.setTimeout(() => {
-            applyReadingMode(nextMode, true);
-            window.requestAnimationFrame(() => {
-                document.documentElement.classList.remove("is-mode-changing");
-            });
-        }, 100);
-    }
-
     window.addEventListener("DOMContentLoaded", () => {
         applyLanguage(currentLanguage(), false);
-        applyReadingMode(currentReadingMode(), false);
         document.querySelectorAll(".language-toggle").forEach((button) => {
             button.addEventListener("click", () => {
                 const nextLanguage = currentLanguage() === "zh" ? "en" : "zh";
                 applyLanguage(nextLanguage, true);
             });
-        });
-
-        document.querySelectorAll("[data-set-mode]").forEach((button) => {
-            button.addEventListener("click", () => transitionReadingMode(button.dataset.setMode));
         });
     });
 }());

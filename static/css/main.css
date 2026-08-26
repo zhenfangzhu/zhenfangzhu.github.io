@@ -21,11 +21,6 @@ html[data-language="zh"] [data-lang="en"] {
     display: none !important;
 }
 
-html[data-reading-mode="dream"] [data-mode="reality"],
-html[data-reading-mode="reality"] [data-mode="dream"] {
-    display: none !important;
-}
-
 *,
 *::before,
 *::after {
@@ -628,16 +623,6 @@ body {
     font-size: 16px;
 }
 
-main {
-    transition: opacity 100ms ease, filter 100ms ease, transform 100ms ease;
-}
-
-html.is-mode-changing main {
-    opacity: 0.38;
-    filter: blur(1.5px);
-    transform: translateY(2px);
-}
-
 .homepage-shell {
     width: min(100% - 32px, 1080px);
     margin-inline: auto;
@@ -741,40 +726,9 @@ html.is-mode-changing main {
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
 }
 
-.reading-mode-item,
 .language-item {
     display: flex;
     align-items: center;
-}
-
-.reading-mode-switch {
-    display: flex;
-    height: 34px;
-    margin: 0 0.35rem 0 0.55rem;
-    padding: 2px;
-    border: 1px solid rgba(255, 255, 255, 0.44);
-    border-radius: 3px;
-    background: rgba(18, 51, 78, 0.34);
-}
-
-.reading-mode-switch button {
-    min-width: 48px;
-    min-height: 28px;
-    padding: 0 0.55rem;
-    border: 0;
-    border-radius: 2px;
-    background: transparent;
-    color: #dceaf5;
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.72rem;
-    transition: background-color 180ms ease-out, color 180ms ease-out;
-}
-
-.reading-mode-switch button[aria-pressed="true"] {
-    background: #fff;
-    color: #214c75;
-    font-weight: 700;
 }
 
 .language-toggle {
@@ -1227,10 +1181,6 @@ html.is-mode-changing main {
 
     .site-nav .nav-link {
         padding-inline: 0.6rem;
-    }
-
-    .reading-mode-switch {
-        margin: 0.45rem 0;
     }
 
     .archive-titlebar {

@@ -83,13 +83,6 @@
             document.documentElement.dataset.language = language;
             document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
 
-            let readingMode;
-            try {
-                readingMode = localStorage.getItem('site-reading-mode');
-            } catch (error) {
-                readingMode = null;
-            }
-            document.documentElement.dataset.readingMode = readingMode === 'reality' ? 'reality' : 'dream';
         })();
     </script>
 
@@ -106,7 +99,7 @@
     <script defer src="static/js/marked.min.js"></script>
     <script defer src="static/js/js-yaml.min.js"></script>
     <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script defer src="static/js/language.js?v=2026082606"></script>
+    <script defer src="static/js/language.js?v=2026082607"></script>
     <script defer src="static/js/scripts.js?v=2026082606"></script>
     <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </head>
@@ -126,16 +119,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#tools"><span data-mode="dream"><span data-lang="en">Artifacts</span><span data-lang="zh">梦的产物</span></span><span data-mode="reality"><span data-lang="en">Tools</span><span data-lang="zh">工具</span></span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#interests"><span data-mode="dream"><span data-lang="en">Ongoing Dream</span><span data-lang="zh">正在发生</span></span><span data-mode="reality"><span data-lang="en">Focus</span><span data-lang="zh">方向</span></span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#education"><span data-mode="dream"><span data-lang="en">Earlier Dream</span><span data-lang="zh">已经醒来</span></span><span data-mode="reality"><span data-lang="en">Education</span><span data-lang="zh">教育</span></span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact"><span data-mode="dream"><span data-lang="en">Wake Me</span><span data-lang="zh">唤醒方式</span></span><span data-mode="reality"><span data-lang="en">Contact</span><span data-lang="zh">联系</span></span></a></li>
-                    <li class="nav-item reading-mode-item">
-                        <div class="reading-mode-switch" role="group" aria-label="Reading mode">
-                            <button type="button" data-set-mode="dream" aria-pressed="true"><span data-lang="en">Dream</span><span data-lang="zh">梦境</span></button>
-                            <button type="button" data-set-mode="reality" aria-pressed="false"><span data-lang="en">Index</span><span data-lang="zh">现实</span></button>
-                        </div>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#tools"><span data-lang="en">Tools</span><span data-lang="zh">工具</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#interests"><span data-lang="en">Focus</span><span data-lang="zh">方向</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#education"><span data-lang="en">Education</span><span data-lang="zh">教育</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact"><span data-lang="en">Contact</span><span data-lang="zh">联系</span></a></li>
                     <li class="nav-item language-item">
                         <button class="language-toggle" type="button" aria-label="切换到中文" title="切换到中文">
                             <i class="bi bi-globe2" aria-hidden="true"></i><span class="language-code"><span data-lang="en">中</span><span data-lang="zh">EN</span></span>
@@ -154,11 +141,7 @@
                     <div class="leerob-left-col">
                         <header class="archive-titlebar">
                             <h1 id="profile-name"><span data-lang="en">Zhu Zhenfang</span><span data-lang="zh" lang="zh-CN">朱振方</span></h1>
-                            <p class="archive-subtitle" data-mode="dream">
-                                <span data-lang="en">If life is one long dream, this is only a small part I kept from oblivion.</span>
-                                <span data-lang="zh" lang="zh-CN">如果人生是一场漫长的梦，这里只是我从遗忘里留下的一小部分。</span>
-                            </p>
-                            <p class="archive-subtitle" data-mode="reality">
+                            <p class="archive-subtitle">
                                 <span data-lang="en">A concise index of my education, work, projects, and notes.</span>
                                 <span data-lang="zh" lang="zh-CN">关于我的教育、工作、项目与记录。</span>
                             </p>
@@ -194,21 +177,21 @@
 
             <section class="section section-tinted" id="tools" aria-labelledby="tools-title">
                 <header class="section-heading">
-                    <h2 id="tools-title"><span data-mode="dream"><span data-lang="en">Things the dream left behind</span><span data-lang="zh" lang="zh-CN">梦的产物</span></span><span data-mode="reality"><span data-lang="en">Tools</span><span data-lang="zh" lang="zh-CN">实用工具</span></span></h2>
+                    <h2 id="tools-title"><span data-lang="en">Tools</span><span data-lang="zh" lang="zh-CN">实用工具</span></h2>
                 </header>
                 <div class="tool-list">
                     <a class="tool-row" href="/dreams/">
-                        <span class="tool-type"><span data-mode="dream"><span data-lang="en">Sleep record</span><span data-lang="zh">睡眠记录</span></span><span data-mode="reality"><span data-lang="en">Dream archive</span><span data-lang="zh">梦境档案</span></span></span>
+                        <span class="tool-type"><span data-lang="en">Dream archive</span><span data-lang="zh">梦境档案</span></span>
                         <span class="tool-main"><strong>Loading… 99%</strong><small>清醒是漫长的加载，为了那 1% 的睡眠。</small></span>
                         <span class="tool-status"><span data-lang="en">Enter</span><span data-lang="zh">进入</span> ›</span>
                     </a>
                     <a class="tool-row" href="/founder-dna/">
-                        <span class="tool-type"><span data-mode="dream"><span data-lang="en">Personality script</span><span data-lang="zh">人格脚本</span></span><span data-mode="reality"><span data-lang="en">Assessment</span><span data-lang="zh">测试</span></span></span>
+                        <span class="tool-type"><span data-lang="en">Assessment</span><span data-lang="zh">测试</span></span>
                         <span class="tool-main"><strong>Founder DNA</strong><small data-lang="en">A quick founder profile test</small><small data-lang="zh">快速了解你的创业者特质</small></span>
                         <span class="tool-status"><span data-lang="en">Open</span><span data-lang="zh">打开</span> ›</span>
                     </a>
                     <a class="tool-row" href="/board/">
-                        <span class="tool-type"><span data-mode="dream"><span data-lang="en">Public subconscious</span><span data-lang="zh">公共潜意识</span></span><span data-mode="reality"><span data-lang="en">Collaboration</span><span data-lang="zh">协作</span></span></span>
+                        <span class="tool-type"><span data-lang="en">Collaboration</span><span data-lang="zh">协作</span></span>
                         <span class="tool-main"><strong data-lang="en">Shared Board</strong><strong data-lang="zh">共享白板</strong><small data-lang="en">Write together, publicly or privately</small><small data-lang="zh">公开或加密地一起写点东西</small></span>
                         <span class="tool-status"><span data-lang="en">Open</span><span data-lang="zh">打开</span> ›</span>
                     </a>
@@ -217,21 +200,21 @@
 
             <section class="section section-tinted" id="interests" aria-labelledby="interests-title">
                 <header class="section-heading">
-                    <h2 id="interests-title"><span data-mode="dream"><span data-lang="en">The dream in progress</span><span data-lang="zh" lang="zh-CN">正在发生的梦</span></span><span data-mode="reality"><span data-lang="en">Focus</span><span data-lang="zh" lang="zh-CN">关注方向</span></span></h2>
+                    <h2 id="interests-title"><span data-lang="en">Focus</span><span data-lang="zh" lang="zh-CN">关注方向</span></h2>
                 </header>
                 <div id="publications-md" aria-live="polite"></div>
             </section>
 
             <section class="section" id="education" aria-labelledby="education-title">
                 <header class="section-heading">
-                    <h2 id="education-title"><span data-mode="dream"><span data-lang="en">A dream already left</span><span data-lang="zh" lang="zh-CN">已经醒来的梦</span></span><span data-mode="reality"><span data-lang="en">Education</span><span data-lang="zh" lang="zh-CN">教育经历</span></span></h2>
+                    <h2 id="education-title"><span data-lang="en">Education</span><span data-lang="zh" lang="zh-CN">教育经历</span></h2>
                 </header>
                 <div id="awards-md" aria-live="polite"></div>
             </section>
 
             <section class="profile-contact" id="contact" aria-labelledby="contact-title">
                 <header class="section-heading">
-                    <h2 id="contact-title"><span data-mode="dream"><span data-lang="en">Wake me</span><span data-lang="zh" lang="zh-CN">唤醒方式</span></span><span data-mode="reality"><span data-lang="en">Contact</span><span data-lang="zh" lang="zh-CN">联系方式</span></span></h2>
+                    <h2 id="contact-title"><span data-lang="en">Contact</span><span data-lang="zh" lang="zh-CN">联系方式</span></h2>
                 </header>
                 <div class="contact-strip">
                     <a href="mailto:zhuzhenfang@ustc.edu">

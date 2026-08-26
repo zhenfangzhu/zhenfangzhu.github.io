@@ -302,7 +302,6 @@ class SiteContractTests(unittest.TestCase):
             'grid-template-columns: 170px minmax(0, 1fr)',
             ".archive-titlebar",
             ".archive-stats",
-            ".reading-mode-switch",
             ".contact-strip",
             ".interest-row",
             ".education-row",
@@ -441,22 +440,18 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('document.documentElement.lang = nextLanguage === "zh" ? "zh-CN" : "en"', language_js)
         self.assertIn('currentLanguage() === "zh" ? "en" : "zh"', language_js)
 
-    def test_dream_and_reality_modes_share_one_factual_page(self):
+    def test_homepage_uses_reality_navigation_without_a_mode_switch(self):
         index = read("index.html")
         css = read("static/css/main.css")
         language_js = read("static/js/language.js")
 
-        self.assertIn("document.documentElement.dataset.readingMode = readingMode === 'reality' ? 'reality' : 'dream'", index)
-        self.assertIn('data-set-mode="dream"', index)
-        self.assertIn('data-set-mode="reality"', index)
-        self.assertIn("如果人生是一场漫长的梦，这里只是我从遗忘里留下的一小部分。", index)
-        self.assertIn("正在发生的梦", index)
-        self.assertIn("已经醒来的梦", index)
-        self.assertIn("梦的产物", index)
-        self.assertIn("唤醒方式", index)
-        self.assertIn('html[data-reading-mode="dream"] [data-mode="reality"]', css)
-        self.assertIn("prefers-reduced-motion: reduce", language_js)
-        self.assertIn('window.localStorage.setItem(MODE_STORAGE_KEY, nextMode)', language_js)
+        self.assertNotIn("data-reading-mode", index)
+        self.assertNotIn("data-set-mode", index)
+        self.assertNotIn("data-mode", index)
+        self.assertNotIn("reading-mode-switch", css)
+        self.assertNotIn("site-reading-mode", language_js)
+        for label in ("工具", "方向", "教育", "联系", "实用工具", "关注方向", "教育经历", "联系方式"):
+            self.assertIn(label, index)
 
     def test_portrait_keeps_vertical_composition(self):
         css = read("static/css/main.css")
