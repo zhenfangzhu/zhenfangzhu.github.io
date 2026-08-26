@@ -449,7 +449,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("document.documentElement.dataset.readingMode = readingMode === 'reality' ? 'reality' : 'dream'", index)
         self.assertIn('data-set-mode="dream"', index)
         self.assertIn('data-set-mode="reality"', index)
-        self.assertIn("如果人生是一场漫长的梦，这里保存的是我暂时记得的部分。", index)
+        self.assertIn("如果人生是一场漫长的梦，这里只是我从遗忘里留下的一小部分。", index)
         self.assertIn("正在发生的梦", index)
         self.assertIn("已经醒来的梦", index)
         self.assertIn("梦的产物", index)
