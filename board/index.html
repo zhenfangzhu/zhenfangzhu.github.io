@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-language="zh">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,30 +17,34 @@
     <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico?v=2026071601">
     <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/apple-touch-icon.png?v=2026071601">
     <link href="/static/css/board.css?v=2026082702" rel="stylesheet">
+    <link href="/static/css/site-language.css?v=2026082701" rel="stylesheet">
+    <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="/static/js/board-config.js?v=2026072805"></script>
-    <script defer src="/static/js/board.js?v=2026072807"></script>
+    <script defer src="/static/js/board-i18n.js?v=2026082701"></script>
+    <script defer src="/static/js/site-language.js?v=2026082703"></script>
+    <script defer src="/static/js/board.js?v=2026082709"></script>
 </head>
-<body>
+<body data-title-zh="白板 | 朱振方" data-title-en="Board | Zhenfang Zhu">
     <header class="board-header">
-        <a class="board-home" href="/" aria-label="返回朱振方个人主页">
+        <a class="board-home" href="/" aria-label="返回朱振方个人主页" data-i18n-aria-label="board.back">
             <span aria-hidden="true">←</span>
             <span>zhuzhenfang.com</span>
         </a>
         <div class="board-status" id="board-status" role="status" aria-live="polite">
             <span class="status-dot" aria-hidden="true"></span>
-            <span id="status-text">正在连接</span>
+            <span id="status-text" data-i18n="board.connecting">正在连接</span>
         </div>
     </header>
 
     <main class="board-shell">
         <section class="board-intro" aria-labelledby="board-title">
-            <p class="board-kicker">PUBLIC OR PRIVATE · 自由选择</p>
-            <h1 id="board-title">白板</h1>
-            <p>公开协作，或输入 4 位 PIN 进入对应的私密白板。</p>
+            <p class="board-kicker" data-i18n="board.kicker">公开或私密 · 自由选择</p>
+            <h1 id="board-title" data-i18n="board.title">白板</h1>
+            <p data-i18n="board.intro">公开协作，或输入 4 位 PIN 进入对应的私密白板。</p>
         </section>
 
-        <div class="mode-tabs" role="tablist" aria-label="白板类型">
+        <div class="mode-tabs" role="tablist" aria-label="白板类型" data-i18n-aria-label="board.types">
             <button
                 class="mode-tab is-active"
                 id="public-tab"
@@ -51,7 +55,7 @@
                 data-mode="public"
             >
                 <svg class="tab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="2.5"></circle></svg>
-                公共白板
+                <span data-i18n="board.public">公共白板</span>
             </button>
             <button
                 class="mode-tab"
@@ -63,29 +67,29 @@
                 data-mode="private"
             >
                 <svg class="tab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg>
-                加密便签
+                <span data-i18n="board.private">加密便签</span>
             </button>
         </div>
 
         <section id="public-mode" role="tabpanel" aria-labelledby="public-tab">
-            <section class="paper" aria-label="共享白板编辑区">
-                <label class="sr-only" for="board-editor">公开共享白板内容</label>
+            <section class="paper" aria-label="共享白板编辑区" data-i18n-aria-label="board.publicArea">
+                <label class="sr-only" for="board-editor" data-i18n="board.publicLabel">公开共享白板内容</label>
                 <textarea
                     id="board-editor"
                     maxlength="20000"
                     spellcheck="true"
-                    placeholder="在这里写点什么……"
+                    placeholder="在这里写点什么……" data-i18n-placeholder="board.publicPlaceholder"
                     disabled
                 ></textarea>
                 <footer class="paper-footer">
-                    <span id="updated-at">尚未保存</span>
+                    <span id="updated-at" data-i18n="board.unsaved">尚未保存</span>
                     <span><span id="character-count">0</span> / 20,000</span>
                 </footer>
             </section>
 
             <aside class="board-notice">
-                <strong>请注意</strong>
-                <span>这是公开页面，请勿填写密码、手机号、身份证号等隐私信息。多人同时输入时，以最后一次保存为准。</span>
+                <strong data-i18n="board.noticeTitle">请注意</strong>
+                <span data-i18n="board.notice">这是公开页面，请勿填写密码、手机号、身份证号等隐私信息。多人同时输入时，以最后一次保存为准。</span>
             </aside>
         </section>
 
@@ -94,15 +98,15 @@
                 <header class="private-card-header">
                     <span class="lock-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span>
                     <div>
-                        <p class="private-eyebrow">PASSWORD ROOM</p>
-                        <h2>进入快速房间</h2>
-                        <p>直接输入创建者设置的 4 位 PIN。</p>
+                        <p class="private-eyebrow" data-i18n="board.joinEyebrow">密码房间</p>
+                        <h2 data-i18n="board.joinTitle">进入快速房间</h2>
+                        <p data-i18n="board.joinIntro">直接输入创建者设置的 4 位 PIN。</p>
                     </div>
                 </header>
 
                 <form id="private-room-form">
                     <div class="field pin-field">
-                        <label for="private-room-password">4 位 PIN</label>
+                        <label for="private-room-password" data-i18n="board.pin">4 位 PIN</label>
                         <input
                             class="pin-input"
                             id="private-room-password"
@@ -116,30 +120,30 @@
                             aria-describedby="pin-help"
                             required
                         >
-                        <p class="field-help" id="pin-help">只输入创建者设置的 4 位数字。</p>
+                        <p class="field-help" id="pin-help" data-i18n="board.pinHelp">只输入创建者设置的 4 位数字。</p>
                     </div>
 
                     <p class="form-message" id="room-message" role="status" aria-live="polite"></p>
-                    <button class="primary-button" id="enter-room-button" type="submit">快速进入</button>
+                    <button class="primary-button" id="enter-room-button" type="submit" data-i18n="board.enter">快速进入</button>
                 </form>
 
-                <button class="text-button create-room-shortcut" id="show-create-room" type="button">创建新房间</button>
+                <button class="text-button create-room-shortcut" id="show-create-room" type="button" data-i18n="board.createShortcut">创建新房间</button>
             </div>
 
             <div class="private-card" id="private-create-panel" hidden>
                 <header class="private-card-header">
                     <span class="lock-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
                     <div>
-                        <p class="private-eyebrow">NEW PRIVATE ROOM</p>
-                        <h2>创建快速房间</h2>
-                        <p>设置一个尚未使用的 4 位 PIN，对方进入网站后输入它即可。</p>
+                        <p class="private-eyebrow" data-i18n="board.createEyebrow">新建私密房间</p>
+                        <h2 data-i18n="board.createTitle">创建快速房间</h2>
+                        <p data-i18n="board.createIntro">设置一个尚未使用的 4 位 PIN，对方进入网站后输入它即可。</p>
                     </div>
                 </header>
 
                 <form id="create-room-form">
                     <div class="private-options">
                         <div class="field pin-field">
-                            <label for="new-room-password">设置 4 位 PIN</label>
+                            <label for="new-room-password" data-i18n="board.setPin">设置 4 位 PIN</label>
                             <input
                                 class="pin-input"
                                 id="new-room-password"
@@ -155,17 +159,17 @@
                         </div>
 
                         <div class="field">
-                            <label for="new-room-expiry">多久未更新后清除</label>
+                            <label for="new-room-expiry" data-i18n="board.expiry">多久未更新后清除</label>
                             <select id="new-room-expiry">
-                                <option value="1">1 天后</option>
-                                <option value="7">7 天后</option>
-                                <option value="30" selected>30 天后</option>
+                                <option value="1" data-i18n="board.day1">1 天后</option>
+                                <option value="7" data-i18n="board.day7">7 天后</option>
+                                <option value="30" selected data-i18n="board.day30">30 天后</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="field confirm-password-field pin-field">
-                        <label for="confirm-room-password">确认 4 位 PIN</label>
+                        <label for="confirm-room-password" data-i18n="board.confirmPin">确认 4 位 PIN</label>
                         <input
                             class="pin-input"
                             id="confirm-room-password"
@@ -181,44 +185,44 @@
                     </div>
 
                     <p class="form-message" id="create-room-message" role="status" aria-live="polite"></p>
-                    <button class="primary-button" id="create-room-button" type="submit">创建并进入房间</button>
-                    <button class="text-button back-to-join" id="back-to-join" type="button">返回进入房间</button>
+                    <button class="primary-button" id="create-room-button" type="submit" data-i18n="board.create">创建并进入房间</button>
+                    <button class="text-button back-to-join" id="back-to-join" type="button" data-i18n="board.backJoin">返回进入房间</button>
                 </form>
             </div>
 
             <div class="private-card private-workspace" id="private-workspace" hidden>
                 <header class="private-workspace-header">
                     <div>
-                        <p class="private-eyebrow">ENCRYPTED BOARD</p>
-                        <h2>私密白板</h2>
+                        <p class="private-eyebrow" data-i18n="board.encrypted">加密白板</p>
+                        <h2 data-i18n="board.privateTitle">私密白板</h2>
                         <div class="active-room-code">
-                            <span>当前房间已解锁</span>
+                            <span data-i18n="board.unlocked">当前房间已解锁</span>
                         </div>
-                        <p id="private-room-expiry-text">内容只会以密文形式保存。</p>
+                        <p id="private-room-expiry-text" data-i18n="board.encryptedOnly">内容只会以密文形式保存。</p>
                     </div>
-                    <button class="text-button lock-room-button" id="lock-private-room" type="button">退出并锁定</button>
+                    <button class="text-button lock-room-button" id="lock-private-room" type="button" data-i18n="board.lock">退出并锁定</button>
                 </header>
 
-                <label class="sr-only" for="private-board-editor">私密白板内容</label>
+                <label class="sr-only" for="private-board-editor" data-i18n="board.privateLabel">私密白板内容</label>
                 <textarea
                     id="private-board-editor"
                     maxlength="20000"
                     spellcheck="true"
-                    placeholder="在这块私密白板里写点什么……"
+                    placeholder="在这块私密白板里写点什么……" data-i18n-placeholder="board.privatePlaceholder"
                 ></textarea>
                 <footer class="private-paper-footer">
-                    <span id="private-save-status">尚未保存</span>
+                    <span id="private-save-status" data-i18n="board.unsaved">尚未保存</span>
                     <span><span id="private-board-character-count">0</span> / 20,000</span>
                 </footer>
             </div>
 
             <aside class="board-notice private-notice">
-                <strong>安全提示</strong>
-                <span>同一个 PIN 对应同一个房间，PIN 不会上传，正文仍以密文保存。4 位 PIN 以便捷为主，请勿存放身份证、银行卡或核心密码。</span>
+                <strong data-i18n="board.safety">安全提示</strong>
+                <span data-i18n="board.safetyText">同一个 PIN 对应同一个房间，PIN 不会上传，正文仍以密文保存。4 位 PIN 以便捷为主，请勿存放身份证、银行卡或核心密码。</span>
             </aside>
         </section>
     </main>
 
-    <noscript>此白板需要启用 JavaScript 才能保存和同步内容。</noscript>
+    <noscript data-i18n="board.noscript">此白板需要启用 JavaScript 才能保存和同步内容。</noscript>
 </body>
 </html>

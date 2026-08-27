@@ -1,0 +1,52 @@
+.site-language-picker {
+    position: fixed;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    z-index: 1000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html[data-language="zh"] [data-lang="en"],
+html[data-language="en"] [data-lang="zh"] {
+    display: none !important;
+}
+
+.site-language-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, Canvas 92%, transparent);
+    color: CanvasText;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: .04em;
+    transition: background 180ms ease, border-color 180ms ease;
+}
+
+.site-language-toggle:hover {
+    background: Canvas;
+    border-color: color-mix(in srgb, currentColor 32%, transparent);
+}
+
+.site-language-toggle:focus-visible {
+    outline: 3px solid color-mix(in srgb, #5e6ad2 35%, transparent);
+    outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+    .site-language-picker {
+        top: max(10px, env(safe-area-inset-top));
+        right: max(10px, env(safe-area-inset-right));
+    }
+}
+
+@media print {
+    .site-language-picker { display: none !important; }
+}

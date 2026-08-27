@@ -51,19 +51,48 @@
     let privateTtlDays = 30;
     let privateRoomExists = false;
 
+    function tr(key, values = {}) {
+        let value = window.siteLanguage?.text(key, key) || key;
+        Object.entries(values).forEach(([name, replacement]) => {
+            value = value.replace(`{${name}}`, replacement);
+        });
+        return value;
+    }
+
+    function locale() {
+        return window.siteLanguage?.current() === "en" ? "en-US" : "zh-CN";
+    }
+
+    function translationKey(value) {
+        const catalogs = Object.values(window.SITE_I18N || {});
+        for (const catalog of catalogs) {
+            const match = Object.entries(catalog).find(([, text]) => text === value);
+            if (match) return match[0];
+        }
+        return "";
+    }
+
     function setStatus(state, text) {
         status.dataset.state = state;
         statusText.textContent = text;
+        statusText.dataset.messageKey = translationKey(text);
     }
 
     function setFormMessage(text, state) {
         roomMessage.textContent = text;
         roomMessage.dataset.state = state || "";
+        roomMessage.dataset.messageKey = translationKey(text);
     }
 
     function setCreateMessage(text, state) {
         createRoomMessage.textContent = text;
         createRoomMessage.dataset.state = state || "";
+        createRoomMessage.dataset.messageKey = translationKey(text);
+    }
+
+    function setPrivateSaveStatus(key) {
+        privateSaveStatus.dataset.messageKey = key;
+        privateSaveStatus.textContent = tr(key);
     }
 
     function setMode(mode) {
@@ -80,33 +109,35 @@
     }
 
     function formatTime(value) {
-        if (!value) return "尚未保存";
-        return `更新于 ${new Intl.DateTimeFormat("zh-CN", {
+        if (!value) return tr("status.unsaved");
+        const date = new Intl.DateTimeFormat(locale(), {
             month: "numeric",
             day: "numeric",
             hour: "2-digit",
             minute: "2-digit",
             second: "2-digit"
-        }).format(new Date(value))}`;
+        }).format(new Date(value));
+        return tr("status.updated", { date });
     }
 
     function formatExpiry(value) {
-        if (!value) return "输入内容后会自动加密保存。";
-        return `内容将于 ${new Intl.DateTimeFormat("zh-CN", {
+        if (!value) return tr("status.encryptHint");
+        const date = new Intl.DateTimeFormat(locale(), {
             year: "numeric",
             month: "long",
             day: "numeric",
             hour: "2-digit",
             minute: "2-digit"
-        }).format(new Date(value))} 过期。`;
+        }).format(new Date(value));
+        return tr("status.expires", { date });
     }
 
     function updateCount() {
-        characterCount.textContent = editor.value.length.toLocaleString("zh-CN");
+        characterCount.textContent = editor.value.length.toLocaleString(locale());
     }
 
     function updatePrivateCount() {
-        privateBoardCharacterCount.textContent = privateBoardEditor.value.length.toLocaleString("zh-CN");
+        privateBoardCharacterCount.textContent = privateBoardEditor.value.length.toLocaleString(locale());
     }
 
     function bytesToBase64(bytes) {
@@ -244,8 +275,9 @@
         privateGate.hidden = true;
         privateCreatePanel.hidden = true;
         privateWorkspace.hidden = false;
+        privateRoomExpiryText.dataset.timestamp = expiresAt || "";
         privateRoomExpiryText.textContent = formatExpiry(expiresAt);
-        privateSaveStatus.textContent = exists ? "已在本地解密" : "正在创建";
+        setPrivateSaveStatus(exists ? "status.localDecrypted" : "status.creating");
         privateBoardEditor.focus();
     }
 
@@ -299,15 +331,15 @@
         const content = privateBoardEditor.value;
         if (privateRoomExists && content === privateLastSavedContent) {
             privateDirty = false;
-            privateSaveStatus.textContent = "已保存并加密";
+            setPrivateSaveStatus("status.savedEncrypted");
             return true;
         }
 
-        privateSaveStatus.textContent = "正在本地加密……";
+        setPrivateSaveStatus("status.encrypting");
 
         try {
             const encrypted = await encryptPrivateContent(content);
-            privateSaveStatus.textContent = "正在保存密文……";
+            setPrivateSaveStatus("status.savingEncrypted");
 
             const { data, error } = await client.rpc("save_private_board", {
                 p_room_id: privateRoomId,
@@ -323,13 +355,14 @@
                 privateRoomExists = true;
                 privateLastSavedContent = content;
                 privateDirty = false;
-                privateSaveStatus.textContent = "已保存并加密";
+                setPrivateSaveStatus("status.savedEncrypted");
+                privateRoomExpiryText.dataset.timestamp = data || "";
                 privateRoomExpiryText.textContent = formatExpiry(data);
             }
 
             return true;
         } catch (error) {
-            privateSaveStatus.textContent = "保存失败，请稍后重试";
+            setPrivateSaveStatus("status.saveFailed");
             return false;
         }
     }
@@ -338,7 +371,7 @@
         privateRevision += 1;
         const revision = privateRevision;
         clearTimeout(privateSaveTimer);
-        privateSaveStatus.textContent = "等待加密保存";
+        setPrivateSaveStatus("status.waitEncrypt");
         privateSaveTimer = window.setTimeout(() => savePrivateBoard(revision), 700);
     }
 
@@ -356,18 +389,18 @@
         const pin = privateRoomPassword.value;
 
         if (!PIN_PATTERN.test(pin)) {
-            setFormMessage("请输入 4 位数字 PIN。", "error");
+            setFormMessage(tr("status.pinInvalid"), "error");
             privateRoomPassword.focus();
             return;
         }
 
         if (!client || !window.crypto || !window.crypto.subtle) {
-            setFormMessage("当前浏览器无法进入私密白板。", "error");
+            setFormMessage(tr("status.privateUnsupported"), "error");
             return;
         }
 
         enterRoomButton.disabled = true;
-        setFormMessage("正在安全验证……");
+        setFormMessage(tr("status.verifying"));
 
         try {
             const credentials = await deriveRoomCredentials(pin);
@@ -383,7 +416,7 @@
 
             if (!data) {
                 clearPrivateCredentials();
-                setFormMessage("这个房间不存在或已经过期。", "error");
+                setFormMessage(tr("status.roomMissing"), "error");
                 return;
             }
 
@@ -394,12 +427,12 @@
                 openPrivateWorkspace(content, data.expires_at, true);
             } catch (error) {
                 clearPrivateCredentials();
-                setFormMessage("PIN 不正确，请重新输入。", "error");
+                setFormMessage(tr("status.pinWrong"), "error");
                 privateRoomPassword.focus();
             }
         } catch (error) {
             clearPrivateCredentials();
-            setFormMessage("暂时无法进入，请稍后重试。", "error");
+            setFormMessage(tr("status.joinFailed"), "error");
         } finally {
             enterRoomButton.disabled = false;
         }
@@ -412,19 +445,19 @@
         const confirmation = confirmRoomPassword.value;
 
         if (!PIN_PATTERN.test(pin)) {
-            setCreateMessage("请输入 4 位数字 PIN。", "error");
+            setCreateMessage(tr("status.pinInvalid"), "error");
             newRoomPassword.focus();
             return;
         }
 
         if (pin !== confirmation) {
-            setCreateMessage("两次输入的 PIN 不一致。", "error");
+            setCreateMessage(tr("status.pinMismatch"), "error");
             confirmRoomPassword.focus();
             return;
         }
 
         createRoomButton.disabled = true;
-        setCreateMessage("正在创建独立房间……");
+        setCreateMessage(tr("status.creatingRoom"));
 
         try {
             const credentials = await deriveRoomCredentials(pin);
@@ -438,7 +471,7 @@
             if (lookupError) throw lookupError;
             if (existing) {
                 credentials.salt.fill(0);
-                setCreateMessage("这个 PIN 已被使用，请换一个。", "error");
+                setCreateMessage(tr("status.pinUsed"), "error");
                 newRoomPassword.focus();
                 return;
             }
@@ -455,11 +488,11 @@
             if (!saved) {
                 clearPrivateSession();
                 showCreatePanel();
-                setCreateMessage("创建失败，请稍后重试。", "error");
+                setCreateMessage(tr("status.createFailed"), "error");
             }
         } catch (error) {
             clearPrivateCredentials();
-            setCreateMessage("创建失败，请稍后重试。", "error");
+            setCreateMessage(tr("status.createFailed"), "error");
         } finally {
             createRoomButton.disabled = false;
         }
@@ -468,11 +501,11 @@
     async function saveBoard(revision) {
         const content = editor.value;
         if (content === lastSavedContent) {
-            setStatus("saved", "已保存");
+            setStatus("saved", tr("status.saved"));
             return;
         }
 
-        setStatus("saving", "正在保存");
+        setStatus("saving", tr("status.saving"));
         const { data, error } = await client
             .from("public_boards")
             .update({ content })
@@ -481,15 +514,16 @@
             .single();
 
         if (error) {
-            setStatus("error", "保存失败，稍后重试");
+            setStatus("error", tr("status.saveRetry"));
             return;
         }
 
         if (revision === localRevision) {
             lastSavedContent = data.content;
             localDirty = false;
+            updatedAt.dataset.timestamp = data.updated_at || "";
             updatedAt.textContent = formatTime(data.updated_at);
-            setStatus("saved", "已保存");
+            setStatus("saved", tr("status.saved"));
         }
     }
 
@@ -497,7 +531,7 @@
         localRevision += 1;
         const revision = localRevision;
         clearTimeout(saveTimer);
-        setStatus("saving", "等待保存");
+        setStatus("saving", tr("status.waitSave"));
         saveTimer = window.setTimeout(() => saveBoard(revision), 650);
     }
 
@@ -513,9 +547,10 @@
         editor.value = data.content || "";
         lastSavedContent = editor.value;
         updateCount();
+        updatedAt.dataset.timestamp = data.updated_at || "";
         updatedAt.textContent = formatTime(data.updated_at);
         editor.disabled = false;
-        setStatus("ready", "已连接");
+        setStatus("ready", tr("status.connected"));
     }
 
     function subscribe() {
@@ -536,13 +571,14 @@
                     editor.value = incoming.content || "";
                     lastSavedContent = editor.value;
                     updateCount();
+                    updatedAt.dataset.timestamp = incoming.updated_at || "";
                     updatedAt.textContent = formatTime(incoming.updated_at);
-                    setStatus("ready", "已同步新内容");
+                    setStatus("ready", tr("status.synced"));
                 }
             )
             .subscribe((state) => {
                 if (state === "CHANNEL_ERROR" || state === "TIMED_OUT") {
-                    setStatus("error", "实时连接中断");
+                    setStatus("error", tr("status.realtimeLost"));
                 }
             });
     }
@@ -553,9 +589,9 @@
         window.history.replaceState(null, "", "/board/");
 
         if (!config.supabaseUrl || !config.supabaseAnonKey || !window.supabase) {
-            setStatus("error", "白板正在配置中");
-            updatedAt.textContent = "暂时无法编辑";
-            setFormMessage("私密白板正在配置中。", "error");
+            setStatus("error", tr("status.configuring"));
+            updatedAt.textContent = tr("status.readonly");
+            setFormMessage(tr("status.privateConfiguring"), "error");
             return;
         }
 
@@ -565,8 +601,8 @@
             subscribe();
 
         } catch (error) {
-            setStatus("error", "连接失败，请刷新重试");
-            setFormMessage("服务连接失败，请刷新重试。", "error");
+            setStatus("error", tr("status.connectionFailed"));
+            setFormMessage(tr("status.serviceFailed"), "error");
         }
     }
 
@@ -600,6 +636,20 @@
     showCreateRoomButton.addEventListener("click", showCreatePanel);
     backToJoin.addEventListener("click", showJoinPanel);
     lockPrivateRoomButton.addEventListener("click", () => lockPrivateRoom(true));
+
+    window.addEventListener("site-language-change", () => {
+        updateCount();
+        updatePrivateCount();
+        [statusText, roomMessage, createRoomMessage, privateSaveStatus].forEach((element) => {
+            if (element.dataset.messageKey) element.textContent = tr(element.dataset.messageKey);
+        });
+        if (updatedAt.dataset.timestamp) updatedAt.textContent = formatTime(updatedAt.dataset.timestamp);
+        if (privateRoomExpiryText.dataset.timestamp) {
+            privateRoomExpiryText.textContent = formatExpiry(privateRoomExpiryText.dataset.timestamp);
+        } else if (!privateRoomKey) {
+            privateRoomExpiryText.textContent = tr("board.encryptedOnly");
+        }
+    });
 
     window.addEventListener("beforeunload", () => {
         clearTimeout(saveTimer);

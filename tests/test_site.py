@@ -89,6 +89,7 @@ class SiteContractTests(unittest.TestCase):
     def test_private_boards_are_password_derived_and_not_publicly_listable(self):
         board = read("board/index.html")
         board_js = read("static/js/board.js")
+        board_i18n = read("static/js/board-i18n.js")
         schema = read("supabase/private-boards.sql")
 
         for fragment in (
@@ -125,7 +126,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('["deriveBits"]', board_js)
         self.assertNotIn('["deriveKey"]', board_js)
         self.assertIn('window.history.replaceState(null, "", "/board/")', board_js)
-        self.assertIn("这个 PIN 已被使用，请换一个。", board_js)
+        self.assertIn("这个 PIN 已被使用，请换一个。", board_i18n)
+        self.assertIn('tr("status.pinUsed")', board_js)
         self.assertIn('.rpc("save_private_board"', board_js)
         self.assertIn('.rpc("read_private_board"', board_js)
         self.assertNotIn("p_password", board_js)
@@ -389,8 +391,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('href="/dreams/2024-10-19/"', dreams)
         self.assertIn('data-dream-link', dreams)
         self.assertIn("公开 4 条", dreams)
-        self.assertIn("全部 <span>326</span>", dreams)
-        self.assertIn("未公开 <b>322</b>", dreams)
+        self.assertIn('<span data-lang="zh">全部</span>', dreams)
+        self.assertIn('<span data-lang="zh">未公开</span>', dreams)
         self.assertIn("2024年10月19日 午觉", entry)
         self.assertIn("清醒梦", entry)
         self.assertIn("困惑", entry)
@@ -404,9 +406,23 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("bbs-breadcrumb", dreams + entry)
         self.assertNotIn("<strong>朱振方</strong>", entry)
         self.assertNotIn(">朱振方的主页<", dreams + entry)
-        self.assertIn("<dt>全部</dt><dd>326</dd>", dreams)
-        self.assertIn("<dt>公开</dt><dd>4</dd>", dreams)
-        self.assertIn("<dt>未公开</dt><dd>322</dd>", dreams)
+        self.assertRegex(dreams, r'<dt><span data-lang="zh">全部</span>.*?</dt><dd>326</dd>')
+        self.assertRegex(dreams, r'<dt><span data-lang="zh">公开</span>.*?</dt><dd>4</dd>')
+        self.assertRegex(dreams, r'<dt><span data-lang="zh">未公开</span>.*?</dt><dd>322</dd>')
+
+    def test_tools_share_one_persistent_language_setting(self):
+        language = read("static/js/site-language.js")
+        board = read("board/index.html")
+        dreams = read("dreams/index.html")
+        founder = read("founder-dna/index.html")
+
+        self.assertIn('const STORAGE_KEY = "site-language"', language)
+        self.assertIn("window.localStorage.setItem(STORAGE_KEY, next)", language)
+        for page in (board, dreams, founder):
+            self.assertIn("site-language.js", page)
+            self.assertIn("site-language.css", page)
+        self.assertNotIn("bbs-notice", dreams)
+        self.assertIn("Founder Profiles", read("static/js/founder-i18n.js"))
 
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")

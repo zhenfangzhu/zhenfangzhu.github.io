@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-language="zh">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,92 +14,91 @@
     <link rel="icon" type="image/x-icon" href="../static/assets/favicon.ico?v=2026071601">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="../static/css/dream-forum.css?v=2026082703" rel="stylesheet">
+    <link href="../static/css/site-language.css?v=2026082701" rel="stylesheet">
+    <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
+    <script defer src="../static/js/site-language.js?v=2026082703"></script>
     <script defer src="../static/js/dream-navigation.js?v=2026082602"></script>
 </head>
-<body class="bbs-page">
-    <a class="bbs-skip-link" href="#topic-list">跳到主题列表</a>
+<body class="bbs-page" data-title-zh="Loading… 99%｜公开梦境档案" data-title-en="Loading… 99% | Public Dream Archive">
+    <a class="bbs-skip-link" href="#topic-list"><span data-lang="zh">跳到主题列表</span><span data-lang="en">Skip to dream list</span></a>
 
     <main class="bbs-wrap">
         <section class="bbs-board-head" aria-labelledby="dream-title">
             <div>
                 <p class="bbs-board-head__label">DREAM FORUM</p>
                 <h1 id="dream-title">Loading… 99%</h1>
-                <p>清醒是漫长的加载，为了那 1% 的睡眠。</p>
+                <p><span data-lang="zh">清醒是漫长的加载，为了那 1% 的睡眠。</span><span data-lang="en">Wakefulness is a long loading screen for that 1% of sleep.</span></p>
             </div>
             <dl class="bbs-board-stats" aria-label="版面统计">
-                <div><dt>全部</dt><dd>326</dd></div>
-                <div><dt>公开</dt><dd>4</dd></div>
-                <div><dt>未公开</dt><dd>322</dd></div>
+                <div><dt><span data-lang="zh">全部</span><span data-lang="en">All</span></dt><dd>326</dd></div>
+                <div><dt><span data-lang="zh">公开</span><span data-lang="en">Public</span></dt><dd>4</dd></div>
+                <div><dt><span data-lang="zh">未公开</span><span data-lang="en">Private</span></dt><dd>322</dd></div>
             </dl>
         </section>
 
         <nav class="bbs-categories" aria-label="梦境分类">
-            <a class="is-active" href="#topic-list">全部 <span>326</span></a>
-            <a href="#topic-list">清醒梦 <span>3</span></a>
-            <a href="#topic-list">层叠梦 <span>1</span></a>
-            <span>假醒梦 <b>0</b></span>
-            <span>未公开 <b>322</b></span>
+            <a class="is-active" href="#topic-list"><span data-lang="zh">全部</span><span data-lang="en">All</span> <span>326</span></a>
+            <a href="#topic-list"><span data-lang="zh">清醒梦</span><span data-lang="en">Lucid</span> <span>3</span></a>
+            <a href="#topic-list"><span data-lang="zh">层叠梦</span><span data-lang="en">Nested</span> <span>1</span></a>
+            <span><span data-lang="zh">假醒梦</span><span data-lang="en">False awakening</span> <b>0</b></span>
+            <span><span data-lang="zh">未公开</span><span data-lang="en">Private</span> <b>322</b></span>
         </nav>
 
         <section class="bbs-topic-list" id="topic-list" aria-labelledby="topic-list-title">
             <header class="bbs-topic-list__header">
-                <h2 id="topic-list-title">主题列表</h2>
-                <span>公开 4 条</span>
+                <h2 id="topic-list-title"><span data-lang="zh">主题列表</span><span data-lang="en">Dreams</span></h2>
+                <span><span data-lang="zh">公开 4 条</span><span data-lang="en">4 public entries</span></span>
             </header>
 
             <div class="bbs-topic-columns" aria-hidden="true">
-                <span>主题</span><span>分类</span><span>最后记录</span>
+                <span><span data-lang="zh">主题</span><span data-lang="en">Entry</span></span><span><span data-lang="zh">分类</span><span data-lang="en">Type</span></span><span><span data-lang="zh">最后记录</span><span data-lang="en">Recorded</span></span>
             </div>
 
             <a class="bbs-topic dream-transition-20250612" data-dream-link href="/dreams/2025-06-12/">
                 <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
                 <span class="bbs-topic__main">
-                    <strong>2025年6月12日 晚觉</strong>
-                    <small>飞机迫降在市区步行街，穿越荒诞与不真实的荒诞感。</small>
+                    <strong><span data-lang="zh">2025年6月12日 晚觉</span><span data-lang="en">June 12, 2025 · Night</span></strong>
+                    <small><span data-lang="zh">飞机迫降在市区步行街，穿越荒诞与不真实的荒诞感。</span><span data-lang="en">A plane makes an emergency landing on a downtown pedestrian street, drifting through layers of unreality.</span></small>
                 </span>
-                <span class="bbs-topic__category">清醒梦</span>
+                <span class="bbs-topic__category"><span data-lang="zh">清醒梦</span><span data-lang="en">Lucid</span></span>
                 <time class="bbs-topic__date" datetime="2025-06-12">2025-06-12</time>
             </a>
 
             <a class="bbs-topic dream-transition-20250504" data-dream-link href="/dreams/2025-05-04/">
                 <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
                 <span class="bbs-topic__main">
-                    <strong>2025年5月4日 晚觉</strong>
-                    <small>重返父亲单位的午后，目睹一场离奇的坠楼意外。</small>
+                    <strong><span data-lang="zh">2025年5月4日 晚觉</span><span data-lang="en">May 4, 2025 · Night</span></strong>
+                    <small><span data-lang="zh">重返父亲单位的午后，目睹一场离奇的坠楼意外。</span><span data-lang="en">An afternoon back at my father's workplace, where I witness a surreal fall from a building.</span></small>
                 </span>
-                <span class="bbs-topic__category">层叠梦</span>
+                <span class="bbs-topic__category"><span data-lang="zh">层叠梦</span><span data-lang="en">Nested</span></span>
                 <time class="bbs-topic__date" datetime="2025-05-04">2025-05-04</time>
             </a>
 
             <a class="bbs-topic dream-transition-20250108" data-dream-link href="/dreams/2025-01-08/">
                 <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
                 <span class="bbs-topic__main">
-                    <strong>2025年1月8日 晚觉</strong>
-                    <small>在漫天大雪与充满的灰褐色调中，主角仍立于尸体旁。</small>
+                    <strong><span data-lang="zh">2025年1月8日 晚觉</span><span data-lang="en">January 8, 2025 · Night</span></strong>
+                    <small><span data-lang="zh">在漫天大雪与充满的灰褐色调中，主角仍立于尸体旁。</span><span data-lang="en">In heavy snow and muted gray-brown light, I remain beside a body.</span></small>
                 </span>
-                <span class="bbs-topic__category">清醒梦</span>
+                <span class="bbs-topic__category"><span data-lang="zh">清醒梦</span><span data-lang="en">Lucid</span></span>
                 <time class="bbs-topic__date" datetime="2025-01-08">2025-01-08</time>
             </a>
 
             <a class="bbs-topic dream-transition-20241019" data-dream-link href="/dreams/2024-10-19/">
                 <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
                 <span class="bbs-topic__main">
-                    <strong>2024年10月19日 午觉</strong>
-                    <small>目睹坠楼后，我转身下楼，却发现鞋上原本粘稠的鲜血消失无踪。</small>
+                    <strong><span data-lang="zh">2024年10月19日 午觉</span><span data-lang="en">October 19, 2024 · Nap</span></strong>
+                    <small><span data-lang="zh">目睹坠楼后，我转身下楼，却发现鞋上原本粘稠的鲜血消失无踪。</span><span data-lang="en">After witnessing a fall, I head downstairs and discover that the sticky blood on my shoes has vanished.</span></small>
                 </span>
-                <span class="bbs-topic__category">清醒梦</span>
+                <span class="bbs-topic__category"><span data-lang="zh">清醒梦</span><span data-lang="en">Lucid</span></span>
                 <time class="bbs-topic__date" datetime="2024-10-19">2024-10-19</time>
             </a>
         </section>
 
-        <aside class="bbs-notice" aria-label="版面说明">
-            <strong>版面说明</strong>
-            <p>这里收录醒来后还记得的梦。只保留当时的叙述，不急着解释。</p>
-        </aside>
     </main>
 
     <footer class="bbs-footer">
-        <div class="bbs-wrap"><span>Loading… 99%</span><span>持续加载中</span></div>
+        <div class="bbs-wrap"><span>Loading… 99%</span><span><span data-lang="zh">持续加载中</span><span data-lang="en">Still loading</span></span></div>
     </footer>
 </body>
 </html>
