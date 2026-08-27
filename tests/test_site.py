@@ -608,7 +608,9 @@ class SiteContractTests(unittest.TestCase):
             self.assertNotIn(phrase, long_panel.group(0))
         for phrase in (
             "我越来越不相信，现实只发生在清醒的时候。",
-            "它们都曾真实地经过我。",
+            "真正重要的是，一段经历有没有改变之后的你。",
+            "如果一个梦让我十年后仍然恐惧、怀念或者做出不同的选择",
+            "所以我开始记录两边。",
             "这里不是我的个人主页。",
             "我只是此刻，站在这一边记录。",
             "下一次醒来，我也许就在另一边。",
@@ -621,7 +623,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('data-bio-view="long"', index)
         self.assertIn('id="bio-long" role="tabpanel"', index)
         self.assertIn('<span data-lang="en">Long</span>', index)
-        self.assertIn("both have truly passed through me.", long_panel.group(0))
+        self.assertIn("What truly matters is whether an experience changes who you become afterward.", long_panel.group(0))
+        self.assertIn("So I began recording both sides.", long_panel.group(0))
         self.assertIn("activateBioView", read("static/js/language.js"))
 
     def test_portrait_is_a_compact_right_column(self):
