@@ -883,3 +883,29 @@ a:hover { text-decoration-color: currentColor; }
 @media (max-width: 767.98px) {
     .bbs-thread__title { padding: 1.5rem 0; }
 }
+
+.dream-footer {
+    margin: 2.5rem 0 3.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--bbs-border);
+    color: var(--bbs-muted);
+    font-size: 0.78rem;
+    font-family: var(--bbs-ui-font, sans-serif);
+}
+
+.dream-footer .footer-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1.25rem;
+    margin: 0;
+    padding: 0;
+}
+
+.dream-footer .footer-stats span[id^="busuanzi_container"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+

@@ -432,7 +432,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("2024年10月19日 午觉", entry)
         self.assertIn("清醒梦", entry)
         self.assertIn("困惑", entry)
-        self.assertIn("妈妈，你杀了爸爸。", entry)
+        self.assertIn("妈妈你杀了爸爸", entry)
         self.assertIn("https://zhuzhenfang.com/dreams/2024-10-19/", sitemap)
         self.assertNotIn("bbs-post__author", entry)
         self.assertNotIn("1楼", entry)
@@ -513,6 +513,28 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('id="busuanzi_container_site_uv"', index)
         self.assertIn('id="busuanzi_value_site_uv"', index)
         self.assertIn(".footer-stats", css)
+
+    def test_dream_pages_have_busuanzi_site_stats(self):
+        dreams_css = read("static/css/dream-forum.css")
+        self.assertIn(".dream-footer", dreams_css)
+        self.assertIn(".footer-stats", dreams_css)
+        for path in (
+            "dreams/index.html",
+            "dreams/2024-10-19/index.html",
+            "dreams/2025-01-08/index.html",
+            "dreams/2025-05-04/index.html",
+            "dreams/2025-06-12/index.html",
+        ):
+            page = read(path)
+            self.assertIn(
+                'src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"',
+                page,
+            )
+            self.assertIn('id="busuanzi_container_site_pv"', page)
+            self.assertIn('id="busuanzi_value_site_pv"', page)
+            self.assertIn('id="busuanzi_container_site_uv"', page)
+            self.assertIn('id="busuanzi_value_site_uv"', page)
+            self.assertIn('class="dream-footer"', page)
 
     def test_contact_section_uses_editorial_index_rows(self):
         index = read("index.html")
