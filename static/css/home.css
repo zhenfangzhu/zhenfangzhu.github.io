@@ -250,7 +250,7 @@ article.content-frame {
     line-height: 1.35;
 }
 
-.bio-view-header > span {
+.bio-view-header>span {
     display: inline-flex;
     min-height: 44px;
     align-items: center;
@@ -307,7 +307,7 @@ article.content-frame {
     margin-top: 2.75rem;
 }
 
-.content-stack > .content-section:first-child {
+.content-stack>.content-section:first-child {
     margin-top: 0;
 }
 
@@ -383,18 +383,18 @@ article.content-frame {
     text-align: right;
 }
 
-.education-row > div {
+.education-row>div {
     min-width: 0;
 }
 
-.index-row > a,
+.index-row>a,
 a.index-row {
     min-height: 44px;
     color: inherit;
     text-decoration: none;
 }
 
-.index-row > a {
+.index-row>a {
     display: flex;
     margin-block: -0.72em;
     padding-block: 0.72em;
@@ -503,6 +503,7 @@ a.index-row {
 }
 
 @media (hover: hover) and (pointer: fine) {
+
     .education-list:hover .education-row,
     .index-list:hover .index-row {
         opacity: 0.72;
