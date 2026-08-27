@@ -504,6 +504,32 @@ class SiteContractTests(unittest.TestCase):
             self.assertIn(action, page)
             self.assertIn('aria-labelledby="dreams-title"', page)
 
+    def test_make_it_exist_note_is_bilingual_and_linked_from_every_homepage(self):
+        note = read("notes/make-it-exist/index.html")
+        sitemap = read("sitemap.xml")
+
+        for path, title in (
+            ("index.html", "让它存在"),
+            ("zh/index.html", "让它存在"),
+            ("en/index.html", "Make It Exist"),
+        ):
+            homepage = read(path)
+            self.assertIn('href="/notes/make-it-exist/"', homepage)
+            self.assertIn(title, homepage)
+
+        for phrase in (
+            "把原本不存在的东西，带到这个世界里。",
+            "Creator.",
+            "Bringing something that did not exist into this world.",
+            "I want to see how many things that did not exist",
+        ):
+            self.assertIn(phrase, note)
+
+        self.assertIn('<link rel="canonical" href="https://zhuzhenfang.com/notes/make-it-exist/">', note)
+        self.assertIn('data-title-en="Make It Exist | Zhenfang Zhu"', note)
+        self.assertIn("site-language.js", note)
+        self.assertIn("<loc>https://zhuzhenfang.com/notes/make-it-exist/</loc>", sitemap)
+
     def test_homepage_has_busuanzi_site_stats(self):
         index = read("index.html")
         css = read("static/css/home.css")
