@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Things I Believe — 朱振方 (Zhenfang Zhu)">
+    <meta name="description" content="Things I Believe · 赚钱第一性原理 — 朱振方 (Zhenfang Zhu)">
     <meta name="theme-color" content="#ffffff">
     <title>Things I Believe ｜ Zhenfang Zhu</title>
     <link rel="canonical" href="https://zhuzhenfang.com/notes/things-i-believe/">
@@ -41,7 +41,7 @@
             color: var(--ink);
         }
         .note-header {
-            margin-bottom: 3rem;
+            margin-bottom: 2.8rem;
         }
         .note-title {
             margin: 0 0 0.85rem;
@@ -68,10 +68,10 @@
             display: block;
         }
         .section-block {
-            margin-bottom: 3.2rem;
+            margin-bottom: 3rem;
         }
-        .belief-heading-en {
-            margin: 0 0 0.25rem;
+        .section-heading {
+            margin: 0 0 1.25rem;
             color: var(--ink);
             font-family: var(--reading-font);
             font-size: 1.35rem;
@@ -79,25 +79,21 @@
             letter-spacing: -0.01em;
             line-height: 1.35;
         }
-        .belief-heading-zh {
-            margin: 0 0 1.5rem;
-            color: #2b2b2b;
-            font-family: var(--reading-font);
-            font-size: 1.15rem;
-            font-weight: 500;
-            line-height: 1.45;
-        }
-        .belief-list {
+        .square-list {
             margin: 0;
             padding: 0;
             list-style: none;
         }
-        .belief-item {
+        .square-list li {
             position: relative;
-            padding-left: 1.4rem;
-            margin-bottom: 1.35rem;
+            padding-left: 1.35rem;
+            margin-bottom: 0.85rem;
+            font-size: 1rem;
+            line-height: 1.65;
+            color: var(--ink);
+            font-family: var(--reading-font);
         }
-        .belief-item::before {
+        .square-list li::before {
             position: absolute;
             left: 0;
             top: 0.62em;
@@ -106,18 +102,9 @@
             background: #1c1c1c;
             content: "";
         }
-        .belief-text-en {
+        .square-list li strong {
+            font-weight: 600;
             color: var(--ink);
-            font-family: var(--reading-font);
-            font-size: 1.02rem;
-            line-height: 1.5;
-        }
-        .belief-text-zh {
-            margin-top: 0.25rem;
-            color: #4a4a4a;
-            font-family: var(--reading-font);
-            font-size: 0.95rem;
-            line-height: 1.6;
         }
         .note-table-wrap {
             margin: 1.25rem 0 2rem;
@@ -128,7 +115,7 @@
         .note-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.92rem;
+            font-size: 0.94rem;
             text-align: left;
             font-family: var(--reading-font);
         }
@@ -140,16 +127,10 @@
             border-bottom: 1px solid var(--divider);
         }
         .note-table td {
-            padding: 0.7rem 1rem;
+            padding: 0.68rem 1rem;
             border-bottom: 1px solid var(--divider);
             color: var(--secondary);
             line-height: 1.5;
-        }
-        .note-table td small {
-            display: block;
-            color: #777;
-            font-size: 0.85em;
-            margin-top: 0.15rem;
         }
         .note-table tr:last-child td {
             border-bottom: none;
@@ -164,19 +145,13 @@
             overflow-x: auto;
         }
         .layer-box {
-            margin-bottom: 1.6rem;
+            margin-bottom: 1.5rem;
         }
-        .layer-title-en {
+        .layer-title {
             font-weight: 600;
             color: var(--ink);
             font-size: 1.05rem;
-            font-family: var(--reading-font);
-        }
-        .layer-title-zh {
-            font-weight: 500;
-            color: #333;
-            font-size: 0.95rem;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.5rem;
             font-family: var(--reading-font);
         }
         .warning-card {
@@ -186,11 +161,13 @@
             border: 1px solid #f0e6c8;
             border-radius: 6px;
         }
-        .warning-card .belief-heading-en {
-            margin-bottom: 0.15rem;
+        .warning-card .section-heading {
+            margin: 0 0 0.85rem;
         }
-        .warning-card .belief-heading-zh {
-            margin-bottom: 1rem;
+        .note-divider {
+            margin: 2.8rem 0;
+            border: 0;
+            border-top: 1px solid var(--divider);
         }
         .note-footer {
             display: flex;
@@ -218,206 +195,281 @@
 
         <article>
             <header class="note-header">
-                <h1 class="note-title">Things I Believe</h1>
+                <h1 class="note-title">
+                    <span data-lang="en">Things I Believe</span>
+                    <span data-lang="zh" lang="zh-CN">Things I Believe</span>
+                </h1>
                 <div class="author-meta">
                     <img class="author-avatar" src="/static/assets/img/photo.jpg" alt="Zhenfang Zhu">
-                    <span>Zhenfang Zhu 朱振方</span>
+                    <span><span data-lang="en">Zhenfang Zhu</span><span data-lang="zh">朱振方</span></span>
                 </div>
             </header>
 
-            <section class="section-block">
-                <h2 class="belief-heading-en">First Principles of Making Money</h2>
-                <div class="belief-heading-zh">赚钱第一性原理</div>
-                <ul class="belief-list">
-                    <li class="belief-item">
-                        <div class="belief-text-en">The first principle of making money is creating value, not selling time.</div>
-                        <div class="belief-text-zh">赚钱的第一性原理是创造价值，不是出卖时间。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en">The first principle of creating value is solving problems, not providing labor.</div>
-                        <div class="belief-text-zh">创造价值的第一性原理是解决问题，不是提供劳动。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en">The first principle of solving problems is identifying real demand, not self-indulgence.</div>
-                        <div class="belief-text-zh">解决问题的第一性原理是识别真需求，不是自我感动。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en">The first principle of identifying real demand is real-world feedback, not building behind closed doors.</div>
-                        <div class="belief-text-zh">识别真需求的第一性原理是实战反馈，不是闭门造车。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en">The first principle of real-world feedback is rapid iteration, not premature polishing.</div>
-                        <div class="belief-text-zh">实战反馈的第一性原理是快速迭代，不是仔细打磨。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en">The first principle of rapid iteration is validating models, not merely delivering.</div>
-                        <div class="belief-text-zh">快速迭代的第一性原理是验证模型，不是为了交付。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en">The first principle of validating models is systematic replication, not solitary hard grind.</div>
-                        <div class="belief-text-zh">验证模型的第一性原理是为了系统复制，不是个人苦干。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en">The first principle of systematic replication is leverage thinking, not linear accumulation.</div>
-                        <div class="belief-text-zh">系统复制的第一性原理是杠杆思维，不是线性积累。</div>
-                    </li>
-                </ul>
-            </section>
+            <div class="note-body">
+                <!-- 中文版内容 -->
+                <div data-lang="zh" lang="zh-CN">
+                    <section class="section-block">
+                        <h2 class="section-heading">赚钱第一性原理</h2>
+                        <ul class="square-list">
+                            <li>赚钱的第一性原理是创造价值，不是出卖时间。</li>
+                            <li>创造价值的第一性原理是解决问题，不是提供劳动。</li>
+                            <li>解决问题的第一性原理是识别真需求，不是自我感动。</li>
+                            <li>识别真需求的第一性原理是实战反馈，不是闭门造车。</li>
+                            <li>实战反馈的第一性原理是快速迭代，不是仔细打磨。</li>
+                            <li>快速迭代的第一性原理是验证模型，不是为了交付。</li>
+                            <li>验证模型的第一性原理是为了系统复制，不是个人苦干。</li>
+                            <li>系统复制的第一性原理是杠杆思维，不是线性积累。</li>
+                        </ul>
+                    </section>
 
-            <section class="section-block">
-                <h2 class="belief-heading-en">Logic Chain</h2>
-                <div class="belief-heading-zh">逻辑链条</div>
-                <div class="note-table-wrap">
-                    <table class="note-table">
-                        <thead>
-                            <tr>
-                                <th>步骤 <span style="font-weight: normal; color: #777;">Step</span></th>
-                                <th>第一性原理 <span style="font-weight: normal; color: #777;">First Principle</span></th>
-                                <th>核心摒弃 <span style="font-weight: normal; color: #777;">Core Rejection</span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1. 赚钱 <small>Making Money</small></td>
-                                <td>创造价值 <small>Creating Value</small></td>
-                                <td>出卖时间 <small>Selling Time</small></td>
-                            </tr>
-                            <tr>
-                                <td>2. 创造价值 <small>Creating Value</small></td>
-                                <td>解决问题 <small>Solving Problems</small></td>
-                                <td>提供劳动 <small>Providing Labor</small></td>
-                            </tr>
-                            <tr>
-                                <td>3. 解决问题 <small>Solving Problems</small></td>
-                                <td>识别真需求 <small>Identifying Real Demand</small></td>
-                                <td>自我感动 <small>Self-Indulgence</small></td>
-                            </tr>
-                            <tr>
-                                <td>4. 识别真需求 <small>Identifying Demand</small></td>
-                                <td>实战反馈 <small>Real-World Feedback</small></td>
-                                <td>闭门造车 <small>Building Behind Doors</small></td>
-                            </tr>
-                            <tr>
-                                <td>5. 实战反馈 <small>Real Feedback</small></td>
-                                <td>快速迭代 <small>Rapid Iteration</small></td>
-                                <td>仔细打磨 <small>Premature Polishing</small></td>
-                            </tr>
-                            <tr>
-                                <td>6. 快速迭代 <small>Rapid Iteration</small></td>
-                                <td>验证模型 <small>Validating Models</small></td>
-                                <td>为了交付 <small>Merely Delivering</small></td>
-                            </tr>
-                            <tr>
-                                <td>7. 验证模型 <small>Validating Models</small></td>
-                                <td>系统复制 <small>Systematic Replication</small></td>
-                                <td>个人苦干 <small>Solitary Hard Grind</small></td>
-                            </tr>
-                            <tr>
-                                <td>8. 系统复制 <small>Replication</small></td>
-                                <td>杠杆思维 <small>Leverage Thinking</small></td>
-                                <td>线性积累 <small>Linear Accumulation</small></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                    <hr class="note-divider">
 
-            <section class="section-block">
-                <h2 class="belief-heading-en">Value Growth Formula</h2>
-                <div class="belief-heading-zh">价值增长公式</div>
-                <div class="formula-card">
-                    $$\text{Total Wealth} = \frac{\text{Value} \times \text{Solving Problems}}{\text{Subjective Emotion}} \times (\text{Iteration})^{\text{Speed}} \times \text{Leverage}$$
-                </div>
+                    <section class="section-block">
+                        <h2 class="section-heading">🚧 逻辑链条</h2>
+                        <div class="note-table-wrap">
+                            <table class="note-table">
+                                <thead>
+                                    <tr>
+                                        <th>步骤</th>
+                                        <th>第一性原理</th>
+                                        <th>核心摒弃</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1. 赚钱</td>
+                                        <td>创造价值</td>
+                                        <td>出卖时间</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2. 创造价值</td>
+                                        <td>解决问题</td>
+                                        <td>提供劳动</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3. 解决问题</td>
+                                        <td>识别真需求</td>
+                                        <td>自我感动</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4. 识别真需求</td>
+                                        <td>实战反馈</td>
+                                        <td>闭门造车</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5. 实战反馈</td>
+                                        <td>快速迭代</td>
+                                        <td>仔细打磨</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6. 快速迭代</td>
+                                        <td>验证模型</td>
+                                        <td>为了交付</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7. 验证模型</td>
+                                        <td>系统复制</td>
+                                        <td>个人苦干</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8. 系统复制</td>
+                                        <td>杠杆思维</td>
+                                        <td>线性积累</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
 
-                <div style="font-weight: 600; margin: 1.25rem 0 0.75rem;">⚒️ 变量解析 <span style="font-weight: normal; color: #666; font-size: 0.9em;">Variable Breakdown</span></div>
-                <ul class="belief-list">
-                    <li class="belief-item">
-                        <div class="belief-text-en"><strong>Numerator:</strong> The depth and breadth of problems solved—the bedrock of your business.</div>
-                        <div class="belief-text-zh"><strong>分子：</strong>你解决问题的深度和广度，这是业务“底座”。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en"><strong>Denominator:</strong> Subjective bias, ego attachments, and self-pity. The smaller the denominator, the higher the efficiency.</div>
-                        <div class="belief-text-zh"><strong>分母：</strong>主观偏见、自我执念、自我怜悯。分母越小，价值传导效率越高。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en"><strong>Exponent:</strong> Non-linear acceleration. Faster speed means lower correction costs and higher evolutionary efficiency.</div>
-                        <div class="belief-text-zh"><strong>指数：</strong>每一次非线性变量。速度越快，纠错成本越低，进化效率越高。</div>
-                    </li>
-                    <li class="belief-item">
-                        <div class="belief-text-en"><strong>Coefficient:</strong> Amplifier. Without leverage (code, content, capital), growth remains a linear treadmill.</div>
-                        <div class="belief-text-zh"><strong>系数：</strong>放大器。没有杠杆（代码、内容、资本），增长永远是线性的体力活。</div>
-                    </li>
-                </ul>
-            </section>
+                    <hr class="note-divider">
 
-            <section class="section-block">
-                <h2 class="belief-heading-en">Model Hierarchy</h2>
-                <div class="belief-heading-zh">模型分层</div>
+                    <section class="section-block">
+                        <h2 class="section-heading">📈 价值增长公式</h2>
+                        <div class="formula-card">
+                            $$\text{Total Wealth} = \frac{\text{Value} \times \text{Solving Problems}}{\text{Subjective Emotion}} \times (\text{Iteration})^{\text{Speed}} \times \text{Leverage}$$
+                        </div>
 
-                <div class="layer-box">
-                    <div class="layer-title-en">🟢 Level 1: Value Anchor</div>
-                    <div class="layer-title-zh">第一层：价值锚点</div>
-                    <ul class="belief-list">
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Core Metric:</strong> Degree of pain point resolution.</div>
-                            <div class="belief-text-zh"><strong>核心指标：</strong>解决痛点的程度。</div>
-                        </li>
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Pitfall Guide:</strong> Beware of "low-level diligence"—never use busyness to conceal incompetence.</div>
-                            <div class="belief-text-zh"><strong>避坑指南：</strong>我们需要警惕“低水平勤奋”，不能用“忙碌”来掩盖“无能”。</div>
-                        </li>
-                    </ul>
+                        <div style="font-weight: 600; margin: 1.25rem 0 0.75rem;">⚒️ 变量解析：</div>
+                        <ul class="square-list">
+                            <li><strong>分子：</strong>你解决问题的深度和广度，这是业务“底座”。</li>
+                            <li><strong>分母：</strong>主观偏见、自我执念、自我怜悯。分母越小，价值传导效率越高。</li>
+                            <li><strong>指数：</strong>每一次非线性变量。速度越快，纠错成本越低，进化效率越高。</li>
+                            <li><strong>系数：</strong>放大器。没有杠杆（代码、内容、资本），增长永远是线性的体力活。</li>
+                        </ul>
+                    </section>
+
+                    <hr class="note-divider">
+
+                    <section class="section-block">
+                        <h2 class="section-heading">🧩 模型分层</h2>
+
+                        <div class="layer-box">
+                            <div class="layer-title">🟢 第一层：价值锚点</div>
+                            <ul class="square-list">
+                                <li><strong>核心指标：</strong>解决痛点的程度。</li>
+                                <li><strong>避坑指南：</strong>我们需要警惕“低水平勤奋”，不能用“忙碌”来掩盖“无能”。</li>
+                            </ul>
+                        </div>
+
+                        <div class="layer-box">
+                            <div class="layer-title">🟡 第二层：生存验证</div>
+                            <ul class="square-list">
+                                <li><strong>核心指标：</strong>反馈周期</li>
+                                <li><strong>避坑指南：</strong>如果我们不为第一版产品感到难堪，说明我们发晚了，所以我们需要拒绝闭门造车，去向市场接触。</li>
+                            </ul>
+                        </div>
+
+                        <div class="layer-box">
+                            <div class="layer-title">🔴 第三层：规模效应</div>
+                            <ul class="square-list">
+                                <li><strong>核心指标：</strong>系统化程度</li>
+                                <li><strong>避坑指南：</strong>拒绝“个人苦干”，问自己：如果我睡着了，这个系统还能为我运转吗？</li>
+                            </ul>
+                        </div>
+
+                        <div class="warning-card">
+                            <h2 class="section-heading" style="margin-bottom: 0.6rem;">⚠️ 警示</h2>
+                            <ul class="square-list" style="margin-bottom: 0;">
+                                <li><strong>打磨陷阱：</strong>在未验证模型前进行“仔细打磨”，本质上是高成本的博弈。</li>
+                                <li><strong>交付误区：</strong>交付只是手段，验证模型是否能自动运行才是目的。</li>
+                                <li><strong>线性诅咒：</strong>任何无法进入“系统复制”层级的努力，终究会被时间耗死。</li>
+                            </ul>
+                        </div>
+                    </section>
                 </div>
 
-                <div class="layer-box">
-                    <div class="layer-title-en">🟡 Level 2: Survival Validation</div>
-                    <div class="layer-title-zh">第二层：生存验证</div>
-                    <ul class="belief-list">
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Core Metric:</strong> Feedback cycle duration.</div>
-                            <div class="belief-text-zh"><strong>核心指标：</strong>反馈周期</div>
-                        </li>
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Pitfall Guide:</strong> If you aren't embarrassed by your first version, you launched too late. Reject building in isolation; engage directly with the market.</div>
-                            <div class="belief-text-zh"><strong>避坑指南：</strong>如果我们不为第一版产品感到难堪，说明我们发晚了，所以我们需要拒绝闭门造车，去向市场接触。</div>
-                        </li>
-                    </ul>
-                </div>
+                <!-- 英文版内容 -->
+                <div data-lang="en">
+                    <section class="section-block">
+                        <h2 class="section-heading">First Principles of Making Money</h2>
+                        <ul class="square-list">
+                            <li>The first principle of making money is creating value, not selling time.</li>
+                            <li>The first principle of creating value is solving problems, not providing labor.</li>
+                            <li>The first principle of solving problems is identifying real demand, not self-indulgence.</li>
+                            <li>The first principle of identifying real demand is real-world feedback, not building behind closed doors.</li>
+                            <li>The first principle of real-world feedback is rapid iteration, not premature polishing.</li>
+                            <li>The first principle of rapid iteration is validating models, not merely delivering.</li>
+                            <li>The first principle of validating models is systematic replication, not solitary hard grind.</li>
+                            <li>The first principle of systematic replication is leverage thinking, not linear accumulation.</li>
+                        </ul>
+                    </section>
 
-                <div class="layer-box">
-                    <div class="layer-title-en">🔴 Level 3: Economies of Scale</div>
-                    <div class="layer-title-zh">第三层：规模效应</div>
-                    <ul class="belief-list">
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Core Metric:</strong> Degree of systematization.</div>
-                            <div class="belief-text-zh"><strong>核心指标：</strong>系统化程度</div>
-                        </li>
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Pitfall Guide:</strong> Reject solitary brute force. Ask yourself: if I am asleep, can this system continue running and generating value for me?</div>
-                            <div class="belief-text-zh"><strong>避坑指南：</strong>拒绝“个人苦干”，问自己：如果我睡着了，这个系统还能为我运转吗？</div>
-                        </li>
-                    </ul>
-                </div>
+                    <hr class="note-divider">
 
-                <div class="warning-card">
-                    <h2 class="belief-heading-en">⚠️ Key Warnings</h2>
-                    <div class="belief-heading-zh">警示</div>
-                    <ul class="belief-list" style="margin-bottom: 0;">
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Polishing Trap:</strong> Polishing endlessly before validating the model is fundamentally a high-cost gamble.</div>
-                            <div class="belief-text-zh"><strong>打磨陷阱：</strong>在未验证模型前进行“仔细打磨”，本质上是高成本的博弈。</div>
-                        </li>
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Delivery Fallacy:</strong> Delivery is merely a means; validating whether the model can run autonomously is the true objective.</div>
-                            <div class="belief-text-zh"><strong>交付误区：</strong>交付只是手段，验证模型是否能自动运行才是目的。</div>
-                        </li>
-                        <li class="belief-item">
-                            <div class="belief-text-en"><strong>Linear Curse:</strong> Any effort that cannot ascend to systematic replication will ultimately be consumed by time.</div>
-                            <div class="belief-text-zh"><strong>线性诅咒：</strong>任何无法进入“系统复制”层级的努力，终究会被时间耗死。</div>
-                        </li>
-                    </ul>
+                    <section class="section-block">
+                        <h2 class="section-heading">🚧 Logic Chain</h2>
+                        <div class="note-table-wrap">
+                            <table class="note-table">
+                                <thead>
+                                    <tr>
+                                        <th>Step</th>
+                                        <th>First Principle</th>
+                                        <th>Core Rejection</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1. Making Money</td>
+                                        <td>Creating Value</td>
+                                        <td>Selling Time</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2. Creating Value</td>
+                                        <td>Solving Problems</td>
+                                        <td>Providing Labor</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3. Solving Problems</td>
+                                        <td>Identifying Real Demand</td>
+                                        <td>Self-Indulgence</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4. Identifying Demand</td>
+                                        <td>Real-World Feedback</td>
+                                        <td>Building Behind Closed Doors</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5. Real Feedback</td>
+                                        <td>Rapid Iteration</td>
+                                        <td>Premature Polishing</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6. Rapid Iteration</td>
+                                        <td>Validating Models</td>
+                                        <td>Merely Delivering</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7. Validating Models</td>
+                                        <td>Systematic Replication</td>
+                                        <td>Solitary Hard Grind</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8. Replication</td>
+                                        <td>Leverage Thinking</td>
+                                        <td>Linear Accumulation</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <hr class="note-divider">
+
+                    <section class="section-block">
+                        <h2 class="section-heading">📈 Value Growth Formula</h2>
+                        <div class="formula-card">
+                            $$\text{Total Wealth} = \frac{\text{Value} \times \text{Solving Problems}}{\text{Subjective Emotion}} \times (\text{Iteration})^{\text{Speed}} \times \text{Leverage}$$
+                        </div>
+
+                        <div style="font-weight: 600; margin: 1.25rem 0 0.75rem;">⚒️ Variable Breakdown:</div>
+                        <ul class="square-list">
+                            <li><strong>Numerator:</strong> The depth and breadth of problems solved—the bedrock of your business.</li>
+                            <li><strong>Denominator:</strong> Subjective bias, ego attachments, and self-pity. The smaller the denominator, the higher the value transmission efficiency.</li>
+                            <li><strong>Exponent:</strong> Non-linear acceleration. Faster speed means lower correction costs and higher evolutionary efficiency.</li>
+                            <li><strong>Coefficient:</strong> Amplifier. Without leverage (code, content, capital), growth remains a linear treadmill of manual labor.</li>
+                        </ul>
+                    </section>
+
+                    <hr class="note-divider">
+
+                    <section class="section-block">
+                        <h2 class="section-heading">🧩 Model Hierarchy</h2>
+
+                        <div class="layer-box">
+                            <div class="layer-title">🟢 Level 1: Value Anchor</div>
+                            <ul class="square-list">
+                                <li><strong>Core Metric:</strong> Degree of pain point resolution.</li>
+                                <li><strong>Pitfall Guide:</strong> Beware of "low-level diligence"—never use busyness to conceal incompetence.</li>
+                            </ul>
+                        </div>
+
+                        <div class="layer-box">
+                            <div class="layer-title">🟡 Level 2: Survival Validation</div>
+                            <ul class="square-list">
+                                <li><strong>Core Metric:</strong> Feedback cycle duration.</li>
+                                <li><strong>Pitfall Guide:</strong> If you aren't embarrassed by the first version of your product, you launched too late. Reject building in isolation; engage directly with the market.</li>
+                            </ul>
+                        </div>
+
+                        <div class="layer-box">
+                            <div class="layer-title">🔴 Level 3: Economies of Scale</div>
+                            <ul class="square-list">
+                                <li><strong>Core Metric:</strong> Degree of systematization.</li>
+                                <li><strong>Pitfall Guide:</strong> Reject solitary brute force. Ask yourself: if I am asleep, can this system continue running and generating value for me?</li>
+                            </ul>
+                        </div>
+
+                        <div class="warning-card">
+                            <h2 class="section-heading" style="margin-bottom: 0.6rem;">⚠️ Key Warnings</h2>
+                            <ul class="square-list" style="margin-bottom: 0;">
+                                <li><strong>Polishing Trap:</strong> Polishing endlessly before validating the model is fundamentally a high-cost gamble.</li>
+                                <li><strong>Delivery Fallacy:</strong> Delivery is merely a means; validating whether the model can run autonomously is the true objective.</li>
+                                <li><strong>Linear Curse:</strong> Any effort that cannot ascend to systematic replication will ultimately be consumed by time.</li>
+                            </ul>
+                        </div>
+                    </section>
                 </div>
-            </section>
+            </div>
         </article>
 
         <footer class="note-footer">
