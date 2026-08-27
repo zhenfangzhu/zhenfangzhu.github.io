@@ -294,16 +294,8 @@ article.content-frame {
     margin-top: 0;
 }
 
-.content-section h2 {
-    margin-bottom: 0.85rem;
-    font-family: var(--ui-font);
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0;
-    color: var(--nav);
-}
-
-.content-section h3 {
+.content-section h2,
+.dream-section-title {
     margin: 0 0 0.35rem;
     color: var(--ink);
     font-family: var(--reading-font);
@@ -397,7 +389,7 @@ a.index-row {
 }
 
 .dream-section .index-list {
-    margin-top: 1.5rem;
+    margin-top: 0;
 }
 
 .dream-entry-row .row-copy strong {

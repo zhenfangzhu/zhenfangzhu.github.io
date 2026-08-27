@@ -392,7 +392,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('href="/dreams/"', index)
         self.assertIn("清醒是漫长的加载，为了那 1% 的睡眠。", index)
         self.assertIn("Wakefulness is a long loading screen for that 1% of sleep.", index)
-        self.assertNotIn('id="dreams-title"', index)
+        self.assertIn('<h2 class="dream-section-title" id="dreams-title">', index)
+        self.assertIn('aria-labelledby="dreams-title"', index)
         self.assertNotIn("Waking life leaves credentials", index)
         self.assertNotIn("清醒时留下履历、作品、关系和时间", index)
         self.assertNotIn(">Archive<", index)
@@ -485,8 +486,20 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082715', index)
+        self.assertIn('static/css/home.css?v=2026082716', index)
         self.assertIn('static/js/language.js?v=2026082711', index)
+
+    def test_homepage_dream_archive_is_clearly_labeled_as_navigation(self):
+        for path, label, action in (
+            ("index.html", "另一边", "进入 →"),
+            ("en/index.html", "The Other Side", "Enter →"),
+            ("zh/index.html", "另一边", "进入 →"),
+        ):
+            page = read(path)
+            self.assertIn('class="dream-section-title"', page)
+            self.assertIn(label, page)
+            self.assertIn(action, page)
+            self.assertIn('aria-labelledby="dreams-title"', page)
 
     def test_homepage_has_busuanzi_site_stats(self):
         index = read("index.html")
