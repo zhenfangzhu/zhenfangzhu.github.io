@@ -530,6 +530,27 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("site-language.js", note)
         self.assertIn("<loc>https://zhuzhenfang.com/notes/make-it-exist/</loc>", sitemap)
 
+    def test_things_i_believe_is_the_shipping_manifesto(self):
+        note = read("notes/things-i-believe/index.html")
+
+        for phrase in (
+            "Shipping fast beats the best strategy.",
+            "后来我发现恰恰相反。",
+            "很多问题只有把东西交到真实的人手里才会出现。",
+            "Ship 不是执行的最后一步。Ship 本身就是思考的一部分",
+            "Shipping is not the final step of execution.",
+        ):
+            self.assertIn(phrase, note)
+
+        for removed_copy in (
+            "赚钱第一性原理",
+            "逻辑链条",
+            "Total Wealth",
+            "Value Growth Formula",
+            "MathJax-script",
+        ):
+            self.assertNotIn(removed_copy, note)
+
     def test_homepage_has_busuanzi_site_stats(self):
         index = read("index.html")
         css = read("static/css/home.css")
