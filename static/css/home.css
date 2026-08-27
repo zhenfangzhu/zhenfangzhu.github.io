@@ -430,9 +430,9 @@ a.index-row {
     margin: 0 0 0.85rem;
     color: var(--ink);
     font-family: var(--reading-font);
-    font-size: 1.05rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-size: 1.12rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     line-height: 1.4;
 }
 
@@ -447,32 +447,33 @@ a.index-row {
 
 .notes-grid li {
     position: relative;
-    padding-left: 0.95rem;
-    font-size: 0.95rem;
-    line-height: 1.55;
+    padding-left: 1.15rem;
+    font-size: 0.98rem;
+    line-height: 1.6;
 }
 
 .notes-grid li::before {
     position: absolute;
-    top: 0.58em;
+    top: 0.6em;
     left: 0;
-    width: 3.5px;
-    height: 3.5px;
-    background: var(--nav);
+    width: 5px;
+    height: 5px;
+    background: var(--ink);
     content: "";
 }
 
 .notes-grid a {
-    color: var(--secondary);
+    color: #6a6a6a;
     text-decoration: underline;
-    text-decoration-color: var(--divider);
+    text-decoration-color: #c4c4c4;
     text-decoration-thickness: 1px;
-    text-underline-offset: 0.22em;
+    text-underline-offset: 0.28em;
+    transition: color 150ms ease, text-decoration-color 150ms ease;
 }
 
 .notes-grid a:hover {
     color: var(--ink);
-    text-decoration-color: currentColor;
+    text-decoration-color: var(--ink);
 }
 
 .home-footer {

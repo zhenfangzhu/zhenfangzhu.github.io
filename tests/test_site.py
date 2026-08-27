@@ -486,7 +486,7 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082717', index)
+        self.assertIn('static/css/home.css?v=2026082718', index)
         self.assertIn('static/js/language.js?v=2026082711', index)
 
     def test_homepage_dream_archive_is_clearly_labeled_as_navigation(self):
