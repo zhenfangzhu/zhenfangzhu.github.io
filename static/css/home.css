@@ -115,14 +115,6 @@ article.content-frame {
     margin: 0 0 2.2rem;
 }
 
-.site-handle {
-    margin: 0.35rem 0 0;
-    color: var(--nav);
-    font-family: var(--ui-font);
-    font-size: 0.85rem;
-    line-height: 1.5;
-}
-
 .home-visual {
     display: none;
 }
@@ -408,27 +400,16 @@ a.index-row {
     margin-top: 1.5rem;
 }
 
-.dream-entry-row::after {
-    content: "99%";
-    color: var(--nav);
-    font-family: var(--ui-font);
-    font-size: 0.78rem;
-    font-variant-numeric: tabular-nums;
-    line-height: 1.5;
-}
-
 .dream-entry-row .row-copy strong {
     font-size: 1.08rem;
     letter-spacing: -0.01em;
 }
 
-.board-entry-row .row-meta,
-.dream-entry-row::after {
+.board-entry-row .row-meta {
     transition: color 160ms ease;
 }
 
-.board-entry-row:hover .row-meta,
-.dream-entry-row:hover::after {
+.board-entry-row:hover .row-meta {
     color: var(--ink);
 }
 

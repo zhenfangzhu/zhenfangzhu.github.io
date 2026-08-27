@@ -244,7 +244,7 @@ a:hover { color: var(--bbs-link-hover); }
     min-height: 34px;
     padding-left: 52px;
     align-items: center;
-    border-bottom: 1px solid var(--bbs-border);
+    border-bottom: 0;
     background: var(--bbs-soft);
     color: #71808d;
     font-size: 0.72rem;
@@ -583,7 +583,7 @@ a:hover { text-decoration-color: currentColor; }
 
 .bbs-board-head {
     min-height: 0;
-    padding: clamp(3.5rem, 8vw, 6rem) 0 clamp(2.75rem, 6vw, 4.5rem);
+    padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(2rem, 4vw, 3rem);
     align-items: end;
     border: 0;
     border-bottom: 1px solid var(--bbs-border);
@@ -629,10 +629,10 @@ a:hover { text-decoration-color: currentColor; }
 
 .bbs-categories {
     min-height: 52px;
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 0;
     border: 0;
-    border-bottom: 1px solid var(--bbs-border);
+    border-bottom: 0;
     background: transparent;
     font-family: var(--bbs-ui-font);
 }
@@ -647,12 +647,12 @@ a:hover { text-decoration-color: currentColor; }
 .bbs-categories a:first-child { padding-left: 0; }
 .bbs-categories a:hover,
 .bbs-categories a.is-active { color: var(--bbs-text); }
-.bbs-categories a.is-active { border-bottom: 1px solid var(--bbs-text); }
+.bbs-categories a.is-active { border-bottom: 0; }
 
 .bbs-topic-list {
-    margin-top: 2.5rem;
+    margin-top: 1.25rem;
     border: 0;
-    border-top: 1px solid var(--bbs-border);
+    border-top: 0;
     border-bottom: 1px solid var(--bbs-border);
     background: transparent;
 }
@@ -820,7 +820,7 @@ a:hover { text-decoration-color: currentColor; }
     .bbs-topbar__inner { min-height: 64px; }
     .bbs-nav a:first-child { display: inline-flex; }
     .bbs-board-head {
-        padding: 3.25rem 0 2.5rem;
+        padding: 2.25rem 0 1.75rem;
         align-items: stretch;
         gap: 2rem;
     }
@@ -829,8 +829,8 @@ a:hover { text-decoration-color: currentColor; }
         white-space: nowrap;
     }
     .bbs-board-stats { width: 100%; }
-    .bbs-categories { margin-top: 1.25rem; }
-    .bbs-topic-list { margin-top: 2rem; }
+    .bbs-categories { margin-top: 0.75rem; }
+    .bbs-topic-list { margin-top: 1.25rem; }
     .bbs-topic {
         min-height: 116px;
         padding: 1rem 0 1rem 36px;

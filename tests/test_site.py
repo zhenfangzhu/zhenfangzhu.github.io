@@ -212,7 +212,7 @@ class SiteContractTests(unittest.TestCase):
 
         self.assertIn('<span data-lang="en">Zhenfang Zhu</span>', index)
         self.assertIn('<span data-lang="zh" lang="zh-CN">朱振方</span>', index)
-        self.assertIn('<p class="site-handle">@zhuzhenfang</p>', index)
+        self.assertNotIn("site-handle", index + read("en/index.html") + read("zh/index.html"))
         for language, path in (("en", "en"), ("zh-CN", "zh")):
             self.assertIn(
                 f'<link rel="alternate" hreflang="{language}" href="https://zhuzhenfang.com/{path}/">',
@@ -441,9 +441,17 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("bbs-breadcrumb", dreams + entry)
         self.assertNotIn("<strong>朱振方</strong>", entry)
         self.assertNotIn(">朱振方的主页<", dreams + entry)
-        self.assertRegex(dreams, r'<dt><span data-lang="zh">全部</span>.*?</dt><dd>326</dd>')
-        self.assertRegex(dreams, r'<dt><span data-lang="zh">公开</span>.*?</dt><dd>4</dd>')
-        self.assertRegex(dreams, r'<dt><span data-lang="zh">未公开</span>.*?</dt><dd>322</dd>')
+        self.assertRegex(dreams, r'<span data-lang="zh">全部</span>.*?<span>326</span>')
+        self.assertRegex(dreams, r'<span data-lang="zh">未公开</span>.*?<b>322</b>')
+        self.assertNotIn("bbs-board-stats", dreams)
+        for dream_page in (
+            dreams,
+            entry,
+            read("dreams/2025-01-08/index.html"),
+            read("dreams/2025-05-04/index.html"),
+            read("dreams/2025-06-12/index.html"),
+        ):
+            self.assertNotIn("bbs-footer", dream_page)
 
     def test_tools_share_one_persistent_language_setting(self):
         language = read("static/js/site-language.js")
@@ -459,6 +467,17 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("bbs-notice", dreams)
         self.assertIn("Founder Profiles", read("static/js/founder-i18n.js"))
 
+    def test_dream_filters_use_text_state_without_active_underline(self):
+        dreams = read("dreams/index.html")
+        css = read("static/css/dream-forum.css")
+
+        self.assertIn('dream-forum.css?v=2026082705', dreams)
+        self.assertIn('.bbs-categories a.is-active { border-bottom: 0; }', css)
+        self.assertRegex(css, r"\.bbs-categories a\.is-active \{ color: var\(--bbs-text\); \}")
+        self.assertRegex(css, r"\.bbs-categories \{[^}]*border-bottom: 0;")
+        self.assertRegex(css, r"\.bbs-topic-list \{[^}]*border-top: 0;")
+        self.assertNotIn("dream-entry-row::after", read("static/css/home.css"))
+
     def test_mutable_assets_use_cache_busting_versions(self):
         index = read("index.html")
         self.assertRegex(index, r'static/css/home\.css\?v=\d{8,}')
@@ -466,7 +485,7 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082714', index)
+        self.assertIn('static/css/home.css?v=2026082715', index)
         self.assertIn('static/js/language.js?v=2026082711', index)
 
     def test_homepage_has_busuanzi_site_stats(self):
