@@ -7,6 +7,7 @@
     --divider: color-mix(in srgb, #282828 10%, transparent);
     --surface: #f4f4f1;
     --reading-font: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --cjk-reading-font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
     --ui-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -296,6 +297,20 @@ article.content-frame {
 
 .bio-view-panel[hidden] {
     display: none;
+}
+
+html[data-language="zh"] .bio-view-panel [data-lang="zh"] {
+    color: #40403d;
+    font-family: var(--cjk-reading-font);
+    font-size: 0.98em;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.82;
+}
+
+html[data-language="zh"] .bio-view-panel [data-lang="zh"] strong {
+    color: var(--ink);
+    font-weight: 600;
 }
 
 .world-section {
