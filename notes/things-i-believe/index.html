@@ -18,20 +18,24 @@
     <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
     <script defer src="../../static/js/site-language.js?v=2026082703"></script>
     <style>
+        :root {
+            --belief-cjk-serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", SimSun, serif;
+        }
+
         .belief-page {
-            width: min(100%, 640px);
+            width: min(100%, 700px);
             margin-inline: auto;
-            padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2rem);
+            padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem);
         }
 
         .belief-back {
-            margin-bottom: clamp(3.5rem, 9vw, 6rem);
+            margin-bottom: clamp(2.75rem, 7vw, 4.5rem);
         }
 
         .belief-back a {
             color: var(--nav);
             font-family: var(--ui-font);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             text-decoration: none;
         }
 
@@ -40,60 +44,90 @@
         }
 
         .belief-header {
-            margin-bottom: clamp(2.75rem, 7vw, 4.5rem);
+            margin-bottom: clamp(4rem, 9vw, 6.5rem);
         }
 
         .belief-title {
             margin: 0;
-            color: var(--ink);
+            color: #242424;
             font-family: var(--reading-font);
-            font-size: clamp(2.4rem, 7vw, 3.6rem);
+            font-size: clamp(2.45rem, 6vw, 3.4rem);
             font-weight: 600;
             letter-spacing: -0.035em;
             line-height: 1.08;
         }
 
+        .belief-byline {
+            display: flex;
+            margin-top: 0.9rem;
+            align-items: center;
+            gap: 0.55rem;
+            color: var(--nav);
+            font-family: var(--ui-font);
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .belief-byline img {
+            width: 23px;
+            height: 23px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: 58% 30%;
+        }
+
         .belief-body {
-            color: var(--secondary);
-            font-size: clamp(1.05rem, 2vw, 1.15rem);
+            color: #393936;
+            font-family: var(--reading-font);
+            font-size: clamp(1.08rem, 2vw, 1.2rem);
             line-height: 1.78;
         }
 
         .belief-body p {
-            margin: 0 0 1.25em;
-        }
-
-        html[data-language="zh"] .belief-title,
-        html[data-language="zh"] .belief-body [data-lang="zh"] {
-            font-family: var(--cjk-reading-font);
-        }
-
-        html[data-language="zh"] .belief-title {
-            letter-spacing: -0.04em;
+            margin: 0 0 1.1em;
         }
 
         .belief-lead {
-            margin-bottom: 2em !important;
-            color: var(--ink);
-            font-family: var(--ui-font);
-            font-size: 1.15em;
-            letter-spacing: -0.02em;
-            line-height: 1.45;
+            margin: 0 0 1.4em !important;
+            color: #242424;
+            font-size: 1.42em;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.35;
         }
 
         .belief-turn {
-            margin-top: 1.9em !important;
+            margin-top: 1.75em !important;
         }
 
         .belief-conclusion {
-            margin-top: 2em !important;
-            color: var(--ink);
-            font-size: 1.08em;
-            line-height: 1.68;
+            margin-top: 1.9em !important;
+            color: #242424;
+            font-size: 1.06em;
+            line-height: 1.7;
         }
 
         .belief-conclusion strong {
             font-weight: 600;
+        }
+
+        html[data-language="zh"] .belief-title,
+        html[data-language="zh"] .belief-body [data-lang="zh"] {
+            font-family: var(--belief-cjk-serif);
+        }
+
+        html[data-language="zh"] .belief-title {
+            font-weight: 700;
+            letter-spacing: -0.045em;
+        }
+
+        html[data-language="zh"] .belief-body [data-lang="zh"] {
+            line-height: 1.9;
+        }
+
+        html[data-language="zh"] .belief-lead {
+            font-family: var(--reading-font);
+            line-height: 1.4;
         }
 
         .belief-footer {
@@ -113,116 +147,25 @@
             margin: 0;
         }
 
-        .belief-kicker {
-            display: none;
-        }
-
-        html[data-language="zh"],
-        html[data-language="zh"] body {
-            background: #f3f3ef;
-        }
-
-        html[data-language="zh"] .belief-page {
-            width: min(100%, 760px);
-            padding-block: clamp(1.5rem, 4vw, 3rem);
-        }
-
-        html[data-language="zh"] .belief-back {
-            margin-bottom: 1.35rem;
-            padding-inline: clamp(0.25rem, 2vw, 0.75rem);
-        }
-
-        html[data-language="zh"] .belief-card {
-            padding: clamp(2.25rem, 7vw, 4.75rem);
-            border: 1px solid rgba(40, 40, 40, 0.08);
-            border-radius: 24px;
-            background: #fff;
-            box-shadow: 0 1px 0 rgba(40, 40, 40, 0.03);
-        }
-
-        html[data-language="zh"] .belief-header {
-            margin-bottom: clamp(2.5rem, 6vw, 3.75rem);
-            padding-bottom: clamp(1.5rem, 4vw, 2.25rem);
-            border-bottom: 1px solid var(--divider);
-        }
-
-        html[data-language="zh"] .belief-kicker {
-            display: block;
-            margin: 0 0 1rem;
-            color: var(--nav);
-            font-family: var(--ui-font);
-            font-size: 0.68rem;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            line-height: 1.4;
-        }
-
-        html[data-language="zh"] .belief-title {
-            font-size: clamp(2.15rem, 6vw, 3.05rem);
-            font-weight: 600;
-            letter-spacing: -0.055em;
-            line-height: 1.15;
-        }
-
-        html[data-language="zh"] .belief-body [data-lang="zh"] {
-            color: #444440;
-            font-size: 1.04rem;
-            line-height: 1.9;
-        }
-
-        html[data-language="zh"] .belief-lead {
-            margin-bottom: 2.6em !important;
-            color: #6a6a65;
-            font-size: 0.92em;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-        }
-
-        html[data-language="zh"] .belief-turn {
-            margin-top: 2.15em !important;
-        }
-
-        html[data-language="zh"] .belief-conclusion {
-            margin-top: 2.6em !important;
-            padding-top: 1.55em;
-            border-top: 1px solid rgba(40, 40, 40, 0.18);
-            color: var(--ink);
-            font-size: 1.08em;
-            line-height: 1.8;
-        }
-
-        html[data-language="zh"] .belief-footer {
-            margin-top: 1.5rem;
-            padding-inline: clamp(0.25rem, 2vw, 0.75rem);
-            border-top: 0;
-        }
-
         @media (max-width: 480px) {
+            .belief-page {
+                padding-top: 2rem;
+            }
+
+            .belief-header {
+                margin-bottom: 3.5rem;
+            }
+
             .belief-title {
-                font-size: 2.45rem;
+                font-size: 2.3rem;
             }
 
-            html[data-language="zh"] .belief-page {
-                padding: 0.9rem 0.75rem 1.25rem;
+            .belief-body {
+                font-size: 1.05rem;
             }
 
-            html[data-language="zh"] .belief-back {
-                margin-bottom: 0.75rem;
-                padding-inline: 0.4rem;
-            }
-
-            html[data-language="zh"] .belief-card {
-                padding: 2rem 1.5rem 2.35rem;
-                border-radius: 18px;
-            }
-
-            html[data-language="zh"] .belief-title {
-                font-size: 2.15rem;
-            }
-
-            html[data-language="zh"] .belief-body [data-lang="zh"] {
-                font-size: 1rem;
-                line-height: 1.85;
+            .belief-lead {
+                font-size: 1.28em;
             }
         }
     </style>
@@ -234,10 +177,13 @@
             <a href="/"><span data-lang="zh">← 朱振方</span><span data-lang="en">← Zhenfang Zhu</span></a>
         </nav>
 
-        <article class="belief-card">
+        <article>
             <header class="belief-header">
-                <p class="belief-kicker" data-lang="zh">THINGS I BELIEVE</p>
                 <h1 class="belief-title"><span data-lang="zh" lang="zh-CN">我所相信的事</span><span data-lang="en">Things I Believe</span></h1>
+                <div class="belief-byline">
+                    <img src="../../static/assets/img/photo-600.webp" width="23" height="23" alt="" aria-hidden="true">
+                    <span data-lang="zh">朱振方</span><span data-lang="en">Zhenfang Zhu</span>
+                </div>
             </header>
 
             <div class="belief-body">

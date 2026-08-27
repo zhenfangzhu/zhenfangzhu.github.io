@@ -551,9 +551,11 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertNotIn(removed_copy, note)
 
-        self.assertIn('<article class="belief-card">', note)
-        self.assertIn('<p class="belief-kicker" data-lang="zh">THINGS I BELIEVE</p>', note)
-        self.assertIn('html[data-language="zh"] .belief-card', note)
+        self.assertIn('class="belief-byline"', note)
+        self.assertIn('src="../../static/assets/img/photo-600.webp"', note)
+        self.assertIn('--belief-cjk-serif: "Songti SC"', note)
+        self.assertNotIn('class="belief-card"', note)
+        self.assertNotIn('class="belief-kicker"', note)
         self.assertIn('data-title-zh="我所相信的事 ｜ 朱振方"', note)
 
     def test_homepage_has_busuanzi_site_stats(self):
