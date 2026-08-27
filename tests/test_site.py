@@ -200,6 +200,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('<meta property="og:site_name" content="Zhenfang Zhu (朱振方)">', index)
         self.assertIn('data-title-en="Zhenfang Zhu (朱振方)" data-title-zh="Zhenfang Zhu (朱振方)"', index)
         self.assertIn('"name": "Zhenfang Zhu (朱振方)"', index)
+        self.assertIn('"alternateName": ["Zhenfang Zhu", "Zhu Zhenfang", "zhuzhenfang", "@zhuzhenfang", "zhuzhenfangx"]', index)
+        self.assertIn('"familyName": "朱"', index)
+        self.assertIn('"givenName": "振方"', index)
+        self.assertIn('<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">', index)
         self.assertNotIn("Personal Website", index)
 
     def test_copy_is_factual_and_not_marketing_style(self):
