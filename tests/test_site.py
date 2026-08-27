@@ -551,6 +551,11 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertNotIn(removed_copy, note)
 
+        self.assertIn('<article class="belief-card">', note)
+        self.assertIn('<p class="belief-kicker" data-lang="zh">THINGS I BELIEVE</p>', note)
+        self.assertIn('html[data-language="zh"] .belief-card', note)
+        self.assertIn('data-title-zh="我所相信的事 ｜ 朱振方"', note)
+
     def test_homepage_has_busuanzi_site_stats(self):
         index = read("index.html")
         css = read("static/css/home.css")
