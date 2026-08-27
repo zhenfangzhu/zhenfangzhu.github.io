@@ -486,7 +486,7 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082716', index)
+        self.assertIn('static/css/home.css?v=2026082717', index)
         self.assertIn('static/js/language.js?v=2026082711', index)
 
     def test_homepage_dream_archive_is_clearly_labeled_as_navigation(self):
@@ -616,6 +616,16 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("object-fit: cover", css)
         self.assertIn("object-position: 70% center", css)
         self.assertIn("border-radius: 8px", css)
+
+    def test_portrait_has_a_mobile_editorial_crop(self):
+        for path in ("index.html", "en/index.html", "zh/index.html"):
+            page = read(path)
+            self.assertIn('class="mobile-profile-visual"', page)
+            self.assertIn('srcset="/static/assets/img/photo-600.webp 600w, /static/assets/img/photo-1200.webp 1200w"', page)
+
+        css = read("static/css/home.css")
+        self.assertRegex(css, r"\.mobile-profile-visual\s*\{[^}]*aspect-ratio:\s*4 / 3")
+        self.assertRegex(css, r"@media \(min-width: 1100px\)[\s\S]*?\.mobile-profile-visual\s*\{[^}]*display:\s*none")
 
 
 if __name__ == "__main__":
