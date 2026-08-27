@@ -299,6 +299,31 @@ article.content-frame {
     display: none;
 }
 
+#bio-default .bio-story-break {
+    margin-top: 1.55em;
+}
+
+#bio-default .bio-thesis {
+    margin-block: 1.45em;
+    color: var(--ink);
+    font-size: 1.04em;
+    line-height: 1.68;
+}
+
+#bio-default .bio-closing {
+    margin-top: 1.8em;
+}
+
+#bio-default .bio-closing p:first-child {
+    margin-bottom: 0.45em;
+}
+
+#bio-default .bio-closing-question {
+    color: var(--ink);
+    font-size: 1.05em;
+    line-height: 1.65;
+}
+
 html[data-language="zh"] .bio-view-panel [data-lang="zh"] {
     color: #40403d;
     font-family: var(--cjk-reading-font);

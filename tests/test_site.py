@@ -487,7 +487,7 @@ class SiteContractTests(unittest.TestCase):
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
         css = read("static/css/home.css")
-        self.assertIn('static/css/home.css?v=2026082719', index)
+        self.assertIn('static/css/home.css?v=2026082720', index)
         self.assertIn('static/js/language.js?v=2026082711', index)
         self.assertIn('--cjk-reading-font: "PingFang SC"', css)
         self.assertIn('html[data-language="zh"] .bio-view-panel [data-lang="zh"]', css)
@@ -596,16 +596,16 @@ class SiteContractTests(unittest.TestCase):
         self.assertIsNotNone(long_panel)
         for phrase in (
             "我是朱振方，本科毕业于中国科学技术大学。",
-            "现在，我在做 AI Agent Coding。",
-            "而是敢想，敢做，敢创造。",
-            "代码会越来越便宜。",
-            "想象力不会。",
-            "你到底想做什么？",
+            "现在，我在做 AI Agent Coding 方向的创业。",
+            "2026 年暑假，我见过几百个孩子",
+            "从少数人的能力，变成每个人都能拥有的可能。",
+            "从软件的使用者，变成软件的创造者。",
+            "最后只剩下一个问题——你到底想做什么？",
             "I am Zhenfang Zhu (Chinese: 朱振方), a graduate of the University of Science and Technology of China.",
-            "Today, I work on AI Agent Coding.",
-            "Code will become cheaper and cheaper.",
-            "Imagination will not.",
-            "What do you actually want to build?",
+            "I am now building a startup focused on AI Agent Coding.",
+            "During the summer of 2026, I watched hundreds of children",
+            "a possibility open to everyone.",
+            "what do you actually want to build?",
         ):
             self.assertIn(phrase, default_panel.group(0))
             self.assertNotIn(phrase, long_panel.group(0))
@@ -626,6 +626,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('data-bio-view="long"', index)
         self.assertIn('id="bio-long" role="tabpanel"', index)
         self.assertIn('<span data-lang="en">Long</span>', index)
+        self.assertIn('class="bio-thesis"', default_panel.group(0))
+        self.assertIn('class="bio-closing"', default_panel.group(0))
         self.assertIn("What truly matters is whether an experience changes who you become afterward.", long_panel.group(0))
         self.assertIn("So I began recording both sides.", long_panel.group(0))
         self.assertIn("activateBioView", read("static/js/language.js"))
