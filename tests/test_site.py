@@ -206,6 +206,37 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">', index)
         self.assertNotIn("Personal Website", index)
 
+    def test_homepage_exposes_name_and_language_specific_urls(self):
+        index = read("index.html")
+        sitemap = read("sitemap.xml")
+
+        self.assertIn('<span data-lang="en">Zhenfang Zhu</span>', index)
+        self.assertIn('<span data-lang="zh" lang="zh-CN">朱振方</span>', index)
+        self.assertIn('<p class="site-handle">@zhuzhenfang</p>', index)
+        for language, path in (("en", "en"), ("zh-CN", "zh")):
+            self.assertIn(
+                f'<link rel="alternate" hreflang="{language}" href="https://zhuzhenfang.com/{path}/">',
+                index,
+            )
+            self.assertIn(f"<loc>https://zhuzhenfang.com/{path}/</loc>", sitemap)
+
+        for localized_path, canonical in (("en/index.html", "/en/"), ("zh/index.html", "/zh/")):
+            localized = read(localized_path)
+            self.assertIn(f'<link rel="canonical" href="https://zhuzhenfang.com{canonical}">', localized)
+            self.assertIn('hreflang="x-default" href="https://zhuzhenfang.com/"', localized)
+
+        self.assertNotIn('data-lang="zh"', read("en/index.html"))
+        self.assertNotIn('data-lang="en"', read("zh/index.html"))
+
+    def test_homepage_uses_responsive_optimized_portrait(self):
+        index = read("index.html")
+
+        for image in ("photo-600.webp", "photo-1200.webp", "photo-1200.jpg"):
+            self.assertTrue((ROOT / "static/assets/img" / image).is_file())
+            self.assertIn(image, index)
+        self.assertIn('width="1171" height="1200"', index)
+        self.assertNotIn('src="static/assets/img/photo.jpg"', index)
+
     def test_copy_is_factual_and_not_marketing_style(self):
         home = read("contents/home.md")
         text = "\n".join((
@@ -435,8 +466,8 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
-        self.assertIn('static/css/home.css?v=2026082713', index)
-        self.assertIn('static/js/language.js?v=2026082710', index)
+        self.assertIn('static/css/home.css?v=2026082714', index)
+        self.assertIn('static/js/language.js?v=2026082711', index)
 
     def test_homepage_has_busuanzi_site_stats(self):
         index = read("index.html")

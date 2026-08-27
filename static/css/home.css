@@ -102,13 +102,25 @@ article.content-frame {
 }
 
 .site-title {
-    margin: 0 0 0.95em;
+    margin: 0;
     color: var(--ink);
     font-family: var(--reading-font);
     font-size: clamp(2.2rem, 3.5vw, 2.65rem);
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1.15;
+}
+
+.profile-heading {
+    margin: 0 0 2.2rem;
+}
+
+.site-handle {
+    margin: 0.35rem 0 0;
+    color: var(--nav);
+    font-family: var(--ui-font);
+    font-size: 0.85rem;
+    line-height: 1.5;
 }
 
 .home-visual {
@@ -184,7 +196,8 @@ article.content-frame {
     display: none;
 }
 
-.language-menu button {
+.language-menu button,
+.language-menu a {
     display: flex;
     width: 100%;
     min-height: 38px;
@@ -198,15 +211,19 @@ article.content-frame {
     font: inherit;
     text-align: left;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .language-menu button:hover,
-.language-menu button:focus-visible {
+.language-menu button:focus-visible,
+.language-menu a:hover,
+.language-menu a:focus-visible {
     background: var(--surface);
     color: var(--ink);
 }
 
-.language-menu button[aria-checked="true"]::after {
+.language-menu button[aria-checked="true"]::after,
+.language-menu a[aria-checked="true"]::after {
     color: var(--ink);
     content: "✓";
 }
@@ -490,6 +507,12 @@ a.index-row {
         height: 100%;
         object-fit: cover;
         object-position: 70% center;
+    }
+
+    .home-visual picture {
+        display: block;
+        width: 100%;
+        height: 100%;
     }
 }
 

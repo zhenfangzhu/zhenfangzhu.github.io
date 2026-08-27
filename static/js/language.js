@@ -75,6 +75,14 @@
         });
         document.querySelectorAll("[data-language-option]").forEach((option) => {
             option.addEventListener("click", () => {
+                if (option.matches("a[href]")) {
+                    try {
+                        window.localStorage.setItem(STORAGE_KEY, option.dataset.languageOption);
+                    } catch (error) {
+                        // Navigation still selects the requested language when storage is unavailable.
+                    }
+                    return;
+                }
                 applyLanguage(option.dataset.languageOption, true);
                 const picker = option.closest(".language-picker");
                 if (picker) {
