@@ -194,13 +194,18 @@ class SiteContractTests(unittest.TestCase):
 
     def test_homepage_search_title_contains_both_names(self):
         index = read("index.html")
+        localized_homepages = index + read("en/index.html") + read("zh/index.html")
 
-        self.assertIn('<title id="title">Zhenfang Zhu (朱振方)</title>', index)
-        self.assertIn('<meta property="og:title" content="Zhenfang Zhu (朱振方)">', index)
-        self.assertIn('<meta property="og:site_name" content="Zhenfang Zhu (朱振方)">', index)
-        self.assertIn('data-title-en="Zhenfang Zhu (朱振方)" data-title-zh="Zhenfang Zhu (朱振方)"', index)
-        self.assertIn('"name": "Zhenfang Zhu (朱振方)"', index)
-        self.assertIn('"alternateName": ["Zhenfang Zhu", "Zhu Zhenfang", "zhuzhenfang", "@zhuzhenfang", "zhuzhenfangx"]', index)
+        self.assertIn('<title id="title">Zhenfang Zhu｜朱振方</title>', index)
+        self.assertIn('<meta property="og:title" content="Zhenfang Zhu｜朱振方">', index)
+        self.assertIn('<meta property="og:site_name" content="Zhenfang Zhu｜朱振方">', index)
+        self.assertIn('data-title-en="Zhenfang Zhu｜朱振方" data-title-zh="Zhenfang Zhu｜朱振方"', index)
+        self.assertIn('"name": "Zhenfang Zhu｜朱振方"', index)
+        self.assertIn('"alternateName": ["朱振方", "zhuzhenfang", "@zhuzhenfang", "zhuzhenfangx"]', index)
+        self.assertIn('"@type": "WebSite"', index)
+        self.assertEqual(localized_homepages.count('<title id="title">Zhenfang Zhu｜朱振方</title>'), 3)
+        self.assertEqual(localized_homepages.count('<h1 class="site-title" id="profile-name">Zhenfang Zhu｜朱振方</h1>'), 3)
+        self.assertNotIn('Zhu Zhenfang', localized_homepages + read("about/index.html"))
         self.assertIn('"familyName": "朱"', index)
         self.assertIn('"givenName": "振方"', index)
         self.assertIn('<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">', index)
@@ -210,8 +215,7 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         sitemap = read("sitemap.xml")
 
-        self.assertIn('<span data-lang="en">Zhenfang Zhu</span>', index)
-        self.assertIn('<span data-lang="zh" lang="zh-CN">朱振方</span>', index)
+        self.assertIn('<h1 class="site-title" id="profile-name">Zhenfang Zhu｜朱振方</h1>', index)
         self.assertNotIn("site-handle", index + read("en/index.html") + read("zh/index.html"))
         for language, path in (("en", "en"), ("zh-CN", "zh")):
             self.assertIn(
