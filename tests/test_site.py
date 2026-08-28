@@ -533,6 +533,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('data-title-en="Make It Exist | Zhenfang Zhu"', note)
         self.assertIn("site-language.js", note)
         self.assertIn("<loc>https://zhuzhenfang.com/notes/make-it-exist/</loc>", sitemap)
+        self.assertIn('class="essay-byline"', note)
+        self.assertIn('--essay-cjk-serif: "Songti SC"', note)
+        self.assertEqual(note.count('class="essay-pair"'), 4)
+        self.assertNotIn('<strong>Creator.</strong>', note)
 
     def test_things_i_believe_is_the_shipping_manifesto(self):
         note = read("notes/things-i-believe/index.html")

@@ -18,20 +18,24 @@
     <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
     <script defer src="../../static/js/site-language.js?v=2026082703"></script>
     <style>
+        :root {
+            --essay-cjk-serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", SimSun, serif;
+        }
+
         .essay-page {
-            width: min(100%, 640px);
+            width: min(100%, 700px);
             margin-inline: auto;
-            padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2rem);
+            padding: clamp(2.5rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2rem);
         }
 
         .essay-back {
-            margin-bottom: clamp(3.5rem, 9vw, 6rem);
+            margin-bottom: clamp(2.75rem, 7vw, 4.5rem);
         }
 
         .essay-back a {
             color: var(--nav);
             font-family: var(--ui-font);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             text-decoration: none;
         }
 
@@ -40,62 +44,100 @@
         }
 
         .essay-header {
-            margin-bottom: clamp(2.75rem, 7vw, 4.5rem);
+            margin-bottom: clamp(4rem, 9vw, 6.5rem);
         }
 
         .essay-title {
             margin: 0;
-            color: var(--ink);
+            color: #242424;
             font-family: var(--reading-font);
-            font-size: clamp(2.4rem, 7vw, 3.6rem);
+            font-size: clamp(2.45rem, 6vw, 3.4rem);
             font-weight: 600;
             letter-spacing: -0.035em;
             line-height: 1.08;
         }
 
+        .essay-byline {
+            display: flex;
+            margin-top: 0.9rem;
+            align-items: center;
+            gap: 0.55rem;
+            color: var(--nav);
+            font-family: var(--ui-font);
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+
+        .essay-byline img {
+            width: 23px;
+            height: 23px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: 58% 30%;
+        }
+
         .essay-body {
-            color: var(--secondary);
-            font-size: clamp(1.05rem, 2vw, 1.15rem);
+            color: #393936;
+            font-family: var(--reading-font);
+            font-size: clamp(1.08rem, 2vw, 1.2rem);
             line-height: 1.78;
         }
 
         .essay-body p {
-            margin: 0 0 1em;
+            margin: 0;
         }
 
-        html[data-language="zh"] .essay-title,
-        html[data-language="zh"] .essay-body [data-lang="zh"] {
-            font-family: var(--cjk-reading-font);
-        }
-
-        html[data-language="zh"] .essay-title {
-            letter-spacing: -0.04em;
+        .essay-opening {
+            margin-bottom: 2.4em !important;
         }
 
         .essay-statement {
-            margin-block: 1.8em !important;
-            color: var(--ink);
-            font-size: 1.1em;
-            line-height: 1.65;
+            margin-bottom: 1.55em !important;
+            color: #242424;
+            font-size: 1.42em;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            line-height: 1.38;
         }
 
-        .essay-statement strong,
-        .essay-creator strong {
-            font-weight: 600;
+        .essay-pair {
+            margin-top: 1.75em;
+        }
+
+        .essay-pair p + p {
+            margin-top: 0.3em;
+        }
+
+        .essay-identity {
+            margin-top: 2.15em !important;
         }
 
         .essay-creator {
-            margin-block: 1.6em !important;
-            color: var(--ink);
-            font-family: var(--ui-font);
-            font-size: 1.28em;
-            letter-spacing: -0.025em;
-            line-height: 1.3;
+            margin-top: 0.65em !important;
+            color: #242424;
+            font-size: 1.12em;
+            font-weight: 600;
+            line-height: 1.45;
         }
 
         .essay-ending {
             margin-top: 2.2em !important;
-            color: var(--ink);
+            color: #242424;
+            line-height: 1.75;
+        }
+
+        html[data-language="zh"] .essay-title,
+        html[data-language="zh"] .essay-body [data-lang="zh"] {
+            font-family: var(--essay-cjk-serif);
+        }
+
+        html[data-language="zh"] .essay-title {
+            font-weight: 700;
+            letter-spacing: -0.045em;
+        }
+
+        html[data-language="zh"] .essay-body [data-lang="zh"] {
+            line-height: 1.9;
         }
 
         .essay-footer {
@@ -116,8 +158,24 @@
         }
 
         @media (max-width: 480px) {
+            .essay-page {
+                padding-top: 2rem;
+            }
+
+            .essay-header {
+                margin-bottom: 3.5rem;
+            }
+
             .essay-title {
-                font-size: 2.45rem;
+                font-size: 2.3rem;
+            }
+
+            .essay-body {
+                font-size: 1.05rem;
+            }
+
+            .essay-statement {
+                font-size: 1.28em;
             }
         }
     </style>
@@ -132,37 +190,49 @@
         <article>
             <header class="essay-header">
                 <h1 class="essay-title"><span data-lang="zh" lang="zh-CN">让它存在</span><span data-lang="en">Make It Exist</span></h1>
+                <div class="essay-byline">
+                    <img src="../../static/assets/img/photo-600.webp" width="23" height="23" alt="" aria-hidden="true">
+                    <span data-lang="zh">朱振方</span><span data-lang="en">Zhenfang Zhu</span>
+                </div>
             </header>
 
             <div class="essay-body">
                 <div data-lang="zh" lang="zh-CN">
-                    <p>我越来越觉得，做产品和记录梦，本质上是在做同一件事。</p>
-                    <p class="essay-statement"><strong>把原本不存在的东西，带到这个世界里。</strong></p>
+                    <p class="essay-opening">我越来越觉得，做产品和记录梦，本质上是在做同一件事。</p>
+                    <p class="essay-statement">把原本不存在的东西，带到这个世界里。</p>
 
-                    <p>一个想法原本不存在。</p>
-                    <p>写成代码以后，它存在了。</p>
+                    <div class="essay-pair">
+                        <p>一个想法原本不存在。</p>
+                        <p>写成代码以后，它存在了。</p>
+                    </div>
 
-                    <p>一个梦醒来以后原本会消失。</p>
-                    <p>写下来以后，它也存在了。</p>
+                    <div class="essay-pair">
+                        <p>一个梦醒来以后原本会消失。</p>
+                        <p>写下来以后，它也存在了。</p>
+                    </div>
 
-                    <p>所以比起“创业者”“程序员”或者其他身份，我越来越喜欢一个更简单的词：</p>
-                    <p class="essay-creator"><strong>Creator.</strong></p>
+                    <p class="essay-identity">所以比起“创业者”“程序员”或者其他身份，我越来越喜欢一个更简单的词：</p>
+                    <p class="essay-creator">Creator.</p>
 
                     <p class="essay-ending">我想看看，一个人究竟能让多少原本不存在的东西，来到这个世界。</p>
                 </div>
 
                 <div data-lang="en">
-                    <p>I increasingly feel that building products and recording dreams are, at their core, the same thing.</p>
-                    <p class="essay-statement"><strong>Bringing something that did not exist into this world.</strong></p>
+                    <p class="essay-opening">I increasingly feel that building products and recording dreams are, at their core, the same thing.</p>
+                    <p class="essay-statement">Bringing something that did not exist into this world.</p>
 
-                    <p>An idea does not exist at first.</p>
-                    <p>Once written in code, it exists.</p>
+                    <div class="essay-pair">
+                        <p>An idea does not exist at first.</p>
+                        <p>Once written in code, it exists.</p>
+                    </div>
 
-                    <p>A dream would disappear after waking.</p>
-                    <p>Once written down, it exists too.</p>
+                    <div class="essay-pair">
+                        <p>A dream would disappear after waking.</p>
+                        <p>Once written down, it exists too.</p>
+                    </div>
 
-                    <p>So rather than “entrepreneur,” “programmer,” or any other identity, I increasingly prefer a simpler word:</p>
-                    <p class="essay-creator"><strong>Creator.</strong></p>
+                    <p class="essay-identity">So rather than “entrepreneur,” “programmer,” or any other identity, I increasingly prefer a simpler word:</p>
+                    <p class="essay-creator">Creator.</p>
 
                     <p class="essay-ending">I want to see how many things that did not exist one person can bring into this world.</p>
                 </div>
