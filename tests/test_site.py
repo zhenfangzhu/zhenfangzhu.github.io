@@ -157,7 +157,7 @@ class SiteContractTests(unittest.TestCase):
         visible_text = re.sub(r"</?span(?:\s+[^>]*)?>", "", index + content)
         self.assertNotRegex(content, r"\[List your|href=[\"']#[\"']")
         for phrase in (
-            "I am Zhenfang Zhu (Chinese: 朱振方), a graduate of the University of Science and Technology of China",
+            "I am Zhenfang Zhu (Chinese: 朱振方). I earned my bachelor's degree from the University of Science and Technology of China",
             "我是朱振方，本科毕业于中国科学技术大学",
             "中国科学技术大学理学学士",
             "Software Systems",
@@ -663,7 +663,7 @@ class SiteContractTests(unittest.TestCase):
             "从少数人的能力，变成每个人都能拥有的可能。",
             "从软件的使用者，变成软件的创造者。",
             "最后只剩下一个问题——你到底想做什么？",
-            "I am Zhenfang Zhu (Chinese: 朱振方), a graduate of the University of Science and Technology of China.",
+            "I am Zhenfang Zhu (Chinese: 朱振方). I earned my bachelor's degree from the University of Science and Technology of China.",
             "I am now building a startup focused on AI Agent Coding.",
             "During the summer of 2026, I watched hundreds of children",
             "a possibility open to everyone.",
