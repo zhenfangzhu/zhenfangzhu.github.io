@@ -1,0 +1,69 @@
+name: Notify IndexNow
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.html"
+      - "static/**"
+      - "sitemap.xml"
+      - "robots.txt"
+      - "CNAME"
+      - "74b5e7c44a83c21a3c2b5765c25a4107.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for the IndexNow key to be published
+        env:
+          KEY: 74b5e7c44a83c21a3c2b5765c25a4107
+        run: |
+          for attempt in {1..18}; do
+            if [ "$(curl --silent --fail "https://zhuzhenfang.com/${KEY}.txt" || true)" = "$KEY" ]; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "IndexNow key file is not available on the live site." >&2
+          exit 1
+
+      - name: Submit sitemap URLs to IndexNow
+        env:
+          KEY: 74b5e7c44a83c21a3c2b5765c25a4107
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+          import xml.etree.ElementTree as ET
+
+          key = os.environ["KEY"]
+          root = ET.parse("sitemap.xml").getroot()
+          urls = [
+              element.text.strip()
+              for element in root.findall(".//{http://www.sitemaps.org/schemas/sitemap/0.9}loc")
+              if element.text
+          ]
+          payload = json.dumps({
+              "host": "zhuzhenfang.com",
+              "key": key,
+              "keyLocation": f"https://zhuzhenfang.com/{key}.txt",
+              "urlList": urls,
+          }).encode("utf-8")
+          request = urllib.request.Request(
+              "https://api.indexnow.org/indexnow",
+              data=payload,
+              headers={"Content-Type": "application/json; charset=utf-8"},
+              method="POST",
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              print(f"IndexNow accepted {len(urls)} URLs (HTTP {response.status}).")
+          PY
