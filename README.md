@@ -12,7 +12,3 @@
 - Website: [https://zhuzhenfang.com/](https://zhuzhenfang.com/)
 - Profile: [https://zhuzhenfang.com/about/](https://zhuzhenfang.com/about/)
 - Email: [zhuzhenfang@ustc.edu](mailto:zhuzhenfang@ustc.edu)
-
-## Acknowledgements
-
-This site was originally based on the open-source [academic-homepage-template](https://github.com/senli1073/academic-homepage-template). See [LICENSE](LICENSE) for licensing information.
