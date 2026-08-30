@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="朱振方的在线白板：公开共享编辑，或输入 4 位 PIN 进入加密私密白板。">
+    <meta name="description" content="朱振方的在线白板：公开共享编辑，或输入 6 位 PIN 进入加密私密白板。">
     <meta name="author" content="朱振方 (Zhu Zhenfang)">
     <meta name="theme-color" content="#ffffff">
 
     <title>白板 | 朱振方</title>
     <link rel="canonical" href="https://zhuzhenfang.com/board/">
     <meta property="og:title" content="白板 | 朱振方">
-    <meta property="og:description" content="公开共享白板，以及使用 4 位 PIN 进入的加密私密白板。">
+    <meta property="og:description" content="公开共享白板，以及使用 6 位 PIN 进入的加密私密白板。">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://zhuzhenfang.com/board/">
 
@@ -21,9 +21,9 @@
     <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="/static/js/board-config.js?v=2026072805"></script>
-    <script defer src="/static/js/board-i18n.js?v=2026082701"></script>
+    <script defer src="/static/js/board-i18n.js?v=2026083101"></script>
     <script defer src="/static/js/site-language.js?v=2026082703"></script>
-    <script defer src="/static/js/board.js?v=2026082709"></script>
+    <script defer src="/static/js/board.js?v=2026083101"></script>
 </head>
 <body data-title-zh="白板 | 朱振方" data-title-en="Board | Zhenfang Zhu">
     <header class="board-header">
@@ -41,7 +41,7 @@
         <section class="board-intro" aria-labelledby="board-title">
             <p class="board-kicker" data-i18n="board.kicker">公开或私密 · 自由选择</p>
             <h1 id="board-title" data-i18n="board.title">白板</h1>
-            <p data-i18n="board.intro">公开协作，或输入 4 位 PIN 进入对应的私密白板。</p>
+            <p data-i18n="board.intro">公开协作，或输入 6 位 PIN 进入对应的私密白板。</p>
         </section>
 
         <div class="mode-tabs" role="tablist" aria-label="白板类型" data-i18n-aria-label="board.types">
@@ -100,27 +100,27 @@
                     <div>
                         <p class="private-eyebrow" data-i18n="board.joinEyebrow">密码房间</p>
                         <h2 data-i18n="board.joinTitle">进入快速房间</h2>
-                        <p data-i18n="board.joinIntro">直接输入创建者设置的 4 位 PIN。</p>
+                        <p data-i18n="board.joinIntro">直接输入创建者设置的 6 位 PIN。</p>
                     </div>
                 </header>
 
                 <form id="private-room-form">
                     <div class="field pin-field">
-                        <label for="private-room-password" data-i18n="board.pin">4 位 PIN</label>
+                        <label for="private-room-password" data-i18n="board.pin">6 位 PIN</label>
                         <input
                             class="pin-input"
                             id="private-room-password"
                             type="password"
                             inputmode="numeric"
-                            pattern="[0-9]{4}"
-                            minlength="4"
-                            maxlength="4"
+                            pattern="[0-9]{6}"
+                            minlength="6"
+                            maxlength="6"
                             autocomplete="one-time-code"
-                            placeholder="••••"
+                            placeholder="••••••"
                             aria-describedby="pin-help"
                             required
                         >
-                        <p class="field-help" id="pin-help" data-i18n="board.pinHelp">只输入创建者设置的 4 位数字。</p>
+                        <p class="field-help" id="pin-help" data-i18n="board.pinHelp">只输入创建者设置的 6 位数字。</p>
                     </div>
 
                     <p class="form-message" id="room-message" role="status" aria-live="polite"></p>
@@ -136,24 +136,24 @@
                     <div>
                         <p class="private-eyebrow" data-i18n="board.createEyebrow">新建私密房间</p>
                         <h2 data-i18n="board.createTitle">创建快速房间</h2>
-                        <p data-i18n="board.createIntro">设置一个尚未使用的 4 位 PIN，对方进入网站后输入它即可。</p>
+                        <p data-i18n="board.createIntro">设置一个尚未使用的 6 位 PIN，对方进入网站后输入它即可。</p>
                     </div>
                 </header>
 
                 <form id="create-room-form">
                     <div class="private-options">
                         <div class="field pin-field">
-                            <label for="new-room-password" data-i18n="board.setPin">设置 4 位 PIN</label>
+                            <label for="new-room-password" data-i18n="board.setPin">设置 6 位 PIN</label>
                             <input
                                 class="pin-input"
                                 id="new-room-password"
                                 type="password"
                                 inputmode="numeric"
-                                pattern="[0-9]{4}"
-                                minlength="4"
-                                maxlength="4"
+                                pattern="[0-9]{6}"
+                                minlength="6"
+                                maxlength="6"
                                 autocomplete="new-password"
-                                placeholder="••••"
+                                placeholder="••••••"
                                 required
                             >
                         </div>
@@ -169,17 +169,17 @@
                     </div>
 
                     <div class="field confirm-password-field pin-field">
-                        <label for="confirm-room-password" data-i18n="board.confirmPin">确认 4 位 PIN</label>
+                        <label for="confirm-room-password" data-i18n="board.confirmPin">确认 6 位 PIN</label>
                         <input
                             class="pin-input"
                             id="confirm-room-password"
                             type="password"
                             inputmode="numeric"
-                            pattern="[0-9]{4}"
-                            minlength="4"
-                            maxlength="4"
+                            pattern="[0-9]{6}"
+                            minlength="6"
+                            maxlength="6"
                             autocomplete="new-password"
-                            placeholder="••••"
+                            placeholder="••••••"
                             required
                         >
                     </div>
@@ -218,7 +218,7 @@
 
             <aside class="board-notice private-notice">
                 <strong data-i18n="board.safety">安全提示</strong>
-                <span data-i18n="board.safetyText">同一个 PIN 对应同一个房间，PIN 不会上传，正文仍以密文保存。4 位 PIN 以便捷为主，请勿存放身份证、银行卡或核心密码。</span>
+                <span data-i18n="board.safetyText">同一个 PIN 对应同一个房间，PIN 不会上传，正文仍以密文保存。请勿存放身份证、银行卡或核心密码。</span>
             </aside>
         </section>
     </main>

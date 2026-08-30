@@ -33,7 +33,7 @@
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     const PBKDF2_ITERATIONS = 1000000;
-    const PIN_PATTERN = /^[0-9]{4}$/;
+    const PIN_PATTERN = /^[0-9]{6}$/;
     const PIN_ROOM_CONTEXT = "zhuzhenfang.com/pin-room/v1";
 
     let client;

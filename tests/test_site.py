@@ -96,7 +96,7 @@ class SiteContractTests(unittest.TestCase):
             'id="private-mode"',
             'id="private-room-form"',
             'id="private-room-password"',
-            'pattern="[0-9]{4}"',
+            'pattern="[0-9]{6}"',
             'id="private-create-panel"',
             'id="create-room-form"',
             'id="private-workspace"',
@@ -104,6 +104,14 @@ class SiteContractTests(unittest.TestCase):
             'id="lock-private-room"',
         ):
             self.assertIn(fragment, board)
+
+        self.assertEqual(board.count('minlength="6"'), 3)
+        self.assertEqual(board.count('maxlength="6"'), 3)
+        self.assertIn("const PIN_PATTERN = /^[0-9]{6}$/;", board_js)
+        self.assertIn("请输入 6 位数字 PIN。", board_i18n)
+        self.assertIn("Enter a six-digit PIN.", board_i18n)
+        self.assertNotIn("4 位 PIN", board)
+        self.assertNotIn("four-digit PIN", board_i18n)
 
         self.assertNotIn('id="private-room-code"', board)
         self.assertNotIn('id="new-room-code"', board)
