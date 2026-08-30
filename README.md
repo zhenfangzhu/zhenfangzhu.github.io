@@ -1,11 +1,12 @@
+# 我的个人网站 / My Personal Website
 
-# 朱振方个人网站 / Zhu Zhenfang's Personal Website
+你好，我是朱振方。这里是我的个人网站：[zhuzhenfang.com](https://zhuzhenfang.com/)。
 
-[zhuzhenfang.com](https://zhuzhenfang.com/) 是朱振方的个人网站。
+我毕业于中国科学技术大学，获理学学士学位。目前我正在从事 AI 创业，关注软件系统、开发者工具与 AI 产品。
 
-朱振方毕业于中国科学技术大学，获理学学士学位，目前从事 AI 创业，关注软件系统、开发者工具与 AI 产品。
+Hi, I'm Zhenfang Zhu. This is my personal website: [zhuzhenfang.com](https://zhuzhenfang.com/).
 
-[zhuzhenfang.com](https://zhuzhenfang.com/) is the personal website of Zhu Zhenfang, a Bachelor of Science graduate of the University of Science and Technology of China who is currently building AI products.
+I earned my Bachelor of Science degree from the University of Science and Technology of China. I'm currently building AI products, with a focus on software systems and developer tools.
 
 ## Links
 
