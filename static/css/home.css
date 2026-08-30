@@ -324,6 +324,56 @@ article.content-frame {
     line-height: 1.65;
 }
 
+.bio-more {
+    margin-top: 1.8rem;
+    border-top: 1px solid var(--divider);
+}
+
+.bio-more summary {
+    position: relative;
+    display: flex;
+    min-height: 44px;
+    padding: 0.8rem 2rem 0.8rem 0;
+    align-items: center;
+    color: var(--nav);
+    font-family: var(--ui-font);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    cursor: pointer;
+    list-style: none;
+    transition: color 160ms ease;
+}
+
+.bio-more summary::-webkit-details-marker {
+    display: none;
+}
+
+.bio-more summary::after {
+    position: absolute;
+    right: 0;
+    color: var(--nav);
+    content: "+";
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.bio-more[open] summary::after {
+    content: "−";
+}
+
+.bio-more summary:hover,
+.bio-more summary:focus-visible {
+    color: var(--ink);
+}
+
+.bio-more-content {
+    padding-top: 1rem;
+}
+
+.bio-more-content p:first-child {
+    margin-top: 0;
+}
+
 html[data-language="zh"] .bio-view-panel [data-lang="zh"] {
     color: #40403d;
     font-family: var(--cjk-reading-font);

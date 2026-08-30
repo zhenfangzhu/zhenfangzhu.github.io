@@ -491,7 +491,7 @@ class SiteContractTests(unittest.TestCase):
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
         css = read("static/css/home.css")
-        self.assertIn('static/css/home.css?v=2026082720', index)
+        self.assertIn('static/css/home.css?v=2026083001', index)
         self.assertIn('static/js/language.js?v=2026082711', index)
         self.assertIn('--cjk-reading-font: "PingFang SC"', css)
         self.assertIn('html[data-language="zh"] .bio-view-panel [data-lang="zh"]', css)
