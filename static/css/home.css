@@ -1,14 +1,34 @@
 :root {
+    color-scheme: light dark;
     --page-pad: clamp(1.25rem, 3.4vw, 3.25rem);
+    --page: #fff;
     --ink: #282828;
     --secondary: #504945;
     --nav: #676767;
-    --divider: #e2e2df;
     --divider: color-mix(in srgb, #282828 10%, transparent);
     --surface: #f4f4f1;
+    --cjk-text: #40403d;
+    --notes-link: #6a6a6a;
+    --notes-underline: #c4c4c4;
+    --menu-shadow: rgba(40, 40, 40, 0.12);
     --reading-font: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
     --cjk-reading-font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
     --ui-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --page: #151514;
+        --ink: #f1efe9;
+        --secondary: #c9c5bb;
+        --nav: #aaa69c;
+        --divider: color-mix(in srgb, #f1efe9 16%, transparent);
+        --surface: #242421;
+        --cjk-text: #d8d4ca;
+        --notes-link: #b8b4aa;
+        --notes-underline: #66635d;
+        --menu-shadow: rgba(0, 0, 0, 0.35);
+    }
 }
 
 *,
@@ -18,7 +38,7 @@
 }
 
 html {
-    background: #fff;
+    background: var(--page);
     color: var(--ink);
     scroll-behavior: smooth;
 }
@@ -30,7 +50,7 @@ html[data-language="zh"] [data-lang="en"] {
 
 body {
     margin: 0;
-    background: #fff;
+    background: var(--page);
     color: var(--ink);
     font-family: var(--reading-font);
     font-size: 17px;
@@ -65,7 +85,7 @@ a:hover {
     z-index: 20;
     min-height: 44px;
     padding: 0.55rem 0.85rem;
-    background: #fff;
+    background: var(--page);
     color: var(--ink);
     font-family: var(--ui-font);
     font-size: 0.875rem;
@@ -198,8 +218,8 @@ article.content-frame {
     padding: 0.3rem;
     border: 1px solid var(--divider);
     border-radius: 8px;
-    background: #fff;
-    box-shadow: 0 10px 30px rgba(40, 40, 40, 0.12);
+    background: var(--page);
+    box-shadow: 0 10px 30px var(--menu-shadow);
 }
 
 .language-menu[hidden] {
@@ -375,7 +395,7 @@ article.content-frame {
 }
 
 html[data-language="zh"] .bio-view-panel [data-lang="zh"] {
-    color: #40403d;
+    color: var(--cjk-text);
     font-family: var(--cjk-reading-font);
     font-size: 0.98em;
     font-weight: 400;
@@ -553,9 +573,9 @@ a.index-row {
 }
 
 .notes-grid a {
-    color: #6a6a6a;
+    color: var(--notes-link);
     text-decoration: underline;
-    text-decoration-color: #c4c4c4;
+    text-decoration-color: var(--notes-underline);
     text-decoration-thickness: 1px;
     text-underline-offset: 0.28em;
     transition: color 150ms ease, text-decoration-color 150ms ease;

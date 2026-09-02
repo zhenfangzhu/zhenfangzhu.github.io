@@ -311,8 +311,11 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("Newsreader", index)
 
     def test_theme_color_matches_editorial_surface(self):
-        index = read("index.html")
-        self.assertIn('<meta name="theme-color" content="#ffffff">', index)
+        for path in ("index.html", "zh/index.html", "en/index.html"):
+            page = read(path)
+            self.assertIn('<meta name="color-scheme" content="light dark">', page)
+            self.assertIn('<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">', page)
+            self.assertIn('<meta name="theme-color" content="#151514" media="(prefers-color-scheme: dark)">', page)
 
     def test_redundant_hidden_contact_copy_is_absent(self):
         awards = read("contents/awards.md")
@@ -532,10 +535,18 @@ class SiteContractTests(unittest.TestCase):
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
         css = read("static/css/home.css")
-        self.assertIn('static/css/home.css?v=2026083001', index)
+        self.assertIn('static/css/home.css?v=2026090302', index)
         self.assertIn('static/js/language.js?v=2026082711', index)
         self.assertIn('--cjk-reading-font: "PingFang SC"', css)
         self.assertIn('html[data-language="zh"] .bio-view-panel [data-lang="zh"]', css)
+
+    def test_homepage_follows_system_dark_mode(self):
+        css = read("static/css/home.css")
+        self.assertIn("color-scheme: light dark", css)
+        self.assertIn("@media (prefers-color-scheme: dark)", css)
+        self.assertIn("--page: #151514", css)
+        self.assertIn("background: var(--page)", css)
+        self.assertIn("--ink: #f1efe9", css)
 
     def test_homepage_dream_archive_is_clearly_labeled_as_navigation(self):
         for path, label, action in (
