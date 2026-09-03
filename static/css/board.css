@@ -1,4 +1,5 @@
 :root {
+    color-scheme: light dark;
     --ink: #1b1d1f;
     --muted: #6d706f;
     --accent: #185f8d;
@@ -683,6 +684,22 @@ noscript {
     --ui-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ink: #f1efe9;
+        --muted: #aaa69c;
+        --accent: #8eb4d2;
+        --paper: #1d1d1b;
+        --canvas: #151514;
+        --line: #3a3935;
+        --green: #79b997;
+        --amber: #d3a75c;
+        --red: #e28a83;
+        --blue-soft: #252d33;
+        --green-soft: #213029;
+    }
+}
+
 body {
     min-height: 100dvh;
     background: var(--canvas);
@@ -968,4 +985,32 @@ a {
     #board-editor { min-height: 54vh; }
     .private-card-header { grid-template-columns: auto 1fr; }
     .board-notice { grid-template-columns: 1fr; }
+}
+
+@media (prefers-color-scheme: dark) {
+    #board-editor,
+    #private-board-editor {
+        background-image: repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 31px,
+            rgba(241, 239, 233, 0.08) 32px
+        );
+    }
+
+    #board-editor::placeholder,
+    #private-board-editor::placeholder,
+    .password-field input::placeholder,
+    .pin-input::placeholder { color: #85817a; }
+
+    .password-field input,
+    .pin-input,
+    .field select,
+    .text-input {
+        border-color: var(--line);
+        background: #20201e;
+    }
+
+    .primary-button,
+    .secondary-button { color: #151514; }
 }

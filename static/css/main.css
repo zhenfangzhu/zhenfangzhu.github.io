@@ -1,4 +1,5 @@
 :root {
+    color-scheme: light dark;
     --color-heading: #222b33;
     --color-body: #354551;
     --color-muted: #596b79;
@@ -14,6 +15,24 @@
     --color-nav-dark: #214c75;
     --font-body: Arial, "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
     --nav-height: 58px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-heading: #f1f3f5;
+        --color-body: #d5dbe0;
+        --color-muted: #a8b2bb;
+        --color-accent: #8db9de;
+        --color-accent-dark: #b4d2eb;
+        --color-focus: #f1a85b;
+        --color-paper: #15191d;
+        --color-surface: #1c2227;
+        --color-tint: #20272d;
+        --color-border: #35414b;
+        --color-border-strong: #465561;
+        --color-nav: #23313d;
+        --color-nav-dark: #1b2730;
+    }
 }
 
 html[data-language="en"] [data-lang="zh"],
@@ -1359,4 +1378,22 @@ body {
         grid-template-columns: 1fr;
         gap: 0.25rem;
     }
+}
+
+@media (prefers-color-scheme: dark) {
+    .manifesto-text { color: var(--color-body); }
+    .archive-stats { background: color-mix(in srgb, var(--color-surface) 88%, transparent); }
+    .archive-stats dd { color: var(--color-accent-dark); }
+    .archive-author,
+    .author-badge,
+    .section-number { background: var(--color-tint); color: var(--color-accent); }
+    .portrait-wrap img { border-color: var(--color-border); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28); }
+    .section-heading { background: linear-gradient(var(--color-tint), var(--color-surface)); }
+    .section-heading h2,
+    .profile-contact .section-heading h2 { color: var(--color-heading); }
+    .section-number { border-color: var(--color-border-strong); }
+    .tool-row { background: var(--color-surface); }
+    .tool-row:hover,
+    .contact-strip a { background: var(--color-tint); }
+    .site-footer { background: var(--color-tint); }
 }

@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="我所相信的事：Shipping fast beats the best strategy.">
     <meta name="author" content="Zhenfang Zhu">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#151514" media="(prefers-color-scheme: dark)">
     <title>我所相信的事 ｜ 朱振方</title>
     <link rel="canonical" href="https://zhuzhenfang.com/notes/things-i-believe/">
     <meta property="og:title" content="我所相信的事 · Things I Believe">
@@ -13,7 +15,7 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://zhuzhenfang.com/notes/things-i-believe/">
     <link rel="icon" type="image/x-icon" href="../../static/assets/favicon.ico?v=2026071601">
-    <link href="../../static/css/home.css?v=2026082720" rel="stylesheet">
+    <link href="../../static/css/home.css?v=2026090302" rel="stylesheet">
     <link href="../../static/css/site-language.css?v=2026082701" rel="stylesheet">
     <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
     <script defer src="../../static/js/site-language.js?v=2026082703"></script>
@@ -49,7 +51,7 @@
 
         .belief-title {
             margin: 0;
-            color: #242424;
+            color: var(--ink);
             font-family: var(--reading-font);
             font-size: clamp(2.45rem, 6vw, 3.4rem);
             font-weight: 600;
@@ -77,7 +79,7 @@
         }
 
         .belief-body {
-            color: #393936;
+            color: var(--secondary);
             font-family: var(--reading-font);
             font-size: clamp(1.08rem, 2vw, 1.2rem);
             line-height: 1.78;
@@ -89,7 +91,7 @@
 
         .belief-lead {
             margin: 0 0 1.4em !important;
-            color: #242424;
+            color: var(--ink);
             font-size: 1.42em;
             font-weight: 600;
             letter-spacing: -0.025em;
@@ -102,7 +104,7 @@
 
         .belief-conclusion {
             margin-top: 1.9em !important;
-            color: #242424;
+            color: var(--ink);
             font-size: 1.06em;
             line-height: 1.7;
         }

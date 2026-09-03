@@ -520,7 +520,7 @@ class SiteContractTests(unittest.TestCase):
         dreams = read("dreams/index.html")
         css = read("static/css/dream-forum.css")
 
-        self.assertIn('dream-forum.css?v=2026082705', dreams)
+        self.assertIn('dream-forum.css?v=2026090301', dreams)
         self.assertIn('.bbs-categories a.is-active { border-bottom: 0; }', css)
         self.assertRegex(css, r"\.bbs-categories a\.is-active \{ color: var\(--bbs-text\); \}")
         self.assertRegex(css, r"\.bbs-categories \{[^}]*border-bottom: 0;")
@@ -547,6 +547,43 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("--page: #151514", css)
         self.assertIn("background: var(--page)", css)
         self.assertIn("--ink: #f1efe9", css)
+
+    def test_all_public_pages_support_dark_mode(self):
+        static_pages = (
+            "index.html",
+            "en/index.html",
+            "zh/index.html",
+            "about/index.html",
+            "board/index.html",
+            "dreams/index.html",
+            "dreams/2024-10-19/index.html",
+            "dreams/2025-01-08/index.html",
+            "dreams/2025-05-04/index.html",
+            "dreams/2025-06-12/index.html",
+            "notes/index.html",
+            "notes/make-it-exist/index.html",
+            "notes/things-i-believe/index.html",
+            "founder-dna/index.html",
+        )
+        for path in static_pages:
+            page = read(path)
+            self.assertIn('<meta name="color-scheme" content="light dark">', page, path)
+            self.assertIn('media="(prefers-color-scheme: light)"', page, path)
+            self.assertIn('media="(prefers-color-scheme: dark)"', page, path)
+
+        for path in (
+            "static/css/home.css",
+            "static/css/main.css",
+            "static/css/board.css",
+            "static/css/dream-forum.css",
+        ):
+            css = read(path)
+            self.assertIn("color-scheme: light dark", css, path)
+            self.assertIn("@media (prefers-color-scheme: dark)", css, path)
+
+        founder = read("founder-dna/index.html")
+        self.assertIn("matchMedia('(prefers-color-scheme: dark)').matches", founder)
+        self.assertIn("settings:{theme:'system'}", founder)
 
     def test_homepage_dream_archive_is_clearly_labeled_as_navigation(self):
         for path, label, action in (

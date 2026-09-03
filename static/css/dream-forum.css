@@ -1,4 +1,5 @@
 :root {
+    color-scheme: light dark;
     --bbs-blue: #2c5f8f;
     --bbs-blue-dark: #214c75;
     --bbs-link: #205b91;
@@ -509,6 +510,24 @@ main,
     --bbs-ui-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bbs-blue: #8eb4d2;
+        --bbs-blue-dark: #1b1b1a;
+        --bbs-link: #d7e6f2;
+        --bbs-link-hover: #9fc5e2;
+        --bbs-bg: #151514;
+        --bbs-panel: #1d1d1b;
+        --bbs-soft: #242421;
+        --bbs-author: #1a1a18;
+        --bbs-border: #393833;
+        --bbs-border-strong: #4a4841;
+        --bbs-text: #f1efe9;
+        --bbs-muted: #aaa69c;
+        --bbs-focus: #8eb4d2;
+    }
+}
+
 body {
     background: var(--bbs-bg);
     color: var(--bbs-text);
@@ -909,3 +928,9 @@ a:hover { text-decoration-color: currentColor; }
     gap: 0.35rem;
 }
 
+@media (prefers-color-scheme: dark) {
+    .bbs-topbar,
+    .bbs-footer { background: var(--bbs-bg); }
+    .bbs-post__author span { background: var(--bbs-soft); color: var(--bbs-muted); }
+    .bbs-post__content blockquote { color: #c9c5bb; }
+}
