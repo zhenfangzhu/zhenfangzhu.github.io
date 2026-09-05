@@ -934,3 +934,17 @@ a:hover { text-decoration-color: currentColor; }
     .bbs-post__author span { background: var(--bbs-soft); color: var(--bbs-muted); }
     .bbs-post__content blockquote { color: #c9c5bb; }
 }
+
+/* Archive navigation and category filtering. */
+.dream-home-nav {
+    padding-top: 1.25rem;
+    font-size: 0.85rem;
+}
+.dream-home-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+}
+.dream-home-nav a:hover { text-decoration: underline; }
+.bbs-topic[hidden] { display: none; }

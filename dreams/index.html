@@ -15,17 +15,20 @@
     <meta property="og:url" content="https://zhuzhenfang.com/dreams/">
     <link rel="icon" type="image/x-icon" href="../static/assets/favicon.ico?v=2026071601">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="../static/css/dream-forum.css?v=2026090301" rel="stylesheet">
+    <link href="../static/css/dream-forum.css?v=2026090501" rel="stylesheet">
     <link href="../static/css/site-language.css?v=2026082701" rel="stylesheet">
     <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
     <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <script defer src="../static/js/site-language.js?v=2026082703"></script>
-    <script defer src="../static/js/dream-navigation.js?v=2026082602"></script>
+    <script defer src="../static/js/dream-navigation.js?v=2026090501"></script>
 </head>
 <body class="bbs-page" data-title-zh="Loading… 99%｜公开梦境档案" data-title-en="Loading… 99% | Public Dream Archive">
     <a class="bbs-skip-link" href="#topic-list"><span data-lang="zh">跳到主题列表</span><span data-lang="en">Skip to dream list</span></a>
 
     <main class="bbs-wrap">
+        <nav class="dream-home-nav" aria-label="Home">
+            <a href="/"><span data-lang="zh">← 返回个人主页</span><span data-lang="en">← Back to homepage</span></a>
+        </nav>
         <section class="bbs-board-head" aria-labelledby="dream-title">
             <div>
                 <p class="bbs-board-head__label">DREAM FORUM</p>
@@ -35,9 +38,9 @@
         </section>
 
         <nav class="bbs-categories" aria-label="梦境分类">
-            <a class="is-active" href="#topic-list"><span data-lang="zh">全部</span><span data-lang="en">All</span> <span>326</span></a>
-            <a href="#topic-list"><span data-lang="zh">清醒梦</span><span data-lang="en">Lucid</span> <span>3</span></a>
-            <a href="#topic-list"><span data-lang="zh">层叠梦</span><span data-lang="en">Nested</span> <span>1</span></a>
+            <a class="is-active" href="#all" data-dream-filter="all" aria-current="true"><span data-lang="zh">全部</span><span data-lang="en">All</span> <span>4</span></a>
+            <a href="#lucid" data-dream-filter="lucid"><span data-lang="zh">清醒梦</span><span data-lang="en">Lucid</span> <span>3</span></a>
+            <a href="#nested" data-dream-filter="nested"><span data-lang="zh">层叠梦</span><span data-lang="en">Nested</span> <span>1</span></a>
             <span><span data-lang="zh">假醒梦</span><span data-lang="en">False awakening</span> <b>0</b></span>
             <span><span data-lang="zh">未公开</span><span data-lang="en">Private</span> <b>322</b></span>
         </nav>
@@ -45,14 +48,14 @@
         <section class="bbs-topic-list" id="topic-list" aria-labelledby="topic-list-title">
             <header class="bbs-topic-list__header">
                 <h2 id="topic-list-title"><span data-lang="zh">主题列表</span><span data-lang="en">Dreams</span></h2>
-                <span><span data-lang="zh">公开 4 条</span><span data-lang="en">4 public entries</span></span>
+                <span role="status" aria-live="polite"><span data-lang="zh">显示 <span data-dream-count>4</span> 条 · 公开 4 条</span><span data-lang="en">Showing <span data-dream-count>4</span> of 4 public entries</span></span>
             </header>
 
             <div class="bbs-topic-columns" aria-hidden="true">
                 <span><span data-lang="zh">主题</span><span data-lang="en">Entry</span></span><span><span data-lang="zh">分类</span><span data-lang="en">Type</span></span><span><span data-lang="zh">最后记录</span><span data-lang="en">Recorded</span></span>
             </div>
 
-            <a class="bbs-topic dream-transition-20250612" data-dream-link href="/dreams/2025-06-12/">
+            <a class="bbs-topic dream-transition-20250612" data-dream-category="lucid" data-dream-link href="/dreams/2025-06-12/">
                 <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
                 <span class="bbs-topic__main">
                     <strong><span data-lang="zh">2025年6月12日 晚觉</span><span data-lang="en">June 12, 2025 · Night</span></strong>
@@ -62,7 +65,7 @@
                 <time class="bbs-topic__date" datetime="2025-06-12">2025-06-12</time>
             </a>
 
-            <a class="bbs-topic dream-transition-20250504" data-dream-link href="/dreams/2025-05-04/">
+            <a class="bbs-topic dream-transition-20250504" data-dream-category="nested" data-dream-link href="/dreams/2025-05-04/">
                 <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
                 <span class="bbs-topic__main">
                     <strong><span data-lang="zh">2025年5月4日 晚觉</span><span data-lang="en">May 4, 2025 · Night</span></strong>
@@ -72,7 +75,7 @@
                 <time class="bbs-topic__date" datetime="2025-05-04">2025-05-04</time>
             </a>
 
-            <a class="bbs-topic dream-transition-20250108" data-dream-link href="/dreams/2025-01-08/">
+            <a class="bbs-topic dream-transition-20250108" data-dream-category="lucid" data-dream-link href="/dreams/2025-01-08/">
                 <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
                 <span class="bbs-topic__main">
                     <strong><span data-lang="zh">2025年1月8日 晚觉</span><span data-lang="en">January 8, 2025 · Night</span></strong>
@@ -82,7 +85,7 @@
                 <time class="bbs-topic__date" datetime="2025-01-08">2025-01-08</time>
             </a>
 
-            <a class="bbs-topic dream-transition-20241019" data-dream-link href="/dreams/2024-10-19/">
+            <a class="bbs-topic dream-transition-20241019" data-dream-category="lucid" data-dream-link href="/dreams/2024-10-19/">
                 <span class="bbs-topic__status" aria-label="精华主题"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
                 <span class="bbs-topic__main">
                     <strong><span data-lang="zh">2024年10月19日 午觉</span><span data-lang="en">October 19, 2024 · Nap</span></strong>

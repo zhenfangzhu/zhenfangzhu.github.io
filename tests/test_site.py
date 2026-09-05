@@ -212,7 +212,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('"alternateName": ["朱振方", "zhuzhenfang", "@zhuzhenfang", "zhenfangzhu"]', index)
         self.assertIn('"@type": "WebSite"', index)
         self.assertEqual(localized_homepages.count('<title id="title">Zhenfang Zhu｜朱振方</title>'), 3)
-        self.assertEqual(localized_homepages.count('<h1 class="site-title" id="profile-name">Zhenfang Zhu｜朱振方</h1>'), 3)
+        self.assertEqual(localized_homepages.count('<h1 class="site-title" id="profile-name"><span class="name-en">Zhenfang Zhu</span><span class="name-divider">｜</span><span class="name-zh">朱振方</span></h1>'), 3)
         self.assertNotIn('Zhu Zhenfang', localized_homepages + read("about/index.html"))
         self.assertIn('"familyName": "朱"', index)
         self.assertIn('"givenName": "振方"', index)
@@ -223,7 +223,7 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         sitemap = read("sitemap.xml")
 
-        self.assertIn('<h1 class="site-title" id="profile-name">Zhenfang Zhu｜朱振方</h1>', index)
+        self.assertIn('<h1 class="site-title" id="profile-name"><span class="name-en">Zhenfang Zhu</span><span class="name-divider">｜</span><span class="name-zh">朱振方</span></h1>', index)
         self.assertNotIn("site-handle", index + read("en/index.html") + read("zh/index.html"))
         for language, path in (("en", "en"), ("zh-CN", "zh")):
             self.assertIn(
@@ -490,7 +490,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("bbs-breadcrumb", dreams + entry)
         self.assertNotIn("<strong>朱振方</strong>", entry)
         self.assertNotIn(">朱振方的主页<", dreams + entry)
-        self.assertRegex(dreams, r'<span data-lang="zh">全部</span>.*?<span>326</span>')
+        self.assertRegex(dreams, r'<span data-lang="zh">全部</span>.*?<span>4</span>')
         self.assertRegex(dreams, r'<span data-lang="zh">未公开</span>.*?<b>322</b>')
         self.assertNotIn("bbs-board-stats", dreams)
         for dream_page in (
@@ -520,7 +520,7 @@ class SiteContractTests(unittest.TestCase):
         dreams = read("dreams/index.html")
         css = read("static/css/dream-forum.css")
 
-        self.assertIn('dream-forum.css?v=2026090301', dreams)
+        self.assertIn('dream-forum.css?v=2026090501', dreams)
         self.assertIn('.bbs-categories a.is-active { border-bottom: 0; }', css)
         self.assertRegex(css, r"\.bbs-categories a\.is-active \{ color: var\(--bbs-text\); \}")
         self.assertRegex(css, r"\.bbs-categories \{[^}]*border-bottom: 0;")
@@ -535,7 +535,7 @@ class SiteContractTests(unittest.TestCase):
     def test_homepage_uses_current_editorial_release_assets(self):
         index = read("index.html")
         css = read("static/css/home.css")
-        self.assertIn('static/css/home.css?v=2026090302', index)
+        self.assertIn('static/css/home.css?v=2026090501', index)
         self.assertIn('static/js/language.js?v=2026082711', index)
         self.assertIn('--cjk-reading-font: "PingFang SC"', css)
         self.assertIn('html[data-language="zh"] .bio-view-panel [data-lang="zh"]', css)

@@ -132,6 +132,16 @@ article.content-frame {
     line-height: 1.15;
 }
 
+.site-title {
+    padding-right: 48px;
+}
+
+.site-title .name-en,
+.site-title .name-zh {
+    display: inline-block;
+    white-space: nowrap;
+}
+
 .profile-heading {
     margin: 0 0 2.2rem;
 }
@@ -676,6 +686,23 @@ a.index-row {
 }
 
 @media (max-width: 639px) {
+    .site-title {
+        font-size: clamp(1.65rem, 7.2vw, 2.2rem);
+    }
+
+    .site-title .name-zh {
+        display: block;
+        margin-top: 0.2em;
+    }
+
+    .site-title .name-divider {
+        display: none;
+    }
+
+    .language-picker--corner .language-toggle {
+        width: 44px;
+    }
+
     main.site-shell {
         padding: 2.5rem 1.25rem 1.25rem;
     }
