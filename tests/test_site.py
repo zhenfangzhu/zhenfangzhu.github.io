@@ -365,7 +365,7 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         css = read("static/css/home.css")
         self.assertIn('class="bio-view-controls"', index)
-        self.assertIn('class="language-picker language-picker--corner"', index)
+        self.assertIn('class="language-picker"', index)
         self.assertIn('class="language-menu"', index)
         self.assertIn('data-language-option="en"', index)
         self.assertIn('data-language-option="zh"', index)
@@ -380,7 +380,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("navbar", index)
         self.assertIn("min-height: 44px", css)
         self.assertIn(".language-picker--corner", css)
-        self.assertLess(index.index("language-picker--corner"), index.index('class="home-copy"'))
+        self.assertLess(index.index('class="site-chrome"'), index.index('class="home-copy"'))
 
     def test_single_mathjax_runtime(self):
         index = read("index.html")
@@ -397,7 +397,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("fetch(", app)
         self.assertNotIn("XMLHttpRequest", app)
         self.assertNotIn("WebSocket", app)
-        self.assertIn('href="/" aria-label="返回朱振方个人主页"', app)
+        self.assertIn('class="site-return" href="/"', app)
         self.assertIn("<loc>https://zhuzhenfang.com/founder-dna/</loc>", sitemap)
 
     def test_founder_dna_is_a_public_assessment(self):
@@ -536,7 +536,7 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         css = read("static/css/home.css")
         self.assertIn('static/css/home.css?v=2026090501', index)
-        self.assertIn('static/js/language.js?v=2026082711', index)
+        self.assertIn('static/js/language.js?v=2026090502', index)
         self.assertIn('--cjk-reading-font: "PingFang SC"', css)
         self.assertIn('html[data-language="zh"] .bio-view-panel [data-lang="zh"]', css)
 

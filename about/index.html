@@ -82,21 +82,28 @@
             document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
         })();
     </script>
-    <script defer src="../static/js/language.js?v=2026082505"></script>
+    <script defer src="../static/js/language.js?v=2026090502"></script>
+    <link rel="stylesheet" href="/static/css/site-chrome.css?v=2026090502">
 </head>
 <body id="page-top" data-title-en="About Zhenfang Zhu" data-title-zh="关于朱振方">
+    <header class="site-chrome"><a class="site-return" href="/"><span data-lang="zh">← 返回个人主页</span><span data-lang="en">← Back to homepage</span></a><div class="language-picker">
+                    <button class="language-toggle" type="button" aria-label="Choose language" title="Choose language" aria-haspopup="menu" aria-expanded="false" aria-controls="language-menu">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m5 8 6 6"></path>
+                            <path d="m4 14 6-6 2-3"></path>
+                            <path d="M2 5h12"></path>
+                            <path d="M7 2h1"></path>
+                            <path d="m22 22-5-10-5 10"></path>
+                            <path d="M14 18h6"></path>
+                        </svg>
+                    </button>
+                    <div class="language-menu" id="language-menu" role="menu" aria-label="Language" hidden>
+                        <a href="/en/" role="menuitemradio" data-language-option="en" aria-checked="true">English</a>
+                        <a href="/zh/" role="menuitemradio" data-language-option="zh" aria-checked="false">中文</a>
+                    </div>
+                </div></header>
     <a class="skip-link" href="#main-content"><span data-lang="en">Skip to main content</span><span data-lang="zh">跳到主要内容</span></a>
-    <nav class="site-nav navbar navbar-expand-md fixed-top" aria-label="Primary navigation">
-        <div class="container site-container">
-            <a class="navbar-brand" href="/"><span data-lang="en">Zhenfang Zhu</span><span data-lang="zh">朱振方</span></a>
-            <div class="about-nav-actions ms-auto">
-                <a class="nav-link" href="/"><span data-lang="en">Home</span><span data-lang="zh">首页</span></a>
-                <button class="language-toggle" type="button" aria-label="切换到中文" title="切换到中文">
-                    <i class="bi bi-globe2" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-    </nav>
+
 
     <main id="main-content">
         <section class="profile-intro" aria-labelledby="about-title">

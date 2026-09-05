@@ -24,15 +24,14 @@
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script defer src="/static/js/board-config.js?v=2026072805"></script>
     <script defer src="/static/js/board-i18n.js?v=2026083101"></script>
-    <script defer src="/static/js/site-language.js?v=2026082703"></script>
+    <script defer src="/static/js/site-language.js?v=2026090502"></script>
     <script defer src="/static/js/board.js?v=2026083101"></script>
+    <link rel="stylesheet" href="/static/css/site-chrome.css?v=2026090502">
 </head>
 <body data-title-zh="白板 | 朱振方" data-title-en="Board | Zhenfang Zhu">
+    <header class="site-chrome"><a class="site-return" href="/"><span data-lang="zh">← 返回个人主页</span><span data-lang="en">← Back to homepage</span></a></header>
     <header class="board-header">
-        <a class="board-home" href="/" aria-label="返回朱振方个人主页" data-i18n-aria-label="board.back">
-            <span aria-hidden="true">←</span>
-            <span>zhuzhenfang.com</span>
-        </a>
+
         <div class="board-status" id="board-status" role="status" aria-live="polite">
             <span class="status-dot" aria-hidden="true"></span>
             <span id="status-text" data-i18n="board.connecting">正在连接</span>
