@@ -1,5 +1,45 @@
+/* A shared, quiet reading layout for both essays. */
+body .essay-page,
+body .belief-page {
+    width: min(100%, 680px);
+    margin-inline: auto;
+    padding: 32px 24px 24px;
+    font-family: var(--site-ui-font);
+}
+.essay-header, .belief-header { margin-bottom: 28px; }
+body .essay-title, body .belief-title {
+    margin: 0;
+    font-family: inherit;
+    font-size: clamp(1.65rem, 4vw, 2rem);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0;
+}
+.essay-body, .belief-body {
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.85;
+    overflow-wrap: break-word;
+}
+.essay-body p, .belief-body p { margin: 0 0 1em; }
+.essay-pair { margin-bottom: 1em; }
+.essay-pair p { margin-bottom: 0; }
+.essay-body strong, .belief-body strong { font-weight: inherit; }
+.essay-footer, .belief-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 40px;
+    color: var(--nav);
+    font-size: 12px;
+}
+.essay-footer p, .belief-footer p { margin: 0; }
+@media (max-width: 480px) {
+    body .essay-page, body .belief-page { padding: 24px 20px; }
+}
+
 .note-next {
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding-top: 1.25rem;
     border-top: 1px solid var(--divider);
 }
@@ -14,7 +54,7 @@
     gap: 0.5rem;
     min-height: 44px;
     color: var(--ink);
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-decoration: none;
 }
 .note-next a:hover { text-decoration: underline; text-underline-offset: 4px; }

@@ -622,8 +622,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('data-title-en="Make It Exist | Zhenfang Zhu"', note)
         self.assertIn("site-language.js", note)
         self.assertIn("<loc>https://zhuzhenfang.com/notes/make-it-exist/</loc>", sitemap)
-        self.assertIn('class="essay-byline"', note)
-        self.assertIn('--essay-cjk-serif: "Songti SC"', note)
+        self.assertNotIn('class="essay-byline"', note)
+        self.assertIn('/static/css/notes.css', note)
         self.assertEqual(note.count('class="essay-pair"'), 4)
         self.assertNotIn('<strong>Creator.</strong>', note)
 
@@ -648,9 +648,8 @@ class SiteContractTests(unittest.TestCase):
         ):
             self.assertNotIn(removed_copy, note)
 
-        self.assertIn('class="belief-byline"', note)
-        self.assertIn('src="../../static/assets/img/photo-600.webp"', note)
-        self.assertIn('--belief-cjk-serif: "Songti SC"', note)
+        self.assertNotIn('class="belief-byline"', note)
+        self.assertIn('/static/css/notes.css', note)
         self.assertNotIn('class="belief-card"', note)
         self.assertNotIn('class="belief-kicker"', note)
         self.assertIn('data-title-zh="我所相信的事 ｜ 朱振方"', note)
