@@ -11,8 +11,16 @@
     line-height: 1.4;
     font-weight: 400;
 }
-.echoes-slogan { margin: 0 0 20px; color: var(--ink); font-size: clamp(1.3rem, 3.5vw, 1.65rem); line-height: 1.65; }
 .echoes-stream { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--divider); }
 .echoes-empty { margin: 0; color: var(--nav); font-size: 14px; }
-.echoes-footer { margin-top: 64px; color: var(--nav); font-size: 12px; }
+.echoes-byline {
+    margin: 48px 0 0;
+    padding-left: 14px;
+    border-left: 2px solid var(--divider);
+    color: var(--nav);
+    font-size: 13px;
+    line-height: 1.8;
+    font-weight: 400;
+}
+.echoes-footer { margin-top: 32px; color: var(--nav); font-size: 12px; }
 @media (max-width: 480px) { .echoes-page { padding: 24px 20px; } }
