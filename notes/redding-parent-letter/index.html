@@ -319,21 +319,21 @@
       justify-self: start;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      margin-top: 28px;
-      padding: 15px 28px;
-      min-height: 56px;
-      border-radius: 8px;
-      background: var(--accent);
-      color: #fff;
-      font-size: 20px;
-      font-weight: 720;
+      gap: 16px;
+      margin-top: 26px;
+      padding: 10px 0;
+      min-height: 44px;
+      border-bottom: 1px solid #b9b9b2;
+      color: var(--ink);
+      font-size: 17px;
+      font-weight: 560;
       line-height: 1.4;
       text-decoration: none;
     }
 
-    .signup-button:hover { background: #245bd0; }
-    .signup-button:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+    .signup-button::after { content: "↗"; font-size: 19px; color: var(--muted); }
+    .signup-button:hover { border-bottom-color: var(--ink); }
+    .signup-button:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; }
 
     @media (max-width: 720px) {
       body { line-height: 1.72; }
@@ -369,7 +369,7 @@
       .closing .answer { font-size: 32px; }
       footer { margin-top: 24px; justify-content: flex-start; line-height: 1.65; }
 
-      .signup-button { width: 100%; font-size: 20px; }
+      .signup-button { font-size: 17px; }
 
     }
 
