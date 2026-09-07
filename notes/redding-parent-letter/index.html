@@ -60,11 +60,10 @@
       border-bottom: 1px solid var(--line);
       background: transparent;
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr) auto;
       grid-template-areas:
-        "title"
-        "slogan"
-        "signup";
+        "title signup"
+        "slogan slogan";
       column-gap: 16px;
       align-items: start;
     }
@@ -320,7 +319,8 @@
       display: inline-flex;
       align-items: center;
       gap: 16px;
-      margin-top: 26px;
+      align-self: start;
+      margin-top: 4px;
       padding: 10px 0;
       min-height: 44px;
       border-bottom: 1px solid #b9b9b2;
@@ -342,11 +342,11 @@
       .hero {
         margin: 0 -22px;
         padding: 76px 22px 44px;
-        grid-template-columns: minmax(0, 1fr);
-        column-gap: 10px;
+        grid-template-columns: minmax(0, 1fr) 82px;
+        column-gap: 12px;
       }
       .hero::before { left: 22px; top: 48px; width: 34px; }
-      h1 { font-size: 24px; line-height: 1.14; }
+      h1 { font-size: clamp(16px, 5.1vw, 24px); line-height: 1.2; }
       .slogan { margin-top: 22px; font-size: 14.5px; }
       .slogan cite { display: block; margin: 4px 0 0; }
       .lead { padding: 32px 0 34px; font-size: 15px; }
@@ -369,7 +369,10 @@
       .closing .answer { font-size: 32px; }
       footer { margin-top: 24px; justify-content: flex-start; line-height: 1.65; }
 
-      .signup-button { font-size: 17px; }
+      .signup-button { width: 82px; font-size: 14px; gap: 7px; margin-top: 0; padding: 5px 0 8px; }
+      .signup-button > span { flex-shrink: 0; }
+      .signup-button .signup-action { display: block; }
+      .signup-button::after { font-size: 17px; }
 
     }
 
@@ -398,7 +401,7 @@
         <div class="slogan">
           <div>教育不是注满一桶水，而是点燃一把火。<cite>—— 叶芝</cite></div>
         </div>
-        <a class="signup-button" href="https://jcn5p0e6a7w3.feishu.cn/share/base/form/shrcnwrTbxZSoVY3KDUQ40wJJIc" target="_blank" rel="noopener noreferrer">点击填写报名表</a>
+        <a class="signup-button" href="https://jcn5p0e6a7w3.feishu.cn/share/base/form/shrcnwrTbxZSoVY3KDUQ40wJJIc" target="_blank" rel="noopener noreferrer"><span><span class="signup-action">点击填写</span>报名表</span></a>
       </header>
 
       <main>
