@@ -42,8 +42,9 @@ def render(entry):
             assert isinstance(item['text'], str) and item['text'].strip()
             note = f'<p class="echo-note-body">{e(item["note"])}</p>' if item.get('note') else ''
             items.append(f'<li class="echo-quote"><p class="echo-note-title">{e(item["text"])}</p>{note}</li>')
-        section_title = re.sub(r'^[^\w\u4e00-\u9fff]+', '', section['title']).strip()
-        sections.append(f'<section class="echo-section"><h3 class="echo-section-title">{e(section_title)}</h3><ul class="echo-quote-list">{"".join(items)}</ul></section>')
+        section_title = re.sub(r'^[^\w\u4e00-\u9fff]+', '', section.get('title', '')).strip()
+        section_heading = f'<h3 class="echo-section-title">{e(section_title)}</h3>' if section_title else ''
+        sections.append(f'<section class="echo-section">{section_heading}<ul class="echo-quote-list">{"".join(items)}</ul></section>')
     source_url = re.search(r'https?://[^\s]+', entry['source'])
     source_title = entry['source'][:source_url.start()].strip() if source_url else entry['source']
     source_link = f'<a href="{e(source_url.group(), quote=True)}" target="_blank" rel="noopener noreferrer">{bilingual("查看原始内容 ↗", "View source ↗")}</a>' if source_url else ''
