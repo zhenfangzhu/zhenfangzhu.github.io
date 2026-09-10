@@ -3,7 +3,23 @@
   "date": "2026-01-14",
   "title": "张小珺：对话 Manus CEO 肖弘",
   "type": "播客",
-  "source": "张小珺Jùn · EP.95",
-  "status": "pending",
-  "sections": []
+  "source": "张小珺Jùn｜商业访谈录：95. 世界不是线性外推，让自己成为博弈中的重要变量 https://www.xiaoyuzhoufm.com/episode/67c3d80fb0167b8db9e3ec0f",
+  "status": "published",
+  "sections": [
+    {
+      "title": "手记",
+      "items": [
+        {
+          "text": "我们的能力包括资源不足以我们自研大模型，那就赌大模型厂商未来的技术突破方向，以此锚定我们要开发APP的核心功能",
+          "note": ""
+        },
+        {
+          "text": "瞄准大模型时代的“豌豆荚窗口期”，提前布局适配大模型技术突破方向的第三方生态平台，APP及相关应用的分发与服务先机",
+          "note": ""
+        }
+      ]
+    }
+  ],
+  "source_short": "张小珺Jùn · EP.95 · 小宇宙",
+  "rating": 5
 }
