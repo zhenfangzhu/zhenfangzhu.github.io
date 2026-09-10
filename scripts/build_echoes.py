@@ -26,6 +26,10 @@ def render(entry):
     meta = f'<span class="echo-meta"><time class="echo-date" datetime="{entry["date"]}">{entry["date"].replace("-", "/")}</time><span class="echo-tag">{e(entry["type"])}</span>'
     if not ready:
         meta += '<span class="echo-pending">' + bilingual('待整理', 'Notes pending') + '</span>'
+    rating = entry.get('rating')
+    assert rating is None or type(rating) is int and 1 <= rating <= 5
+    if rating:
+        meta += f'<span class="echo-rating" aria-label="{rating}/5">{"★" * rating}</span>'
     meta += '</span>'
     heading = f'{meta}<h2 class="echo-title">{e(entry["title"])}</h2><span class="echo-source">{e(entry.get("source_short", entry["source"]))}</span>'
     if not ready:
@@ -38,14 +42,14 @@ def render(entry):
             assert isinstance(item['text'], str) and item['text'].strip()
             note = f'<p class="echo-note-body">{e(item["note"])}</p>' if item.get('note') else ''
             items.append(f'<li class="echo-quote"><p class="echo-note-title">{e(item["text"])}</p>{note}</li>')
-        sections.append(f'<section class="echo-section"><h3 class="echo-section-title">{e(section["title"])}</h3><ul class="echo-quote-list">{"".join(items)}</ul></section>')
-    rating = entry.get('rating')
-    assert rating is None or type(rating) is int and 1 <= rating <= 5
-    extra = f'<p class="echo-source">{e(entry["source"])}</p>' if entry.get('source_short') else ''
-    if rating:
-        extra += f'<p class="echo-date" aria-label="{rating}/5">{"★" * rating}</p>'
+        section_title = re.sub(r'^[^\w\u4e00-\u9fff]+', '', section['title']).strip()
+        sections.append(f'<section class="echo-section"><h3 class="echo-section-title">{e(section_title)}</h3><ul class="echo-quote-list">{"".join(items)}</ul></section>')
+    source_url = re.search(r'https?://[^\s]+', entry['source'])
+    source_title = entry['source'][:source_url.start()].strip() if source_url else entry['source']
+    source_link = f'<a href="{e(source_url.group(), quote=True)}" target="_blank" rel="noopener noreferrer">{bilingual("查看原始内容 ↗", "View source ↗")}</a>' if source_url else ''
+    source = f'<aside class="echo-source-detail"><p class="echo-source-label">{bilingual("来源", "Source")}</p><p>{e(source_title)}</p>{source_link}</aside>'
     actions = f'<div class="echo-reading-actions"><a href="#{slug}">{bilingual("本条链接", "Link to note")}</a><button type="button" class="echo-close" hidden>{bilingual("收起笔记 ↑", "Collapse note ↑")}</button></div>'
-    return f'<details class="echo-card" id="{slug}"><summary>{heading}<span class="echo-chevron" aria-hidden="true"></span></summary><div class="echo-body">{extra}{"".join(sections)}{actions}</div></details>'
+    return f'<details class="echo-card" id="{slug}"><summary>{heading}<span class="echo-chevron" aria-hidden="true"></span></summary><div class="echo-body">{"".join(sections)}{source}{actions}</div></details>'
 
 
 def build(check=False):

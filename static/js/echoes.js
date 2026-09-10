@@ -24,7 +24,8 @@
         const allOpen = readable.length > 0 && readable.every(card => card.open);
         toggle.disabled = readable.length === 0;
         toggle.textContent = allOpen ? text('收起全部', 'Collapse all') : text('展开全部', 'Expand all');
-        document.querySelector('#echo-count').textContent = text(`${visible.length} 条记录 · ${readable.length} 篇笔记`, `${visible.length} entries · ${readable.length} notes`);
+        const pending = visible.length - readable.length;
+        document.querySelector('#echo-count').textContent = text(`${readable.length} 篇笔记${pending ? ` · ${pending} 篇待整理` : ''}`, `${readable.length} notes${pending ? ` · ${pending} pending` : ''}`);
         document.querySelector('#echo-empty').hidden = visible.length > 0;
         input.placeholder = text('标题、人物或正文', 'Title, person or text');
     }

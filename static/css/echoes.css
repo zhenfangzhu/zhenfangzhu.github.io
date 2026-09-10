@@ -1,151 +1,75 @@
+/* Shared reading rhythm for the archive and existing standalone notes. */
 .echoes-page {
-    width: min(100%, 680px);
+    --echo-body-size: 14px;
+    width: min(100%, 720px);
     margin-inline: auto;
-    padding: 32px 24px;
+    padding: 48px 24px 80px;
     font-family: var(--site-ui-font);
 }
-.echoes-heading p,
-.echoes-heading h1 {
-    margin: 0;
-    color: var(--nav);
-    font-size: 14px;
-    line-height: 1.4;
-    font-weight: 400;
-}
+.echoes-heading p, .echoes-heading h1 { margin: 0; color: var(--nav); font-size: 14px; line-height: 1.5; font-weight: 400; }
+.echoes-heading .echoes-intro { margin-top: 12px; font-size: 13px; line-height: 1.8; }
 .echoes-stream { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--divider); }
-.echoes-empty { margin: 0; color: var(--nav); font-size: 14px; }
-.echoes-byline {
-    margin: 48px 0 0;
-    padding-left: 14px;
-    border-left: 2px solid var(--divider);
-    color: var(--nav);
-    font-size: 13px;
-    line-height: 1.8;
-    font-weight: 400;
-}
+.echoes-byline { margin: 56px 0 0; padding-left: 16px; border-left: 2px solid var(--divider); color: var(--nav); font-size: 13px; line-height: 1.9; }
 .echoes-footer { margin-top: 32px; color: var(--nav); font-size: 12px; }
-
-/* entry */
-.echo-entry {
-    padding: 28px 0;
-    border-bottom: 1px solid var(--divider);
-}
+.echo-entry { padding: 32px 0; border-bottom: 1px solid var(--divider); }
 .echo-entry:last-child { border-bottom: 0; }
-.echo-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-.echo-date {
-    color: var(--nav);
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.01em;
-}
-.echo-tag {
-    color: var(--nav);
-    font-size: 11px;
-    border: 1px solid var(--divider);
-    padding: 1px 7px;
-    border-radius: 3px;
-    line-height: 1.6;
-}
-.echo-title {
-    margin: 0 0 4px;
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--ink);
-    line-height: 1.5;
-    letter-spacing: -0.01em;
-}
-.echo-source {
-    margin: 0 0 20px;
-    font-size: 12px;
-    color: var(--nav);
-    line-height: 1.5;
-}
-.echo-section { margin-bottom: 18px; }
+.echo-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.echo-date { color: var(--nav); font-size: 12px; font-variant-numeric: tabular-nums; line-height: 1.5; }
+.echo-tag { color: var(--nav); font-size: 11px; border: 1px solid var(--divider); padding: 1px 7px; border-radius: 3px; line-height: 1.6; }
+.echo-rating { color: var(--nav); font-size: 10px; letter-spacing: 2px; margin-left: 2px; }
+.echo-title { margin: 0 0 8px; color: var(--ink); font-size: 16px; font-weight: 500; line-height: 1.65; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.echo-source { display: block; margin: 0 0 24px; color: var(--nav); font-size: 12px; line-height: 1.7; }
+.echo-section { margin: 0 0 36px; }
 .echo-section:last-child { margin-bottom: 0; }
-.echo-section-title {
-    margin: 0 0 10px;
-    font-size: 12px;
-    color: var(--nav);
-    font-weight: 400;
-}
-.echo-quote-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-.echo-quote {
-    padding-left: 12px;
-    border-left: 2px solid var(--divider);
-}
-.echo-quote q {
-    display: block;
-    quotes: none;
-    font-size: 13.5px;
-    color: var(--ink);
-    line-height: 1.75;
-}
-.echo-quote cite {
-    display: block;
-    font-style: normal;
-    font-size: 12px;
-    color: var(--nav);
-    margin-top: 3px;
-    line-height: 1.5;
-}
+.echo-section-title { margin: 0 0 18px; color: var(--nav); font-size: 12px; line-height: 1.7; font-weight: 500; }
+.echo-quote-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 24px; }
+.echo-quote { padding-left: 16px; border-left: 2px solid var(--divider); }
+.echo-note-title, .echo-quote q { display: block; margin: 0; color: var(--ink); font-size: var(--echo-body-size); line-height: 1.95; font-weight: 400; quotes: none; white-space: pre-line; }
+.echo-note-title:has(+ .echo-note-body) { font-weight: 500; }
+.echo-note-body, .echo-quote cite { display: block; margin: 8px 0 0; color: var(--ink); font-size: var(--echo-body-size); line-height: 1.95; font-style: normal; white-space: pre-line; }
 
-@media (max-width: 480px) { .echoes-page { padding: 24px 20px; } }
-
-
-/* Notes retain the reference's quiet title and secondary text hierarchy. */
-.echo-note-title { margin: 0; font-size: 13.5px; color: var(--ink); line-height: 1.75; font-weight: 400; }
-.echo-note-body { margin: 3px 0 0; font-size: 12px; color: var(--nav); line-height: 1.75; }
-
-.echo-item-status { display: block; margin: 4px 0; font-size: 11px; color: var(--nav); font-weight: 400; }
-
-/* The archive stays compact; notes expand in place. */
-.echoes-heading .echoes-intro { margin-top: 10px; font-size: 13px; line-height: 1.7; }
-.echoes-tools { margin-top: 28px; }
-.echoes-tools label { display: block; margin-bottom: 8px; color: var(--nav); font-size: 12px; }
-.echoes-tools input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--divider); border-radius: 6px; background: var(--page); color: var(--ink); font: 14px/1.5 var(--site-ui-font); }
+/* Quiet controls above the list. */
+.echoes-tools { margin-top: 36px; }
+.echoes-tools label { display: block; margin-bottom: 10px; color: var(--nav); font-size: 12px; }
+.echoes-tools input { width: 100%; min-height: 44px; padding: 11px 14px; border: 1px solid var(--divider); border-radius: 6px; background: var(--page); color: var(--ink); font: 14px/1.5 var(--site-ui-font); }
 .echoes-tools input::placeholder { color: var(--nav); }
-.echoes-actions, .echo-reading-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.echoes-actions, .echo-reading-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; }
+.echoes-actions { margin-top: 8px; }
 .echoes-actions p { margin: 0; color: var(--nav); font-size: 12px; }
-.echoes-actions button, .echo-reading-actions button, .echo-reading-actions a { min-height: 44px; padding: 10px 0; border: 0; background: transparent; color: var(--nav); font: 12px/1.5 var(--site-ui-font); cursor: pointer; }
+.echoes-actions button, .echo-reading-actions button, .echo-reading-actions a { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 0; border: 0; background: transparent; color: var(--nav); font: 12px/1.5 var(--site-ui-font); cursor: pointer; }
 .echoes-actions button:hover, .echo-reading-actions button:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
 .echoes-actions button:disabled { opacity: .5; cursor: default; text-decoration: none; }
-.echoes-accordion { margin-top: 8px; padding-top: 0; }
+
+/* Every note uses the same summary, sections, source and closing actions. */
+.echoes-accordion { margin-top: 16px; padding-top: 0; }
 .echo-card { border-bottom: 1px solid var(--divider); scroll-margin-top: 88px; }
-.echo-card summary { position: relative; display: block; list-style: none; padding: 24px 32px 24px 0; cursor: pointer; border-radius: 3px; }
+.echo-card summary { position: relative; display: block; list-style: none; padding: 32px 32px 32px 0; cursor: pointer; border-radius: 3px; }
 .echo-card summary::-webkit-details-marker { display: none; }
 .echo-card summary::marker { content: ''; }
 .echo-card summary:hover .echo-title { color: var(--secondary); }
-.echo-card summary .echo-source { display: block; margin-bottom: 0; }
-.echo-card .echo-title { font-size: 15px; line-height: 1.6; }
-.echo-card .echo-meta { flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
-.echo-chevron { position: absolute; top: 49px; right: 5px; width: 8px; height: 8px; border-right: 1.5px solid var(--nav); border-bottom: 1.5px solid var(--nav); transform: rotate(45deg); transition: transform 180ms ease; }
+.echo-card summary .echo-source { margin-bottom: 0; }
+.echo-chevron { position: absolute; top: 58px; right: 5px; width: 8px; height: 8px; border-right: 1.5px solid var(--nav); border-bottom: 1.5px solid var(--nav); transform: rotate(45deg); transition: transform 180ms ease; }
 .echo-card[open] .echo-chevron { transform: rotate(225deg); }
-.echo-body { padding: 0 0 20px; overflow-wrap: anywhere; }
-.echo-body .echo-section { margin-bottom: 24px; }
-.echo-body .echo-section-title { font-size: 12px; margin-bottom: 12px; }
-.echo-body .echo-note-title { font-size: 14px; line-height: 1.8; white-space: pre-line; }
-.echo-body .echo-note-body { font-size: 13px; line-height: 1.8; white-space: pre-line; }
-.echo-reading-actions { border-top: 1px solid var(--divider); margin-top: 24px; }
-.echo-card-pending { padding: 20px 0; }
+.echo-body { padding: 8px 0 24px; overflow-wrap: anywhere; }
+.echo-source-detail { margin: 40px 0 16px; padding-top: 24px; border-top: 1px solid var(--divider); color: var(--nav); font-size: 12px; line-height: 1.8; }
+.echo-source-detail p { margin: 0; }
+.echo-source-detail .echo-source-label { margin-bottom: 8px; font-weight: 500; }
+.echo-source-detail a { display: inline-flex; align-items: center; min-height: 44px; }
+.echo-reading-actions { margin-top: 8px; }
+.echo-card-pending { padding: 32px 0; }
 .echo-card-pending .echo-title { color: var(--nav); font-weight: 400; }
-.echo-card-pending .echo-source { display: block; margin: 0; }
-.echo-pending { color: var(--nav); font-size: 11px; }
+.echo-card-pending .echo-source { margin: 0; }
+.echo-pending, .echo-item-status { color: var(--nav); font-size: 11px; }
 .echoes-page [hidden] { display: none !important; }
 .echoes-page :focus-visible { outline: 2px solid var(--nav); outline-offset: 4px; }
-.echoes-empty { padding: 28px 0; }
-@media (prefers-reduced-motion: reduce) { .echo-chevron { transition: none; } html { scroll-behavior: auto; } }
-@media (max-width: 480px) { .echo-card summary { padding-block: 20px; } .echo-chevron { top: 45px; } }
-
+.echoes-empty { margin: 0; padding: 32px 0; color: var(--nav); font-size: 14px; }
 html:has(.echoes-accordion) { scroll-behavior: auto; }
+@media (prefers-reduced-motion: reduce) { .echo-chevron { transition: none; } }
+@media (max-width: 480px) {
+    .echoes-page { padding: 32px 20px 64px; }
+    .echoes-tools { margin-top: 28px; }
+    .echo-card summary { padding-block: 28px; }
+    .echo-chevron { top: 54px; }
+    .echo-quote { padding-left: 14px; }
+    .echo-section { margin-bottom: 32px; }
+}
