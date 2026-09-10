@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN" data-language="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="听完之后，留下来的那些。">
+    <meta name="author" content="Zhenfang Zhu">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#151514" media="(prefers-color-scheme: dark)">
+    <title>Echoes｜回声</title>
+    <link rel="canonical" href="https://zhuzhenfang.com/echoes/">
+    <meta property="og:title" content="Echoes｜回声">
+    <meta property="og:description" content="听完之后，留下来的那些。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://zhuzhenfang.com/echoes/">
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico?v=2026071601">
+    <link href="/static/css/home.css?v=2026090302" rel="stylesheet">
+    <link href="/static/css/site-language.css?v=2026082701" rel="stylesheet">
+    <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
+    <script defer src="/static/js/site-language.js?v=2026090502"></script>
+    <link rel="stylesheet" href="/static/css/site-chrome.css?v=2026090502">
+    <link rel="stylesheet" href="/static/css/echoes.css?v=2026091003">
+    <script defer src="/static/js/echoes.js?v=2026091003"></script>
+</head>
+<body data-title-zh="Echoes｜回声" data-title-en="Echoes | Zhenfang Zhu">
+    <header class="site-chrome"><a class="site-return" href="/"><span data-lang="zh">← 返回个人主页</span><span data-lang="en">← Back to homepage</span></a></header>
+    <a class="skip-link" href="#echoes-content"><span data-lang="zh">跳到正文</span><span data-lang="en">Skip to content</span></a>
+    <main class="echoes-page" id="echoes-content">
+
+        <header class="echoes-heading"><h1>Echoes<span data-lang="zh">｜回声</span></h1><p class="echoes-intro"><span data-lang="zh">听完之后，留下来的那些。</span><span data-lang="en">What stayed after listening.</span></p></header>
+
+        <div class="echoes-tools" hidden>
+            <label for="echo-search"><span data-lang="zh">搜索笔记</span><span data-lang="en">Search notes</span></label>
+            <input id="echo-search" type="search" autocomplete="off" placeholder="标题、人物或正文" data-placeholder-en="Title, person or text">
+            <div class="echoes-actions"><p id="echo-count" role="status"></p><button type="button" id="echo-toggle-all"><span data-lang="zh">展开全部</span><span data-lang="en">Expand all</span></button></div>
+        </div>
+        <section class="echoes-stream echoes-accordion" aria-label="Echoes">
+{{ENTRIES}}
+        </section>
+        <p class="echoes-empty" id="echo-empty" hidden><span data-lang="zh">没有找到相关笔记，试试其他关键词。</span><span data-lang="en">No matching notes. Try another keyword.</span></p>
+        <p class="echoes-byline"><span data-lang="zh">我听见了一些东西。<br>它们离开以后，留下了这些。</span><span data-lang="en">I heard a few things.<br>After they were gone, this is what stayed.</span></p>
+    </main>
+</body>
+</html>
