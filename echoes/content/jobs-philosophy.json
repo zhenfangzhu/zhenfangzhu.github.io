@@ -3,7 +3,19 @@
   "date": "2026-01-10",
   "title": "乔布斯：人生哲学",
   "type": "视频",
-  "source": "B站",
-  "status": "pending",
-  "sections": []
+  "source": "乔布斯的人生哲学：https://b23.tv/yjlAweG",
+  "status": "published",
+  "sections": [
+    {
+      "title": "手记",
+      "items": [
+        {
+          "text": "“生活”是由不必你聪明的人创造的，当你发现这个秘密时，人生才真正开始。",
+          "note": ""
+        }
+      ]
+    }
+  ],
+  "source_short": "B站 · 乔布斯的人生哲学",
+  "rating": 5
 }
