@@ -9,12 +9,13 @@
 @media print{header,footer,.actions,.result-heading,details{display:none!important}.page-intro{padding:16px 0}.layout{display:block}.completed-layout>aside{display:none!important}.result-image{max-width:100%;border:0}.card{break-inside:avoid}body{background:white}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
-</style></head><body>
+</style><link rel="stylesheet" href="/shicao/focus.css"></head><body>
 <header><a class="home-link" href="/">← 返回个人主页</a><div class="header-actions"><button id="historyBtn">往日卦录</button><details class="more"><summary>更多</summary><div class="morepanel"><button onclick="downloadCurrent()">存下此录 · 文字</button><button id="clearBtn" class="danger">清除所有数据</button></div></details></div></header>
 <div class="wrap"><div class="page-intro"><div class="ritual-kicker">实用工具 / 蓍草起卦</div><h1>蓍草问易</h1><p>一事一问，分蓍成卦</p></div><div class="layout"><main id="main" class="card guide" aria-live="polite"></main><aside class="card" aria-label="卦象显示" aria-live="polite"><div class="meta"><h3>此 间 卦 象</h3><span id="progress"></span></div><p id="resultHelp" class="small"></p><div id="hexTitle"></div><div id="hex"></div><div id="changedHex"></div><div class="small">爻自下生，逐位而成 ↑<br>一画为阳，两断为阴；标「动」者，为此卦动爻。</div><details id="readingDetails" class="rule"><summary>此问 · 随记</summary><label for="question">起卦时所问 <span class="small">（只读）</span></label><textarea id="question" placeholder="起筮前所定之问，将留于此。"></textarea><label for="notes">手记 <span class="small">（选填）</span></label><textarea id="notes" placeholder="此刻有何所感？展卷之后，又有何所得？"></textarea></details><details><summary>筮法与须知</summary><div class="small">本页采用常见的大衍筮法：50 根中取 1 根始终不用，其余 49 根参与起卦；每一变都挂一，三变成爻。余数按 1–4 记，整除四时留 4 根。每爻结束后收回三变移出的蓍草，重新用 49 根。<p>网页操作时，先将手指或鼠标放在滑块上，闭眼随手拖动，松开只确定分堆位置，再点击“落定此分”提交本轮，避免按根数挑选。页面再按实际根数演算，不直接抽取爻值。左堆至少 1 根，右堆至少 2 根，以保证挂一后两堆都有蓍草。</p><p>不同传承可能有不同操作。本页只记录卦象，不提供断语，也不指定书籍页码。</p><a href="https://www.chinakongzi.org/content/3947_194609.html" target="_blank" rel="noopener">方法参考：中国孔子网《朱熹的〈周易〉观》</a></div></details></aside></div><details><summary>回看此筮 · 逐变明细</summary><div id="log" class="card tablewrap"></div></details></div>
 <footer><span id="status" role="status"></span> · 离线亦可起筮<br>欲久留此问此卦，请导出保存。</footer>
 <dialog id="historyDialog"><h3>往日卦录</h3><div class="small">旧问有迹，新问另起。另起一卦时，此前卦录会自动收存。</div><div id="historyList"></div><pre id="archiveView"></pre><button onclick="document.querySelector('#historyDialog').close()">关闭</button></dialog>
 <dialog id="clearDialog" aria-labelledby="clearTitle" aria-describedby="clearDescription"><h3 id="clearTitle">清除所有数据？</h3><p id="clearDescription">将清空此浏览器中本页保存的所有起卦进度、所问之事、手记、历史记录和撤销记录，恢复到初始页面。清除后无法恢复，请先导出需要保留的记录。</p><p class="small">仅清除此页面的数据，不影响其他网站或已经导出的文件。</p><p id="clearError" class="error" role="alert"></p><div class="actions"><button autofocus onclick="$('#clearDialog').close()">暂且留存 · 取消</button><button class="danger-solid" onclick="clearAllData()">确认清除所有数据</button></div></dialog>
+<script src="/shicao/focus.js"></script>
 <script>
 'use strict';
 const KEY='shicao-journal-v1', $=s=>document.querySelector(s), names=['初爻','二爻','三爻','四爻','五爻','上爻'], types={6:'老阴',7:'少阳',8:'少阴',9:'老阳'};
@@ -71,13 +72,13 @@ if(state.mode!=='virtual'&&state.step===2)html+=`<div class="eyebrow">二 · 挂
 if(state.mode!=='virtual'&&state.step===3){html+=`<div class="eyebrow">三 · 揲四</div><h2>四根一数，余者暂留。</h2><p>先数左堆，再数右堆，每次移开 4 根，直到各剩 <strong>1～4 根</strong>。如果刚好整除四，最后一组 4 根留下，记为 4，不能记为 0。</p>`;for(const side of ['left','right'])html+=`<label>${side==='left'?'左堆余数':'右堆余数（已取走挂一）'}</label><div class="choices" role="group" aria-label="${side==='left'?'左堆':'右堆'}余数">${[1,2,3,4].map(n=>`<button aria-pressed="${state[side]===n}" onclick="choose('${side}',${n})">${n}</button>`).join('')}</div>`;html+=`<div class="hint">${state.left&&state.right?`挂一 1 ＋ 左余 ${state.left} ＋ 右余 ${state.right} ＝ <strong>${1+state.left+state.right} 根</strong>`:'依手中实数，记下左右所余。'}</div>${state.left&&state.right&&!valid()?`<p class="error" role="alert">数目未合：第 ${round} 变合计应为 ${round===1?'5 或 9':'4 或 8'} 根。且缓一步，请复点本变总数、挂一及两侧余数。</p>`:''}${navigation('数已核实，继续 →','confirmRemainders()',!valid())}`}
 if(state.mode!=='virtual'&&state.step===4){const t=1+state.left+state.right;html+=`<div class="eyebrow">四 · 归奇</div><h2>移出 ${t} 根，合拢剩余的蓍草。</h2><p>将挂一的 1 根、左余 ${state.left} 根、右余 ${state.right} 根放到一旁。把两边四根一组数出的蓍草重新合起来。</p><div class="count">${r-t}<small> 根应留在手中</small></div><div class="hint">${round===3?`第三变完成后，以 ${r-t} ÷ 4 得到本爻数。`:'移出的蓍草先不要收回，下一变只用手中剩下的这些。'}</div>${navigation('数目相合，记下此变 →','record()')}`}
 if(state.step===5){const val=v[v.length-1];html+=`<h2>第 ${v.length} 爻：${types[val]}${val===6||val===9?' · 动':''}</h2><div class="count">${val*4}<small> ÷ 4 ＝ </small>${val}</div><p>${val===6?'阴爻，变后成为阳爻。':val===9?'阳爻，变后成为阴爻。':val===7?'阳爻，变后保持不变。':'阴爻，变后保持不变。'}已记在从下往上的第 ${v.length} 个位置。</p><p class="small">${v.length<6?'此爻既成，收齐四十九根，再起下一爻。':'六爻齐备。'}</p>${navigation(v.length<6?'收齐四十九蓍，再起一爻 →':'六爻已齐，观此卦象 →','nextLine()')}`}
-if(state.step===6){html=`<div class="result-heading"><div><div class="eyebrow">六爻已定 · 问卦留影</div><h2>六爻既定，留此一问一卦。</h2></div><button class="primary" onclick="saveResultImage()">留存此卦 · 图片</button></div><p>卦已成，且展卷相参。所问、所求与六爻尽在此图；可截图留存，或保存后交给 AI 解读。</p><img id="resultImage" class="result-image" alt="问卦结果图片"><p id="imageStatus" class="small" role="status"></p><div class="actions">${button('返回核对卦象','back()')}${button('存下卦录 · 文字','downloadCurrent()')}${button('写下参悟','openNotes()')}${button('收存此卦，另起一问','newReading()')}</div><details class="result-notes"><summary>此卦随记</summary><textarea id="finalNotes" aria-label="此卦随记">${escapeHTML(state.notes)}</textarea></details>`}
+if(state.step===6){html=`<div class="result-heading"><div><div class="eyebrow">六爻已定 · 问卦留影</div><h2>六爻既定，留此一问一卦。</h2></div><button class="primary" onclick="saveResultImage()">留存此卦 · 图片</button></div><p>卦已成，且展卷相参。所问、所求与六爻尽在此图；可截图留存，或保存后交给 AI 解读。</p><img id="resultImage" class="result-image" alt="问卦结果图片"><p id="imageStatus" class="small" role="status"></p><div class="result-followup"><div id="resultLogSlot"></div>${button('收起此卦，另起一问','newReading()')}</div>`}
 
 if(state.step!==6)html=html.replace('<div class="actions">',stepAnnotation()+'<div class="actions">');
 if(state.mode==='virtual'&&state.auto!==false&&state.step>=2&&state.step<=5){
 html=html.replace(/<div class="actions">[\s\S]*?<\/div>/,navigation('依数推演，完成此变 →','finishAutoRound()'));
 }
-$('#main').innerHTML=html;bindSplitGesture();bindResultCard();bindOpeningQuestions();
+const previousFocus=captureReadingFocus();$('#main').innerHTML=html;arrangeReadingSurface();bindSplitGesture();bindResultCard();bindOpeningQuestions();restoreReadingFocus(previousFocus);
 $('#log').innerHTML=state.records.length?`<table><thead><tr><th>爻位</th><th>变次</th><th>左余</th><th>右余</th><th>移出（含挂一）</th><th>剩余</th></tr></thead><tbody>${state.records.map((x,i)=>`<tr><td>${names[Math.floor(i/3)]}</td><td>${i%3+1}</td><td>${x.left}</td><td>${x.right}</td><td>${x.total}</td><td>${49-state.records.slice(Math.floor(i/3)*3,i+1).reduce((a,b)=>a+b.total,0)}</td></tr>`).join('')}</tbody></table>`:'此筮尚未起笔。每落定一变，便在此留下一记。';save()}
 function confirmRemainders(){if(!valid())return;if(!automaticBatch)undo.push(copy(state));state.step=4;save();render()}
 function textRecord(s){const v=lines(s);let t=`蓍草问易\n起卦时间：${new Date(s.date).toLocaleString('zh-CN')}（查看设备当地时间）\n起卦时间 UTC：${new Date(s.date).toISOString()}\n所问：${s.question||'未填写'}\n所求：${s.purpose||'未填写'}\n方法：49 根，三变皆挂一（${s.mode==='virtual'?'屏上分蓍':'执蓍手记'}）\n六爻（自下而上）：${v.join('、')}\n`;if(v.length===6){const a=info(v),b=info(v,true);t+=`本卦：第 ${a.number} 卦 ${a.name}（${a.description}）\n之卦：第 ${b.number} 卦 ${b.name}（${b.description}）\n动爻：${v.map((x,i)=>x===6||x===9?lineLabel(x,i):null).filter(Boolean).join('、')||'无'}\n卦画（自上而下）：\n${v.slice().reverse().map(x=>(x%2?'━━━━━━':'━━  ━━')+' '+types[x]+(x===6||x===9?'（动）':'')).join('\n')}\n`}t+='\n揲蓍明细：\n'+s.records.map((r,i)=>`${names[Math.floor(i/3)]} 第${i%3+1}变：${r.split?`分堆左${r.split}，右${49-s.records.slice(Math.floor(i/3)*3,i).reduce((n,x)=>n+x.total,0)-r.split}（${r.splitMethod==='random'?'随机分堆':'手动分堆'}），`:''}左余${r.left}，右余${r.right}，挂一1，移出${r.total}，剩余${49-s.records.slice(Math.floor(i/3)*3,i+1).reduce((n,x)=>n+x.total,0)}`).join('\n');return t+'\n\n手记：\n'+s.notes+(v.length===6?'\n\n请 AI 参解此卦：\n'+AI_REQUEST:'')}
@@ -85,7 +86,6 @@ let resultCanvas=null;
 const AI_REQUEST='请结合图中所问、所求、本卦、动爻与之卦，依据《周易》的卦爻辞，参考《高岛易断》，并结合起卦时间、时令节气，解读当前处境、变化趋势与进退时机，给出贴合所问的行动启发。说明依据，不编造原文，不将卦象视为定论。';
 function bindResultCard(){
 if(state.step!==6){resultCanvas=null;return}
-$('#finalNotes').addEventListener('input',e=>{state.notes=e.target.value;$('#notes').value=state.notes;save()});
 drawResultCard();
 }
 function drawResultCard(){
@@ -95,7 +95,8 @@ const font='"PingFang SC", "Microsoft YaHei", sans-serif';
 function wrap(text,width,size){ctx.font=`${size}px ${font}`;const lines=[];for(const paragraph of String(text).split('\n')){let line='';for(const char of paragraph){if(line&&ctx.measureText(line+char).width>width){lines.push(line);line=char}else line+=char}lines.push(line)}return lines}
 const q=wrap(state.question||'起卦时未记录所问',W-pad*2,30),p=wrap(state.purpose||'起卦时未记录所求',W-pad*2,28),prompt=wrap(AI_REQUEST,W-pad*2,23);
 const bodyY=220+q.length*44+74+p.length*40+48,H=bodyY+540+150+prompt.length*35+100;
-canvas.width=W;canvas.height=H;ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#dedfd6';ctx.lineWidth=2;ctx.strokeRect(22,22,W-44,H-44);
+// Render at double resolution while preserving the layout coordinates.
+const pixelRatio=2;canvas.width=W*pixelRatio;canvas.height=H*pixelRatio;ctx.scale(pixelRatio,pixelRatio);ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#dedfd6';ctx.lineWidth=2;ctx.strokeRect(22,22,W-44,H-44);
 const text=(t,x,y,size=28,color='#282828')=>{ctx.font=`${size}px ${font}`;ctx.fillStyle=color;ctx.fillText(t,x,y)};
 text('蓍草问易 · 问卦结果',pad,90,38,'#414b36');text('起卦时间：'+new Date(state.date).toLocaleString('zh-CN',{hour12:false})+'（查看设备当地时间）',pad,135,21,'#6b6b62');text('起卦时间 UTC：'+new Date(state.date).toISOString(),pad,165,18,'#6b6b62');
 let y=190;text('此卦所问',pad,y,22,'#68745a');y+=46;for(const l of q){text(l,pad,y,30);y+=44}y+=25;text('此卦所求',pad,y,22,'#68745a');y+=42;for(const l of p){text(l,pad,y,28);y+=40}
@@ -147,7 +148,6 @@ if(state.step===5)nextLine();
 }finally{automaticBatch=false;save();render()}
 }
 function setAutomatic(value){if(state.step!==0)return;state.auto=value;save();render()}
-function openNotes(){if(state.step===6){$('.result-notes').open=true;$('#finalNotes').focus();$('#finalNotes').scrollIntoView({block:'center'});return}$('#readingDetails').open=true;$('#notes').focus();$('#notes').scrollIntoView({block:'center',behavior:'auto'})}
 function autoReceipt(){
 if(state.mode!=='virtual'||state.auto===false||!state.records.length)return '';
 const i=state.records.length-1,x=state.records[i],start=Math.floor(i/3)*3;
