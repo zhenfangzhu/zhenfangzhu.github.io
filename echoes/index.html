@@ -20,8 +20,8 @@
     <script>try{const l=localStorage.getItem('site-language');if(l==='en'||l==='zh'){document.documentElement.dataset.language=l;document.documentElement.lang=l==='zh'?'zh-CN':'en'}}catch(e){}</script>
     <script defer src="/static/js/site-language.js?v=2026090502"></script>
     <link rel="stylesheet" href="/static/css/site-chrome.css?v=2026090502">
-    <link rel="stylesheet" href="/static/css/echoes.css?v=2026091004">
-    <script defer src="/static/js/echoes.js?v=2026091004"></script>
+    <link rel="stylesheet" href="/static/css/echoes.css?v=2026091101">
+    <script defer src="/static/js/echoes.js?v=2026091101"></script>
 </head>
 <body data-title-zh="Echoes｜回声" data-title-en="Echoes | Zhenfang Zhu">
     <header class="site-chrome"><a class="site-return" href="/"><span data-lang="zh">← 返回个人主页</span><span data-lang="en">← Back to homepage</span></a></header>
@@ -31,8 +31,11 @@
         <header class="echoes-heading"><h1>Echoes<span data-lang="zh">｜回声</span></h1></header>
 
         <div class="echoes-tools" hidden>
-            <label for="echo-search"><span data-lang="zh">搜索笔记</span><span data-lang="en">Search notes</span></label>
-            <input id="echo-search" type="search" autocomplete="off" placeholder="标题、人物或正文" data-placeholder-en="Title, person or text">
+            <label class="echo-visually-hidden" for="echo-search"><span data-lang="zh">搜索笔记</span><span data-lang="en">Search notes</span></label>
+            <div class="echo-search-line">
+            <svg class="echo-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg>
+            <input id="echo-search" type="search" autocomplete="off" placeholder="搜索回声" data-placeholder-en="Search echoes">
+            </div>
             <div class="echoes-actions"><p id="echo-count" role="status"></p><button type="button" id="echo-toggle-all"><span data-lang="zh">展开全部</span><span data-lang="en">Expand all</span></button></div>
         </div>
         <section class="echoes-stream echoes-accordion" aria-label="Echoes">
