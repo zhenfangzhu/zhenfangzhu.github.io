@@ -151,3 +151,17 @@ header .more[open]{z-index:30}
 .focus-nav-actions button{padding:10px 0;white-space:nowrap}
 @media(max-width:380px){.focus-nav{gap:8px}.focus-nav-actions{gap:10px}.focus-nav-actions button{font-size:12px}}
 @media(max-height:480px) and (min-width:600px){.focus-top>.meta{padding-right:220px}}
+/* A quiet dividing line over the stalks; the native range remains the input surface. */
+.focus-stage .gesture-mat{border-color:#eee9dd;border-radius:3px;background:linear-gradient(120deg,#faf8f1,#f5f2e9 55%,#faf8f2)}
+.focus-stage .slider-label{color:#82785f;letter-spacing:.5em}
+.focus-stage .split-bed{isolation:isolate}
+.focus-stage .ritual-divider{opacity:0;z-index:2;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none;border:0;box-shadow:none}
+.focus-stage .ritual-divider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;background:transparent;border:0;box-shadow:none;filter:none}
+.focus-stage .ritual-divider::-moz-range-thumb{appearance:none;background:transparent;border:0;box-shadow:none;filter:none}
+.focus-stage .split-bed .reed{border-radius:2px;background:linear-gradient(90deg,#a59065,#c4b18c 55%,#af9a72);transition:transform 180ms ease-out}
+.reed-divider{position:absolute;top:12%;bottom:12%;width:1px;background:linear-gradient(transparent,#7c7053 20%,#7c7053 80%,transparent);pointer-events:none;z-index:1}
+.reed-divider::after{content:'';position:absolute;bottom:-4px;left:-2px;width:5px;height:5px;background:#8c7d5c;transform:rotate(45deg)}
+.split-bed.dividing .reed-divider{background:linear-gradient(transparent,#514931 20%,#514931 80%,transparent)}
+.focus-stage .split-bed:has(.ritual-divider:focus-visible){outline:1px solid #9a947f;outline-offset:4px;border-radius:2px}
+.focus-stage .gesture-hint{color:#7b735f}
+@media(prefers-reduced-motion:reduce){.focus-stage .split-bed .reed{transition:none}}

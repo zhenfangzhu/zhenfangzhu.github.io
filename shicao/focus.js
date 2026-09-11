@@ -67,6 +67,7 @@ function arrangeReadingSurface(){
   const stage=document.createElement('div');stage.className='focus-stage'+(main.querySelector('#splitRange')?' is-splitting':'');
   stage.append(...main.childNodes);main.append(top,stage,dock);
   arrangeRecollection(stage,dock);
+  bindReedVisual();
  }
  else{
   layout.append(readingSidebar);
@@ -113,4 +114,19 @@ function arrangeRecollection(stage,dock){
  dock.querySelector('.focus-feedback').textContent='意定再继续，不必赶时间。';
  const action=document.createElement('button');action.id='continueAfterRecollection';action.type='button';action.className='primary recollection-continue';action.textContent='此问在心，继续分蓍';
  action.onclick=()=>{recollectedLines.add(lineIndex);render()};dock.append(action);
+}
+
+function bindReedVisual(){
+ const slider=document.querySelector('#splitRange');if(!slider)return;
+ const bed=slider.closest('.split-bed'),stalks=[...bed.querySelectorAll('.reed')];
+ const divider=document.createElement('span');divider.className='reed-divider';divider.setAttribute('aria-hidden','true');bed.append(divider);
+ const update=()=>{
+  const split=Number(slider.value);
+  divider.style.left=`calc(16px + (100% - 32px) * ${split/stalks.length})`;
+  stalks.forEach((stalk,i)=>{stalk.style.transform=`translateX(${i<split?-7:7}px)`});
+ };
+ slider.addEventListener('input',update);
+ slider.addEventListener('pointerdown',()=>bed.classList.add('dividing'));
+ for(const event of ['pointerup','pointercancel','lostpointercapture'])slider.addEventListener(event,()=>bed.classList.remove('dividing'));
+ update();
 }
