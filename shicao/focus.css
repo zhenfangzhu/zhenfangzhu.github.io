@@ -134,3 +134,20 @@ body.focus-reading{background:#fff}
 .recollection-question>p{white-space:pre-wrap;overflow-wrap:anywhere;font-size:20px;line-height:1.8;color:var(--ink);margin:8px 0}
 .recollection-continue{width:100%;min-height:52px;border-radius:8px;font-size:14px}
 @media(max-height:700px){.recollection{margin-top:12px}.recollection>p{margin-bottom:16px}.recollection-question{margin:16px 0}.recollection-question>p{font-size:18px}.recollection-continue{min-height:48px}}
+/* Consistent native button/summary metrics, including mobile Safari. */
+header .home-link,header .header-actions>button,header .more>summary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;font:400 13px/20px var(--sans);white-space:nowrap;box-sizing:border-box}
+header .home-link{justify-content:flex-start}
+header .header-actions>button,header .more>summary{height:44px;padding:12px 10px;border:0}
+header .more{margin:0;flex:none}
+header .more>summary{list-style:none}
+header .more>summary::-webkit-details-marker{display:none}
+header .more[open]{z-index:30}
+@media(max-width:760px){
+ textarea{font-size:16px}
+ .select-stalks{grid-template-columns:repeat(auto-fit,minmax(44px,1fr))}
+}
+@media(min-width:761px) and (max-width:1024px){textarea{font-size:16px}.select-stalks{grid-template-columns:repeat(auto-fit,minmax(44px,1fr))}}
+.focus-nav-actions{display:flex;align-items:center;gap:14px}
+.focus-nav-actions button{padding:10px 0;white-space:nowrap}
+@media(max-width:380px){.focus-nav{gap:8px}.focus-nav-actions{gap:10px}.focus-nav-actions button{font-size:12px}}
+@media(max-height:480px) and (min-width:600px){.focus-top>.meta{padding-right:220px}}

@@ -47,8 +47,9 @@ function arrangeReadingSurface(){
   main.querySelector('.intention')?.remove();
   const top=document.createElement('div');top.className='focus-top';
   const nav=document.createElement('div');nav.className='focus-nav';
-  nav.innerHTML='<a href="/">← 个人主页</a><button type="button">卦象与说明</button>';
-  nav.querySelector('button').onclick=showReadingInfo;top.append(nav);
+  nav.innerHTML='<a href="/">← 个人主页</a><div class="focus-nav-actions"><button type="button" class="reading-info-button">卦象与说明</button><button type="button" class="reading-clear-button danger">清除所有数据</button></div>';
+  nav.querySelector('.reading-info-button').onclick=showReadingInfo;
+  nav.querySelector('.reading-clear-button').onclick=()=>document.querySelector('#clearBtn').click();top.append(nav);
   const values=lines();
   const live=document.createElement('aside');live.className='focus-live-hex';live.setAttribute('aria-label',`已成 ${values.length} 爻，卦爻自下而上显现`);
   live.innerHTML='<div class="live-hex-title">此间卦象 <span>'+values.length+' / 6 爻</span></div><div class="live-hex-lines">'+Array.from({length:6},(_,j)=>{
