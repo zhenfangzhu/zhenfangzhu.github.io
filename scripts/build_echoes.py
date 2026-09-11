@@ -81,12 +81,14 @@ def share_page(entry, template):
     <meta name="twitter:description" content="{summary}">
     <meta name="twitter:image" content="{image}">
 '''
+    stats = re.search(r'<footer class="echoes-stats".*?</footer>', template, re.S).group()
     nav = bilingual('← 返回回声', '← Back to Echoes')
     return head.replace('</head>', metadata + '</head>') + f'''<body>
     <header class="site-chrome"><a class="site-return" href="/echoes/#{entry['id']}">{nav}</a></header>
     <main class="echoes-page" id="echoes-content">
         <header class="echoes-heading"><p>Echoes<span data-lang="zh">｜回声</span></p></header>
         {render(entry, standalone=True)}
+        {stats}
     </main>
 </body>
 </html>

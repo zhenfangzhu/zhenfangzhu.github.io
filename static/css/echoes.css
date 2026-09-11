@@ -81,3 +81,5 @@ html:has(.echoes-accordion) { scroll-behavior: auto; }
 .echo-standalone { margin-top: 40px; border-top: 1px solid var(--divider); border-bottom: 0; }
 .echo-standalone > header { margin-bottom: 36px; }
 .echo-standalone .echo-title { font-size: 22px; line-height: 1.6; }
+
+.echoes-stats { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 32px; color: var(--nav); font-size: 11px; line-height: 1.8; font-variant-numeric: tabular-nums; }
