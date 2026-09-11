@@ -18,6 +18,7 @@
   "type": "视频",
   "source": "节目或文章的完整名称",
   "status": "published",
+  "summary": "用于分享卡片的简短摘要",
   "sections": [
     {
       "title": "这一部分的主题",
@@ -29,9 +30,9 @@
 }
 ```
 
-`source_short` 可选，用于折叠状态的短来源；`rating` 可选，整数 1–5。`sections` 可以有多节，每节可以有多条，文字里的换行写成 `\n`。内容按纯文本转义，不执行 HTML。`id` 必须唯一且保持稳定，分享地址为 `/echoes/#example-note`。
+`source_short` 可选，用于折叠状态的短来源；`rating` 可选，整数 1–5。`sections` 可以有多节，每节可以有多条，文字里的换行写成 `\n`。内容按纯文本转义，不执行 HTML。`id` 必须唯一且保持稳定，分享地址为 `/echoes/example-note/`，旧锚点 `/echoes/#example-note` 仍可定位展开。
 
-已有两篇独立页面是旧链接的兼容入口，后续阅读与分享统一用主题页锚点。提交文本给 Codex 时只需提供标题、日期、来源和正文，Codex 可整理为此格式。
+所有已发布笔记同时生成独立页面、1200×630 PNG 封面与站点地图条目；主题页继续折叠阅读。提交文本给 Codex 时只需提供标题、日期、来源和正文，Codex 可整理为此格式。
 
 ## 交互约定
 
@@ -43,3 +44,5 @@
 - 新内容自动进入搜索和计数，不需要修改交互脚本。
 
 分节 `title` 可留空或省略，正文会直接呈现；不要添加“手记”等占位标题。
+
+构建依赖 Pillow 和中文字体。此机器可使用 `/Users/hitler/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3` 执行上述命令；其他环境安装 Pillow，并用 `ECHO_COVER_FONT` 指定中文 TTF/TTC 字体。封面生成器在 `scripts/build_echo_covers.py`。`--check` 会验证主题页、所有独立页、封面和站点地图。
