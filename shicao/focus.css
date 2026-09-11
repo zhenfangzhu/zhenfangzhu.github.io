@@ -165,3 +165,10 @@ header .more[open]{z-index:30}
 .focus-stage .split-bed:has(.ritual-divider:focus-visible){outline:1px solid #9a947f;outline-offset:4px;border-radius:2px}
 .focus-stage .gesture-hint{color:#7b735f}
 @media(prefers-reduced-motion:reduce){.focus-stage .split-bed .reed{transition:none}}
+/* Long questions must not set the grid's intrinsic column width. */
+.focus-reading #main{grid-template-columns:minmax(0,1fr);min-width:0}
+.focus-top,.focus-stage,.focus-dock{min-width:0;max-width:100%}
+.focus-question{min-width:0;max-width:100%}
+.recollection{width:100%;min-width:0}
+.recollection-question{min-width:0}
+.recollection-question>p{overflow-wrap:anywhere;word-break:normal}
