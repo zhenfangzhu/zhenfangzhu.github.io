@@ -80,9 +80,17 @@ html=html.replace(/<div class="actions">[\s\S]*?<\/div>/,navigation('依数推�
 $('#main').innerHTML=html;bindSplitGesture();bindResultCard();bindOpeningQuestions();
 $('#log').innerHTML=state.records.length?`<table><thead><tr><th>爻位</th><th>变次</th><th>左余</th><th>右余</th><th>移出（含挂一）</th><th>剩余</th></tr></thead><tbody>${state.records.map((x,i)=>`<tr><td>${names[Math.floor(i/3)]}</td><td>${i%3+1}</td><td>${x.left}</td><td>${x.right}</td><td>${x.total}</td><td>${49-state.records.slice(Math.floor(i/3)*3,i+1).reduce((a,b)=>a+b.total,0)}</td></tr>`).join('')}</tbody></table>`:'此筮尚未起笔。每落定一变，便在此留下一记。';save()}
 function confirmRemainders(){if(!valid())return;if(!automaticBatch)undo.push(copy(state));state.step=4;save();render()}
-function textRecord(s){const v=lines(s);let t=`蓍草问易\n起卦时间：${new Date(s.date).toLocaleString('zh-CN')}\n所问：${s.question||'未填写'}\n所求：${s.purpose||'未填写'}\n方法：49 根，三变皆挂一（${s.mode==='virtual'?'屏上分蓍':'执蓍手记'}）\n六爻（自下而上）：${v.join('、')}\n`;if(v.length===6){const a=info(v),b=info(v,true);t+=`本卦：第 ${a.number} 卦 ${a.name}（${a.description}）\n之卦：第 ${b.number} 卦 ${b.name}（${b.description}）\n动爻：${v.map((x,i)=>x===6||x===9?lineLabel(x,i):null).filter(Boolean).join('、')||'无'}\n卦画（自上而下）：\n${v.slice().reverse().map(x=>(x%2?'━━━━━━':'━━  ━━')+' '+types[x]+(x===6||x===9?'（动）':'')).join('\n')}\n`}t+='\n揲蓍明细：\n'+s.records.map((r,i)=>`${names[Math.floor(i/3)]} 第${i%3+1}变：${r.split?`分堆左${r.split}，右${49-s.records.slice(Math.floor(i/3)*3,i).reduce((n,x)=>n+x.total,0)-r.split}（${r.splitMethod==='random'?'随机分堆':'手动分堆'}），`:''}左余${r.left}，右余${r.right}，挂一1，移出${r.total}，剩余${49-s.records.slice(Math.floor(i/3)*3,i+1).reduce((n,x)=>n+x.total,0)}`).join('\n');return t+'\n\n手记：\n'+s.notes}
+function textRecord(s){const v=lines(s);let t=`蓍草问易\n起卦时间：${new Date(s.date).toLocaleString('zh-CN')}（查看设备当地时间）\n起卦时间 UTC：${new Date(s.date).toISOString()}\n所问：${s.question||'未填写'}\n所求：${s.purpose||'未填写'}\n方法：49 根，三变皆挂一（${s.mode==='virtual'?'屏上分蓍':'执蓍手记'}）\n六爻（自下而上）：${v.join('、')}\n`;if(v.length===6){const a=info(v),b=info(v,true);t+=`本卦：第 ${a.number} 卦 ${a.name}（${a.description}）\n之卦：第 ${b.number} 卦 ${b.name}（${b.description}）\n动爻：${v.map((x,i)=>x===6||x===9?lineLabel(x,i):null).filter(Boolean).join('、')||'无'}\n卦画（自上而下）：\n${v.slice().reverse().map(x=>(x%2?'━━━━━━':'━━  ━━')+' '+types[x]+(x===6||x===9?'（动）':'')).join('\n')}\n`}t+='\n揲蓍明细：\n'+s.records.map((r,i)=>`${names[Math.floor(i/3)]} 第${i%3+1}变：${r.split?`分堆左${r.split}，右${49-s.records.slice(Math.floor(i/3)*3,i).reduce((n,x)=>n+x.total,0)-r.split}（${r.splitMethod==='random'?'随机分堆':'手动分堆'}），`:''}左余${r.left}，右余${r.right}，挂一1，移出${r.total}，剩余${49-s.records.slice(Math.floor(i/3)*3,i+1).reduce((n,x)=>n+x.total,0)}`).join('\n');return t+'\n\n手记：\n'+s.notes+(v.length===6?'\n\n请 AI 参解此卦：\n'+AI_REQUEST:'')}
 let resultCanvas=null;
-const AI_REQUEST='请根据图中所问、所求、本卦、动爻与之卦，结合《周易》及《高岛易断》作文化参考解读，说明依据，并给出可思考的行动建议；无法核实的原文请勿编造。';
+const AI_REQUEST=`请作为熟悉《周易》与《高岛易断》的研读助手，依据本记录的所问、所求、起卦时间、六爻数值、本卦、动爻及之卦，作有依据、可反思的文化参考解读。请按以下次序展开：
+一、核对卦象与问题。六爻自下而上，6 为老阴、7 为少阳、8 为少阴、9 为老阳，6、9 变爻。先核对卦名、上下卦与之卦是否一致，再概括我真正要作的选择、所求及已知背景；有缺失或矛盾请指出，不要自行补全我的经历。
+二、以经文为主。结合本卦卦辞、相关爻辞及《彖传》《象传》，解释卦象、卦德、爻位及其与所问的关系；中正、得位、承乘比应等仅在确有解释力时使用，说明推导，不堆砌术语。区分原文、白话解释与针对现实的推论。
+三、说明变占方法。根据动爻数量说明采用的取辞规则与出处，兼顾本卦所示处境、动爻所示变化及之卦所示可能趋势。无动爻、多爻变或六爻皆变时明确处理依据；不同流派有分歧时简述差异，不把一种规则说成唯一标准，也不将之卦当作必然结局。
+四、参照《高岛易断》。优先查找对应卦、爻的解释或占例，注明可核实的篇目、版本或链接，说明与本事的相似处和不适用处。不能核实就明确说未核实，不编造引文、页码、故事或作者观点；若可联网，请检索可靠原文再引用。
+五、结合时间与时机。先读取记录中的时间及其标注，区分公历时刻与卦爻所说的时势、阶段和进退之机，并结合事情的现实期限。若要参照节气、季节、干支、月建日辰或时辰，先核实所需历法、时区、所在地及换日规则，说明换算依据；缺资料则先询问或略过，不把当前解读时间当作起卦时间，不凭卦象断定具体日期。
+六、辅助方法按需使用。互卦、错卦、综卦可作补充视角，但须交代取法及与主解的关系。若使用纳甲六爻、五行生克或梅花易数等另有规则的体系，请另列方法和所需资料，说明适用前提，不因记录有六爻或时间就直接套用，也不另起时间卦覆盖此卦。无需穷尽所有体系。
+七、落到现实行动。围绕所问给出总体判断、主要机会与阻力、宜进宜守的条件，以及 3 条具体可执行的建议；区分我能控制和不能控制的因素，列出值得观察的现实信号、何时复盘，以及哪些新事实会改变判断。若背景不足，最后提出至多 3 个关键追问。
+请用清楚平实的中文，先概括，再逐项说明依据。把传统象征解读与可验证的事实分开，保留不确定性，不迎合所求，不渲染宿命；最终帮助我理解处境并自主作出选择。`;
 function bindResultCard(){
 if(state.step!==6){resultCanvas=null;return}
 $('#finalNotes').addEventListener('input',e=>{state.notes=e.target.value;$('#notes').value=state.notes;save()});
@@ -97,12 +105,12 @@ const q=wrap(state.question||'起卦时未记录所问',W-pad*2,30),p=wrap(state
 const bodyY=220+q.length*44+74+p.length*40+48,H=bodyY+540+150+prompt.length*35+100;
 canvas.width=W;canvas.height=H;ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#dedfd6';ctx.lineWidth=2;ctx.strokeRect(22,22,W-44,H-44);
 const text=(t,x,y,size=28,color='#282828')=>{ctx.font=`${size}px ${font}`;ctx.fillStyle=color;ctx.fillText(t,x,y)};
-text('蓍草问易 · 问卦结果',pad,90,38,'#414b36');text('起卦时间：'+new Date(state.date).toLocaleString('zh-CN',{hour12:false})+'（设备当地时间）',pad,135,21,'#6b6b62');
+text('蓍草问易 · 问卦结果',pad,90,38,'#414b36');text('起卦时间：'+new Date(state.date).toLocaleString('zh-CN',{hour12:false})+'（查看设备当地时间）',pad,135,21,'#6b6b62');text('起卦时间 UTC：'+new Date(state.date).toISOString(),pad,165,18,'#6b6b62');
 let y=190;text('此卦所问',pad,y,22,'#68745a');y+=46;for(const l of q){text(l,pad,y,30);y+=44}y+=25;text('此卦所求',pad,y,22,'#68745a');y+=42;for(const l of p){text(l,pad,y,28);y+=40}
 const top=bodyY;ctx.strokeStyle='#dedfd6';ctx.beginPath();ctx.moveTo(pad,top-22);ctx.lineTo(W-pad,top-22);ctx.stroke();
 for(const changed of [false,true]){const x=changed?W/2+35:pad,inf=info(v,changed);text(changed?'之卦 · 动爻所之':'本卦 · 此筮所得',x,top+25,23,'#6b6b62');text(`第 ${inf.number} 卦 · ${inf.name}`,x,top+79,34,'#414b36');text(inf.description,x,top+118,22,'#6b6b62');for(let j=0;j<6;j++){const i=5-j,val=v[i],bit=changed?(val===6?1:val===9?0:val%2):val%2,moving=val===6||val===9,yy=top+168+j*48;ctx.fillStyle=moving&&!changed?'#a45d49':'#626f54';if(bit)ctx.fillRect(x,yy,220,12);else{ctx.fillRect(x,yy,98,12);ctx.fillRect(x+122,yy,98,12)}text(lineLabel(changed?(bit?7:8):val,i)+(moving&&!changed?' · 动':''),x+244,yy+14,23,moving&&!changed?'#a45d49':'#52564c')}}
 y=top+485;const moving=v.map((x,i)=>x===6||x===9?lineLabel(x,i):null).filter(Boolean);text('动爻：'+(moving.join('、')||'无（本卦与之卦相同）'),pad,y,27,'#626b54');y+=47;text('六爻数值（自下而上）：'+v.join(' · '),pad,y,25);y+=40;text('6 老阴、7 少阳、8 少阴、9 老阳；6 和 9 为动爻。',pad,y,22,'#6b6b62');y+=37;text('方法：49 根蓍草，三变皆挂一，十八变成卦。',pad,y,22,'#6b6b62');y+=55;text('请 AI 参解此卦',pad,y,23,'#68745a');y+=40;for(const l of prompt){text(l,pad,y,23);y+=35}
-resultCanvas=canvas;$('#resultImage').src=canvas.toDataURL('image/png');$('#resultImage').alt=textRecord(state)+'\n'+AI_REQUEST;
+resultCanvas=canvas;$('#resultImage').src=canvas.toDataURL('image/png');$('#resultImage').alt=textRecord(state);
 }
 function saveResultImage(){
 if(state.step!==6)return;drawResultCard();if(!resultCanvas)return;
