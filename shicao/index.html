@@ -1,5 +1,8 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>蓍草问易 · 一事一问，分蓍成卦</title>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#151514" media="(prefers-color-scheme: dark)">
 <meta name="description" content="一事一问，分蓍成卦。循大衍筮法，屏上分蓍或执蓍手记，记录本卦、之卦与所问。">
 <link rel="canonical" href="https://zhuzhenfang.com/shicao/">
 <style>
@@ -9,9 +12,9 @@
 @media print{header,footer,.actions,.result-heading,details{display:none!important}.page-intro{padding:16px 0}.layout{display:block}.completed-layout>aside{display:none!important}.result-image{max-width:100%;border:0}.card{break-inside:avoid}body{background:white}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
-</style><link rel="stylesheet" href="/shicao/focus.css?v=9cceac37ab25"></head><body>
+</style><link rel="stylesheet" href="/shicao/focus.css?v=f0d85fcb67b9"></head><body>
 <header><a class="home-link" href="/">← 返回个人主页</a><div class="header-actions"><button id="historyBtn">往日卦录</button><details class="more"><summary>更多</summary><div class="morepanel"><button onclick="downloadCurrent()">存下此录 · 文字</button><button id="clearBtn" class="danger">清除所有数据</button></div></details></div></header>
-<div class="wrap"><div class="page-intro"><div class="ritual-kicker">实用工具 / 蓍草起卦</div><h1>蓍草问易</h1><p>一事一问，分蓍成卦</p></div><div class="layout"><main id="main" class="card guide" aria-live="polite"></main><aside class="card" aria-label="卦象显示" aria-live="polite"><div class="meta"><h3>此 间 卦 象</h3><span id="progress"></span></div><p id="resultHelp" class="small"></p><div id="hexTitle"></div><div id="hex"></div><div id="changedHex"></div><div class="small">爻自下生，逐位而成 ↑<br>一画为阳，两断为阴；标「动」者，为此卦动爻。</div><details id="readingDetails" class="rule"><summary>此问 · 随记</summary><label for="question">起卦时所问 <span class="small">（只读）</span></label><textarea id="question" placeholder="起筮前所定之问，将留于此。"></textarea><label for="notes">手记 <span class="small">（选填）</span></label><textarea id="notes" placeholder="此刻有何所感？展卷之后，又有何所得？"></textarea></details><details><summary>筮法与须知</summary><div class="small">本页采用常见的大衍筮法：50 根中取 1 根始终不用，其余 49 根参与起卦；每一变都挂一，三变成爻。余数按 1–4 记，整除四时留 4 根。每爻结束后收回三变移出的蓍草，重新用 49 根。<p>网页操作时，先将手指或鼠标放在滑块上，闭眼随手拖动，松开只确定分堆位置，再点击“落定此分”提交本轮，避免按根数挑选。页面再按实际根数演算，不直接抽取爻值。左堆至少 1 根，右堆至少 2 根，以保证挂一后两堆都有蓍草。</p><p>不同传承可能有不同操作。本页只记录卦象，不提供断语，也不指定书籍页码。</p><a href="https://www.chinakongzi.org/content/3947_194609.html" target="_blank" rel="noopener">方法参考：中国孔子网《朱熹的〈周易〉观》</a></div></details></aside></div><details><summary>回看此筮 · 逐变明细</summary><div id="log" class="card tablewrap"></div></details></div>
+<div class="wrap"><div class="page-intro"><div class="ritual-kicker">实用工具 / 蓍草起卦</div><h1>蓍草问易</h1></div><div class="layout"><main id="main" class="card guide" aria-live="polite"></main><aside class="card" aria-label="卦象显示" aria-live="polite"><div class="meta"><h3>此 间 卦 象</h3><span id="progress"></span></div><p id="resultHelp" class="small"></p><div id="hexTitle"></div><div id="hex"></div><div id="changedHex"></div><div class="small">爻自下生，逐位而成 ↑<br>一画为阳，两断为阴；标「动」者，为此卦动爻。</div><details><summary>筮法与须知</summary><div class="small">本页采用常见的大衍筮法：50 根中取 1 根始终不用，其余 49 根参与起卦；每一变都挂一，三变成爻。余数按 1–4 记，整除四时留 4 根。每爻结束后收回三变移出的蓍草，重新用 49 根。<p>网页操作时，先将手指或鼠标放在滑块上，闭眼随手拖动，松开只确定分堆位置，再点击“落定此分”提交本轮，避免按根数挑选。页面再按实际根数演算，不直接抽取爻值。左堆至少 1 根，右堆至少 2 根，以保证挂一后两堆都有蓍草。</p><p>不同传承可能有不同操作。本页只记录卦象，不提供断语，也不指定书籍页码。</p><a href="https://www.chinakongzi.org/content/3947_194609.html" target="_blank" rel="noopener">方法参考：中国孔子网《朱熹的〈周易〉观》</a></div></details></aside></div><details><summary>回看此筮 · 逐变明细</summary><div id="log" class="card tablewrap"></div></details></div>
 <footer><span id="status" role="status"></span><br>起卦记录仅保存在当前设备的浏览器中，不上传服务器；如需长期留存，请保存结果图片。
 </footer>
 <dialog id="historyDialog"><h3>往日卦录</h3><div class="small">旧问有迹，新问另起。另起一卦时，此前卦录会自动收存。</div><div id="historyList"></div><pre id="archiveView"></pre><button onclick="document.querySelector('#historyDialog').close()">关闭</button></dialog>
@@ -61,7 +64,6 @@ return `<aside class="classical-note" aria-label="本步原文注释"><a class="
 function render(){if(automaticBatch)return;document.querySelector('.layout').classList.toggle('completed-layout',state.step===6);const v=lines(),round=state.records.length%3+1,idx=Math.floor(state.records.length/3),r=remaining();$('#progress').textContent=`${v.length} / 6 爻`;$('#resultHelp').textContent=v.length===6?'六爻已齐，卦象在此。可循卦名、动爻，展卷相参。':v.length?`已记 ${v.length} 爻，继续在左边起下一爻。`:'卦自初爻而起。每满三轮，此处自下添上一爻。';$('#hex').innerHTML=diagram(v);if(v.length&&state.records.length%3===0){const newest=$('#hex').children[6-v.length];if(newest)newest.classList.add('newest-yao')}
 $('#hexTitle').innerHTML=v.length===6?`<h3>第 ${info(v).number} 卦 · ${info(v).name}</h3><div class="small">本卦 · ${info(v).description}</div>`:'';
 $('#changedHex').innerHTML=v.length===6?`<p class="summaryline"><strong>动爻：</strong>${v.map((x,i)=>x===6||x===9?lineLabel(x,i):null).filter(Boolean).join('、')||'无'}</p><div class="changed-result">${resultBox(v,true)}</div>`:'';
-$('#question').value=state.question;$('#notes').value=state.notes;
 let html=`<div class="meta"><span>${state.step===0?'静心 · 起筮':state.step===6?'六爻已成':state.step===5?`第 ${v.length} 爻完成`:`第 ${idx+1} 爻 · 第 ${round} 轮 / 共 3 轮`}</span><span>已完成 ${state.records.length} / 18 轮</span></div><div class="track" aria-label="已完成 ${v.length} 爻，共六爻">${Array.from({length:6},(_,i)=>`<i class="${i<v.length?'done':''}"></i>`).join('')}</div>`;
 if(state.question&&state.step!==0&&state.step!==6)html+=`<div class="intention"><span>此卦所问</span><div>${escapeHTML(state.question)}</div></div>`;
 if(state.mode==='virtual'&&state.auto!==false&&state.step!==6)html+=autoReceipt();
@@ -89,25 +91,27 @@ function bindResultCard(){
 if(state.step!==6){resultCanvas=null;return}
 drawResultCard();
 }
-function drawResultCard(){
+function drawResultCard(forExport=false){
 const v=lines();if(v.length!==6||!$('#resultImage'))return;
+const dark=!forExport&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+const ink=c=>dark?({'#282828':'#f1efe9','#414b36':'#d4ddc2','#6b6b62':'#b9b6a9','#68745a':'#beca9e','#626b54':'#beca9e','#a45d49':'#e5a08e','#52564c':'#c9c5bb'}[c]||c):c;
 const W=1080,pad=64,canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');
 const font='"PingFang SC", "Microsoft YaHei", sans-serif';
 function wrap(text,width,size){ctx.font=`${size}px ${font}`;const lines=[];for(const paragraph of String(text).split('\n')){let line='';for(const char of paragraph){if(line&&ctx.measureText(line+char).width>width){lines.push(line);line=char}else line+=char}lines.push(line)}return lines}
 const q=wrap(state.question||'起卦时未记录所问',W-pad*2,30),p=wrap(state.purpose||'起卦时未记录所求',W-pad*2,28),prompt=wrap(AI_REQUEST,W-pad*2,23);
 const bodyY=220+q.length*44+74+p.length*40+48,H=bodyY+540+150+prompt.length*35+100;
 // Render at double resolution while preserving the layout coordinates.
-const pixelRatio=2;canvas.width=W*pixelRatio;canvas.height=H*pixelRatio;ctx.scale(pixelRatio,pixelRatio);ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#dedfd6';ctx.lineWidth=2;ctx.strokeRect(22,22,W-44,H-44);
-const text=(t,x,y,size=28,color='#282828')=>{ctx.font=`${size}px ${font}`;ctx.fillStyle=color;ctx.fillText(t,x,y)};
+const pixelRatio=2;canvas.width=W*pixelRatio;canvas.height=H*pixelRatio;ctx.scale(pixelRatio,pixelRatio);ctx.fillStyle=dark?'#1d1d1a':'#ffffff';ctx.fillRect(0,0,W,H);ctx.strokeStyle=dark?'#45483c':'#dedfd6';ctx.lineWidth=2;ctx.strokeRect(22,22,W-44,H-44);
+const text=(t,x,y,size=28,color='#282828')=>{ctx.font=`${size}px ${font}`;ctx.fillStyle=ink(color);ctx.fillText(t,x,y)};
 text('蓍草问易 · 问卦结果',pad,90,38,'#414b36');text('起卦时间：'+new Date(state.date).toLocaleString('zh-CN',{hour12:false})+'（查看设备当地时间）',pad,135,21,'#6b6b62');text('起卦时间 UTC：'+new Date(state.date).toISOString(),pad,165,18,'#6b6b62');
 let y=190;text('此卦所问',pad,y,22,'#68745a');y+=46;for(const l of q){text(l,pad,y,30);y+=44}y+=25;text('此卦所求',pad,y,22,'#68745a');y+=42;for(const l of p){text(l,pad,y,28);y+=40}
-const top=bodyY;ctx.strokeStyle='#dedfd6';ctx.beginPath();ctx.moveTo(pad,top-22);ctx.lineTo(W-pad,top-22);ctx.stroke();
-for(const changed of [false,true]){const x=changed?W/2+35:pad,inf=info(v,changed);text(changed?'之卦 · 动爻所之':'本卦 · 此筮所得',x,top+25,23,'#6b6b62');text(`第 ${inf.number} 卦 · ${inf.name}`,x,top+79,34,'#414b36');text(inf.description,x,top+118,22,'#6b6b62');for(let j=0;j<6;j++){const i=5-j,val=v[i],bit=changed?(val===6?1:val===9?0:val%2):val%2,moving=val===6||val===9,yy=top+168+j*48;ctx.fillStyle=moving&&!changed?'#a45d49':'#626f54';if(bit)ctx.fillRect(x,yy,220,12);else{ctx.fillRect(x,yy,98,12);ctx.fillRect(x+122,yy,98,12)}text(lineLabel(changed?(bit?7:8):val,i)+(moving&&!changed?' · 动':''),x+244,yy+14,23,moving&&!changed?'#a45d49':'#52564c')}}
+const top=bodyY;ctx.strokeStyle=dark?'#45483c':'#dedfd6';ctx.beginPath();ctx.moveTo(pad,top-22);ctx.lineTo(W-pad,top-22);ctx.stroke();
+for(const changed of [false,true]){const x=changed?W/2+35:pad,inf=info(v,changed);text(changed?'之卦 · 动爻所之':'本卦 · 此筮所得',x,top+25,23,'#6b6b62');text(`第 ${inf.number} 卦 · ${inf.name}`,x,top+79,34,'#414b36');text(inf.description,x,top+118,22,'#6b6b62');for(let j=0;j<6;j++){const i=5-j,val=v[i],bit=changed?(val===6?1:val===9?0:val%2):val%2,moving=val===6||val===9,yy=top+168+j*48;ctx.fillStyle=moving&&!changed?(dark?'#e5a08e':'#a45d49'):(dark?'#beca9e':'#626f54');if(bit)ctx.fillRect(x,yy,220,12);else{ctx.fillRect(x,yy,98,12);ctx.fillRect(x+122,yy,98,12)}text(lineLabel(changed?(bit?7:8):val,i)+(moving&&!changed?' · 动':''),x+244,yy+14,23,moving&&!changed?'#a45d49':'#52564c')}}
 y=top+485;const moving=v.map((x,i)=>x===6||x===9?lineLabel(x,i):null).filter(Boolean);text('动爻：'+(moving.join('、')||'无（本卦与之卦相同）'),pad,y,27,'#626b54');y+=47;text('六爻数值（自下而上）：'+v.join(' · '),pad,y,25);y+=40;text('6 老阴、7 少阳、8 少阴、9 老阳；6 和 9 为动爻。',pad,y,22,'#6b6b62');y+=37;text('方法：49 根蓍草，三变皆挂一，十八变成卦。',pad,y,22,'#6b6b62');y+=55;text('请 AI 参解此卦',pad,y,23,'#68745a');y+=40;for(const l of prompt){text(l,pad,y,23);y+=35}
-resultCanvas=canvas;$('#resultImage').src=canvas.toDataURL('image/png');$('#resultImage').alt=textRecord(state);
+resultCanvas=canvas;if(!forExport){$('#resultImage').src=canvas.toDataURL('image/png');$('#resultImage').alt=textRecord(state);}
 }
 function saveResultImage(){
-if(state.step!==6)return;drawResultCard();if(!resultCanvas)return;
+if(state.step!==6)return;drawResultCard(true);if(!resultCanvas)return;
 resultCanvas.toBlob(blob=>{if(!blob){$('#imageStatus').textContent='此图尚未生成，请再试一次，或直接截图留存。';return}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='问卦结果-'+state.date.slice(0,10)+'.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);$('#imageStatus').textContent='此卦已备成 PNG 图片，下载已发起；亦可长按或右键图片留存。'},'image/png');
 }
 function download(s){const blob=new Blob([textRecord(s)],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='蓍草问易-'+s.date.slice(0,10)+'.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
@@ -127,7 +131,6 @@ $('#historyDialog').close();$('#historyList').textContent='';$('#archiveView').t
 $('#clearDialog').close();render();$('#status').textContent='旧录已清，可重新起筮。';$('.more > summary').focus();
 }
 function newReading(){archive.unshift(copy(state));state=fresh();undo=[];save();render()}
-$('#question').readOnly=true;$('#notes').addEventListener('input',e=>{state.notes=e.target.value;save()});
 $('#historyBtn').onclick=()=>{$('#archiveView').textContent='';$('#historyList').innerHTML=`<button onclick="downloadCurrent()">存下此录（未成卦亦可）</button>`+(archive.length?archive.map((s,i)=>`<button class="historyitem" onclick="viewArchive(${i})">${escapeHTML(new Date(s.date).toLocaleString('zh-CN'))} · ${lines(s).length}/6 爻<br>${escapeHTML(s.question||'未填写所问')}</button>`).join(''):'<p>此处尚无旧录。待一卦收存，再来回看。</p>');$('#historyDialog').showModal()};
 function viewArchive(i){$('#archiveView').textContent=textRecord(archive[i]);const b=document.createElement('button');b.textContent='存下这一卦录';b.onclick=()=>download(archive[i]);$('#archiveView').append(document.createElement('br'),b)}
 
@@ -178,7 +181,7 @@ function countNext(all=true){const v=state.virtual;if(state.step!==3)return;cons
 function openingReady(){return !!(state.question||'').trim()&&!!(state.purpose||'').trim()}
 function openingQuestions(){return `<div class="opening-questions"><label for="intentionInput">此卦所问 <span class="small">必填</span></label><textarea id="intentionInput" required ${state.questionLocked?'readonly':''} placeholder="心中何事未决？请写明这一问。">${escapeHTML(state.question)}</textarea><label for="purposeInput">此卦所求 <span class="small">必填</span></label><textarea id="purposeInput" required ${state.questionLocked?'readonly':''} placeholder="此问欲求何解？如：如何取舍，下一步当留意什么。">${escapeHTML(state.purpose||'')}</textarea><p class="small">${state.questionLocked?'此问已定，勿移其意。若另有所问，请归档后另起一卦。':'问有所定，筮有所始。起卦后，所问与所求随此卦留存，不再改写。'}</p></div>`}
 function bindOpeningQuestions(){
-for(const [id,key] of [['intentionInput','question'],['purposeInput','purpose']]){const input=$('#'+id);if(input)input.addEventListener('input',e=>{if(state.questionLocked){e.target.value=state[key]||'';return}state[key]=e.target.value;$('#question').value=state.question;save();const ready=openingReady();document.querySelectorAll('.select-stalk').forEach(b=>b.disabled=!ready);const begin=$('#beginReading');if(begin)begin.disabled=!ready||state.firstStalk==null;const prompt=$('.first-stalk-prompt');if(prompt)prompt.textContent=ready?'五十蓍在前，取一而不用。请亲手点取一根，置于一旁。':'先明所问，再行取一。请先写好所问与所求。';})}
+for(const [id,key] of [['intentionInput','question'],['purposeInput','purpose']]){const input=$('#'+id);if(input)input.addEventListener('input',e=>{if(state.questionLocked){e.target.value=state[key]||'';return}state[key]=e.target.value;save();const ready=openingReady();document.querySelectorAll('.select-stalk').forEach(b=>b.disabled=!ready);const begin=$('#beginReading');if(begin)begin.disabled=!ready||state.firstStalk==null;const prompt=$('.first-stalk-prompt');if(prompt)prompt.textContent=ready?'五十蓍在前，取一而不用。请亲手点取一根，置于一旁。':'先明所问，再行取一。请先写好所问与所求。';})}
 }
 function takeFirstStalk(index){
 if(!openingReady()||state.step!==0||state.mode!=='virtual'||state.firstStalk!=null||!Number.isInteger(index)||index<0||index>=50)return;
@@ -198,6 +201,7 @@ if(step===2||step===3){const side=step===3?(v.left>4?'左':v.right>4?'右':null)
 if(step===4){const t=1+state.left+state.right;return route+`<h2>收走 ${t} 根，剩 ${r-t} 根</h2><p>${round===3?'三变已足，以余下根数除以四，此爻之数便定。':'余者归旁，所存合一。用合拢的蓍草，继续下一轮。'}</p><div class="mat">${reeds(r-t)}<div class="tray">移出 ${t} 根 = 挂一 1 ＋ 左余 ${state.left} ＋ 右余 ${state.right}</div></div>${navigation(round===3?'数已成爻，记下此爻 →':'归奇已毕，再行一变 →','record()')}`}
 return ''}
 
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(state.step===6)drawResultCard()});
 render();
 </script>
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
