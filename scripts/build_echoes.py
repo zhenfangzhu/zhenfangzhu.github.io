@@ -73,7 +73,11 @@ def render(entry, standalone=False):
             items.append(f'<li class="echo-quote{quotation}"><p class="echo-note-title">{e(item["text"])}</p>{note}</li>')
         section_title = re.sub(r'^[^\w\u4e00-\u9fff]+', '', section.get('title', '')).strip()
         section_heading = f'<h3 class="echo-section-title">{e(section_title)}</h3>' if section_title else ''
-        sections.append(f'<section class="echo-section">{section_heading}<ul class="echo-quote-list">{"".join(items)}</ul></section>')
+        section_kind = section.get('kind', 'notes')
+        assert section_kind in ('notes', 'quotation'), 'Invalid section kind'
+        tag = 'blockquote' if section_kind == 'quotation' else 'section'
+        classes = 'echo-section echo-reference' if section_kind == 'quotation' else 'echo-section'
+        sections.append(f'<{tag} class="{classes}">{section_heading}<ul class="echo-quote-list">{"".join(items)}</ul></{tag}>')
     source_url = re.search(r'https?://[^\s]+', entry['source'])
     source_title = entry['source'][:source_url.start()].strip() if source_url else entry['source']
     source_link = f'<a href="{e(source_url.group(), quote=True)}" target="_blank" rel="noopener noreferrer">{bilingual("查看原始内容 ↗", "View source ↗")}</a>' if source_url else ''

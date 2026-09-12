@@ -11,6 +11,7 @@
   "sections": [
     {
       "title": "成长阶段 · System 1 / System 2",
+      "kind": "quotation",
       "items": [
         {
           "text": "System 1（系统1）",
@@ -50,6 +51,7 @@
     },
     {
       "title": "Yoshua Bengio",
+      "kind": "quotation",
       "items": [
         {
           "text": "Yoshua Bengio 被誉为“深度学习三巨头”之一，与 Geoffrey Hinton 和 Yann LeCun 共同获得了计算机界的最高荣誉——图灵奖。他几十年来致力于神经网络的研究，其团队在序列建模和注意力机制上的贡献，为后来 ChatGPT 等大语言模型的诞生奠定了核心理论基石。",
@@ -97,6 +99,7 @@
     },
     {
       "title": "John Schulman",
+      "kind": "quotation",
       "items": [
         {
           "text": "John Schulman 是人工智能领域的顶尖科学家，也是 OpenAI 的联合创始人之一。他是强化学习领域的关键领袖，主导开发了近端策略优化（PPO）算法，该算法现已成为强化学习中最常用、最稳定的标准算法。更重要的是，他在 OpenAI 领导了强化学习人类反馈（RLHF）团队，这一技术正是让 ChatGPT 能够听懂人类指令、并进行自然对话的核心基石。",
@@ -165,6 +168,7 @@
     },
     {
       "title": "马尔可夫过程",
+      "kind": "quotation",
       "items": [
         {
           "text": "马尔可夫过程是一类随机过程，其核心假设是未来状态只依赖于当前状态，而与更早的历史无关，这被称为马尔可夫性。它通常用状态集合和状态转移概率来描述系统的演化过程。确定性的马尔可夫过程是一种特殊情况：在给定当前状态（和动作）后，下一状态是唯一确定的，而不是由概率分布采样得到。",

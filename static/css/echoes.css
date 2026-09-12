@@ -4,11 +4,12 @@
     --secondary: #535b50;
     --nav: #686d64;
     --cjk-text: #40473d;
+    --echo-reference-ink: #757575;
     --divider: color-mix(in srgb, var(--ink) 11%, transparent);
     --echo-display-font: "Songti SC", "STSong", "Noto Serif CJK SC", "SimSun", "Iowan Old Style", Georgia, serif;
 }
 @media (prefers-color-scheme: dark) {
-    .echoes-site { --ink: #e7e9e1; --secondary: #c4ccbd; --nav: #a5ad9f; --cjk-text: #d2d7cc; --divider: color-mix(in srgb, var(--ink) 14%, transparent); }
+    .echoes-site { --ink: #e7e9e1; --secondary: #c4ccbd; --nav: #a5ad9f; --cjk-text: #d2d7cc; --echo-reference-ink: #a6aaa2; --divider: color-mix(in srgb, var(--ink) 14%, transparent); }
 }
 .echoes-page {
     --echo-body-size: 15px;
@@ -38,6 +39,13 @@
 .echo-note-title { margin: 0; color: var(--ink); font-size: var(--echo-body-size); line-height: 2; font-weight: 400; white-space: pre-line; }
 .echo-note-title:has(+ .echo-note-body) { font-weight: 500; }
 .echo-note-body { margin: 10px 0 0; color: var(--cjk-text); font-size: var(--echo-body-size); line-height: 2; white-space: pre-line; }
+
+/* Explanatory passages transcribed from source images. */
+.echo-reference { padding: 2px 0 2px 20px; border-left: 2px solid var(--divider); color: var(--echo-reference-ink); font-family: var(--echo-display-font); }
+.echo-reference .echo-section-title { margin-bottom: 16px; color: inherit; font-size: 14px; font-weight: 400; line-height: 2; }
+.echo-reference .echo-quote-list { gap: 18px; }
+.echo-reference .echo-note-title, .echo-reference .echo-note-body { color: inherit; font-size: 14px; font-weight: 400; line-height: 2.1; }
+.echo-reference .echo-note-body { margin-top: 4px; }
 
 /* Quiet controls above the list. */
 .echoes-tools { display: contents; }
@@ -88,7 +96,7 @@ html:has(.echoes-directory) { scroll-behavior: auto; }
     .echo-card-link { padding-block: 28px; column-gap: 12px; }
     .echo-card .echo-title { font-size: 17px; }
     .echo-section { margin-bottom: 40px; }
-    .echo-quotation { padding-left: 16px; }
+    .echo-quotation, .echo-reference { padding-left: 16px; }
 }
 
 .echo-standalone { margin-top: 0; }
