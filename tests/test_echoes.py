@@ -1,5 +1,6 @@
 """Offline contracts for the Echoes directory and its complete static articles."""
 
+import importlib.util
 import json
 from html.parser import HTMLParser
 from pathlib import Path
@@ -47,12 +48,12 @@ class Element:
 class Page(HTMLParser):
     VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}
 
-    def __init__(self, path):
+    def __init__(self, path=None, *, source=None):
         super().__init__(convert_charrefs=True)
         self.path = path
         self.root = Element("document")
         self.stack = [self.root]
-        self.feed(path.read_text(encoding="utf-8"))
+        self.feed(source if source is not None else path.read_text(encoding="utf-8"))
 
     def handle_starttag(self, tag, attrs):
         element = Element(tag, attrs)
@@ -254,6 +255,76 @@ class EchoesPublicationTests(unittest.TestCase):
             with self.subTest(entry=entry["id"]):
                 self.assertEqual(urls.count(self.article_url(entry)), 1)
                 self.assertTrue((ROOT / "echoes" / entry["id"] / "index.html").is_file())
+
+
+class EchoesSearchIndexTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location("build_echoes", ROOT / "scripts/build_echoes.py")
+        cls.builder = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.builder)
+        cls.entries = [json.loads(path.read_text(encoding="utf-8"))
+                       for path in sorted((ROOT / "echoes/content").glob("*.json"))]
+
+    def test_every_published_section_and_body_field_is_searchable_but_not_visible(self):
+        published = [entry for entry in self.entries if entry["status"] == "published"]
+        self.assertTrue(published)
+        for entry in published:
+            with self.subTest(entry=entry["id"]):
+                page = Page(source=self.builder.render(entry))
+                card, = page.elements("article")
+                index = card.attrs["data-search-text"]
+                visible = normalized(card.text(readable=False))
+                metadata = normalized(" ".join((entry["title"], entry["summary"], entry["date"].replace("-", "/"))))
+                fragments = []
+                for section in entry["sections"]:
+                    fragments.append(section.get("title", ""))
+                    for item in section["items"]:
+                        fragments.extend((item["text"], item.get("note", "")))
+                for fragment in filter(None, fragments):
+                    self.assertIn(fragment, index, "A section or body field is missing from search")
+                    if normalized(fragment) not in metadata:
+                        self.assertNotIn(normalized(fragment), visible, "Search content must not become directory text")
+
+    def test_search_text_round_trips_special_characters_without_markup_or_aria_leaks(self):
+        entry = {
+            "id": "search-escaping", "date": "2026-09-12", "status": "published",
+            "title": "Visible title", "summary": "Visible summary", "type": "视频", "source": "Source",
+            "sections": [{
+                "title": 'Section "quotes" & <angle brackets>',
+                "items": [{
+                    "text": 'Body\"><img src=x onerror="alert(1)">',
+                    "note": "Note 'single quotes' &lt;script&gt;\nSecond line <script>literal</script>",
+                }],
+            }],
+        }
+        page = Page(source=self.builder.render(entry))
+        card, = page.elements("article")
+        self.assertEqual(set(card.attrs), {"class", "id", "lang", "data-search-text"})
+        self.assertFalse(page.elements("img"))
+        self.assertFalse(page.elements("script"))
+        fragments = [entry["sections"][0]["title"], *entry["sections"][0]["items"][0].values()]
+        aria = " ".join(value for element in page.root.walk()
+                        for key, value in element.attrs.items() if key.startswith("aria-") and value)
+        for fragment in fragments:
+            self.assertIn(fragment, card.attrs["data-search-text"])
+            self.assertNotIn(fragment, card.text(readable=False))
+            self.assertNotIn(fragment, aria)
+        link, = page.elements("a")
+        self.assertEqual(link.attrs["href"], "/echoes/search-escaping/")
+        self.assertEqual(link.attrs["aria-labelledby"], "title-search-escaping")
+
+    def test_pending_note_body_is_not_exposed_to_search(self):
+        entry = {
+            "id": "pending-note", "date": "2026-09-12", "status": "pending",
+            "title": "Pending title", "type": "视频", "source": "Source",
+            "sections": [{"title": "Unpublished section", "items": [{"text": "Unpublished body", "note": "Private draft"}]}],
+        }
+        page = Page(source=self.builder.render(entry))
+        card, = page.elements("article")
+        self.assertNotIn("data-search-text", card.attrs)
+        self.assertNotIn("Unpublished", card.text(readable=False))
+        self.assertNotIn("Private draft", card.text(readable=False))
 
 
 if __name__ == "__main__":

@@ -61,7 +61,13 @@ def render(entry, standalone=False):
     assert isinstance(entry.get('summary'), str) and entry['summary'].strip(), 'Published notes need a summary'
     if not standalone:
         summary = f'<p class="echo-summary">{e(entry["summary"])}</p>'
-        return f'<article class="echo-card" id="{slug}" lang="zh-CN"><a class="echo-card-link" href="/echoes/{slug}/" aria-labelledby="title-{slug}">{heading}{summary}<span class="echo-arrow" aria-hidden="true">→</span></a></article>'
+        search_fragments = []
+        for section in entry['sections']:
+            search_fragments.append(section.get('title', ''))
+            for item in section['items']:
+                search_fragments.extend((item['text'], item.get('note', '')))
+        search_text = e(' '.join(fragment for fragment in search_fragments if fragment), quote=True)
+        return f'<article class="echo-card" id="{slug}" lang="zh-CN" data-search-text="{search_text}"><a class="echo-card-link" href="/echoes/{slug}/" aria-labelledby="title-{slug}">{heading}{summary}<span class="echo-arrow" aria-hidden="true">→</span></a></article>'
     sections = []
     for section in entry['sections']:
         assert section['items'], 'Empty section'

@@ -11,6 +11,9 @@
 @media (prefers-color-scheme: dark) {
     .echoes-site { --ink: #e7e9e1; --secondary: #c4ccbd; --nav: #a5ad9f; --cjk-text: #d2d7cc; --echo-reference-ink: #a6aaa2; --divider: color-mix(in srgb, var(--ink) 14%, transparent); }
 }
+/* Keep keyboard navigation visible above the sticky site header. */
+.echoes-site .skip-link { z-index: 60; }
+.echoes-site #echoes-content { scroll-margin-top: 88px; }
 .echoes-page {
     --echo-body-size: 15px;
     width: min(100%, 720px);
