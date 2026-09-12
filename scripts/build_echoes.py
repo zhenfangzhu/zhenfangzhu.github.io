@@ -81,8 +81,8 @@ def render(entry, standalone=False):
         sections.append(f'<{tag} class="{classes}">{section_heading}<ul class="echo-quote-list">{"".join(items)}</ul></{tag}>')
     source_url = re.search(r'https?://[^\s]+', entry['source'])
     source_title = entry['source'][:source_url.start()].strip() if source_url else entry['source']
-    source_link = f'<a href="{e(source_url.group(), quote=True)}" target="_blank" rel="noopener noreferrer">{bilingual("查看原始内容 ↗", "View source ↗")}</a>' if source_url else ''
-    source = f'<aside class="echo-source-detail"><p class="echo-source-label">{bilingual("来源", "Source")}</p><p>{e(source_title)}</p>{source_link}</aside>'
+    source_link = f'<a href="{e(source_url.group(), quote=True)}" target="_blank" rel="noopener noreferrer">{bilingual("查看来源 ↗", "View source ↗")}</a>' if source_url else f'<p>{e(entry.get("source_short") or source_title)}</p>'
+    source = f'<aside class="echo-source-detail">{source_link}</aside>'
     heading = heading.replace('<h2 ', '<h1 ').replace('</h2>', '</h1>')
     body = ''.join(sections).replace('<h3 ', '<h2 ').replace('</h3>', '</h2>')
     signoff = bilingual('我听见了一些东西。<br>它们离开以后，留下了这些。', 'I heard a few things.<br>After they were gone, this is what stayed.')
