@@ -71,7 +71,8 @@ def render(entry, standalone=False):
             note = f'<p class="echo-note-body">{e(item["note"])}</p>' if item.get('note') else ''
             quotation = ' echo-quotation' if item['text'].startswith(('“', '「', '『', '"')) else ''
             items.append(f'<li class="echo-quote{quotation}"><p class="echo-note-title">{e(item["text"])}</p>{note}</li>')
-        section_title = re.sub(r'^[^\w\u4e00-\u9fff]+', '', section.get('title', '')).strip()
+        # Strip decorative emoji without removing title punctuation such as 《》.
+        section_title = re.sub(r'^[\s\u200d\ufe0f\u2600-\u27bf\U0001f000-\U0001faff]+', '', section.get('title', '')).strip()
         section_heading = f'<h3 class="echo-section-title">{e(section_title)}</h3>' if section_title else ''
         section_kind = section.get('kind', 'notes')
         assert section_kind in ('notes', 'quotation'), 'Invalid section kind'
