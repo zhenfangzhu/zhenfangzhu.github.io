@@ -1,4 +1,6 @@
 window.SITE_TEXT_TRANSLATIONS = {
+    "导出备份": "Export backup", "导出当前备份": "Export current backup", "导出原有数据": "Export previous data",
+    "重试保存": "Retry save", "保存提示": "Save status", "正式评估 · 仅限此浏览器": "Formal assessment · This browser only",
     "跳到主要内容": "Skip to main content", "个人主页": "Homepage", "朱振方": "Zhenfang Zhu", "创始人 A": "Founder A", "创始人 B": "Founder B", "创始人 C": "Founder C", "创始人 D": "Founder D", "创始人 E": "Founder E", "创始人 F": "Founder F",
     "尚未填写项目": "Project not added yet", "尚未填写，可在设置中补充": "Not added yet—complete it in Settings",
     "AI 团队协作软件": "AI team collaboration software", "帮助小团队更快对齐目标、分配责任并复盘真实进展。": "Help small teams align goals, assign ownership, and review real progress faster.",
@@ -118,7 +120,7 @@ window.SITE_TEXT_TRANSLATIONS = {
     "看清团队如何自然创造价值": "See how your team naturally creates value",
     "支持 2–6 人创始团队：每个人完成一次自评，并评价所有其他成员，最终生成个人画像、角色匹配与团队地图。": "Built for 2–6 founders: each person completes one self-assessment and assesses every other member to generate founder profiles, role fit, and a team map.",
     "项目名称或类型": "Project name or type", "例如：AI 团队协作软件": "Example: AI team collaboration software", "姓名": "Name",
-    "你的回答只保存在当前浏览器，不会上传到服务器。建议评估前先导出 JSON 备份重要数据。": "Your answers stay in this browser and are never uploaded. Export a JSON backup before the assessment if the data matters.",
+    "你的回答只保存在当前浏览器，不会上传到服务器。建议填写过程中定期导出 JSON 备份，换浏览器前也请备份。": "Your answers stay in this browser and are never uploaded. Export JSON backups as you go, and before switching browsers.",
     "创建团队评估": "Create team assessment", "先看示例报告": "View sample report first",
     "请填写项目和所有创始人的姓名。": "Enter the project and every founder's name.", "创始人的姓名不能相同。": "Each founder must have a different name."
 };

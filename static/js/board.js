@@ -30,6 +30,12 @@
     const privateSaveStatus = document.getElementById("private-save-status");
     const privateBoardCharacterCount = document.getElementById("private-board-character-count");
     const lockPrivateRoomButton = document.getElementById("lock-private-room");
+    const publicSaveRecovery = document.getElementById("public-save-recovery");
+    const privateSaveRecovery = document.getElementById("private-save-recovery");
+    const retryPublicSaveButton = document.getElementById("retry-public-save");
+    const retryPrivateSaveButton = document.getElementById("retry-private-save");
+    const publicCopyStatus = document.getElementById("public-copy-status");
+    const privateCopyStatus = document.getElementById("private-copy-status");
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     const PBKDF2_ITERATIONS = 1000000;
@@ -38,13 +44,17 @@
 
     let client;
     let saveTimer;
-    let localRevision = 0;
     let lastSavedContent = "";
     let localDirty = false;
+    let publicSavePromise = null;
+    let publicSaveFailed = false;
     let privateSaveTimer;
-    let privateRevision = 0;
     let privateLastSavedContent = "";
     let privateDirty = false;
+    let privateSavePromise = null;
+    let privateSaveFailed = false;
+    let privateLockPending = false;
+    let privateOpening = false;
     let privateRoomId = "";
     let privateRoomKey = null;
     let privateRoomSalt = null;
@@ -93,6 +103,29 @@
     function setPrivateSaveStatus(key) {
         privateSaveStatus.dataset.messageKey = key;
         privateSaveStatus.textContent = tr(key);
+    }
+
+    function updateSaveActions() {
+        publicSaveRecovery.hidden = !publicSaveFailed;
+        privateSaveRecovery.hidden = !privateSaveFailed;
+        retryPublicSaveButton.disabled = Boolean(publicSavePromise);
+        retryPrivateSaveButton.disabled = Boolean(privateSavePromise) || privateLockPending || privateOpening;
+        lockPrivateRoomButton.disabled = privateLockPending || privateOpening;
+        modeTabs.forEach(tab => { tab.disabled = privateLockPending || privateOpening; });
+        privateBoardEditor.readOnly = privateLockPending;
+    }
+
+    async function copyDraft(source, feedback) {
+        let key = "status.copied";
+        try {
+            await window.navigator.clipboard.writeText(source.value);
+        } catch (error) {
+            source.focus();
+            source.select();
+            key = "status.copyManually";
+        }
+        feedback.dataset.messageKey = key;
+        feedback.textContent = tr(key);
     }
 
     function setMode(mode) {
@@ -221,7 +254,7 @@
         };
     }
 
-    async function encryptPrivateContent(content) {
+    async function encryptPrivateContent(content, room) {
         const iv = window.crypto.getRandomValues(new Uint8Array(12));
         const plaintext = encoder.encode(JSON.stringify({
             version: 1,
@@ -232,14 +265,14 @@
                 name: "AES-GCM",
                 iv
             },
-            privateRoomKey,
+            room.key,
             plaintext
         );
 
         return {
             ciphertext: bytesToBase64(new Uint8Array(ciphertext)),
             iv: bytesToBase64(iv),
-            salt: bytesToBase64(privateRoomSalt)
+            salt: bytesToBase64(room.salt)
         };
     }
 
@@ -269,8 +302,10 @@
     function openPrivateWorkspace(content, expiresAt, exists) {
         privateRoomExists = exists;
         privateLastSavedContent = content;
-        privateDirty = false;
+        privateDirty = !exists;
+        privateSaveFailed = false;
         privateBoardEditor.value = content;
+        updateSaveActions();
         updatePrivateCount();
         privateGate.hidden = true;
         privateCreatePanel.hidden = true;
@@ -310,11 +345,14 @@
 
     function clearPrivateSession() {
         clearTimeout(privateSaveTimer);
-        privateRevision = 0;
         privateLastSavedContent = "";
         privateDirty = false;
+        privateSaveFailed = false;
         clearPrivateCredentials();
         privateBoardEditor.value = "";
+        privateCopyStatus.textContent = "";
+        privateCopyStatus.dataset.messageKey = "";
+        updateSaveActions();
         updatePrivateCount();
         privateWorkspace.hidden = true;
         privateCreatePanel.hidden = true;
@@ -325,66 +363,101 @@
         showJoinPanel();
     }
 
-    async function savePrivateBoard(revision) {
-        if (!privateRoomKey || !privateRoomId) return false;
+    function savePrivateBoard() {
+        clearTimeout(privateSaveTimer);
+        if (privateSavePromise) return privateSavePromise;
+        if (!privateRoomKey || !privateRoomId || privateWorkspace.hidden) return Promise.resolve(false);
 
-        const content = privateBoardEditor.value;
-        if (privateRoomExists && content === privateLastSavedContent) {
+        if (privateRoomExists && !privateSaveFailed && privateBoardEditor.value === privateLastSavedContent) {
             privateDirty = false;
             setPrivateSaveStatus("status.savedEncrypted");
-            return true;
+            return Promise.resolve(true);
         }
 
-        setPrivateSaveStatus("status.encrypting");
+        const room = { id: privateRoomId, key: privateRoomKey, salt: privateRoomSalt.slice(), ttl: privateTtlDays };
+        const isCurrentRoom = () => room.id === privateRoomId && room.key === privateRoomKey;
+        privateDirty = true;
+        const saving = (async () => {
+            // Finish each write before taking the next snapshot, including an edit back to the original text.
+            while (isCurrentRoom()) {
+                const content = privateBoardEditor.value;
+                setPrivateSaveStatus("status.encrypting");
+                const encrypted = await encryptPrivateContent(content, room);
+                if (!isCurrentRoom()) return false;
+                setPrivateSaveStatus("status.savingEncrypted");
 
-        try {
-            const encrypted = await encryptPrivateContent(content);
-            setPrivateSaveStatus("status.savingEncrypted");
+                const { data, error } = await client.rpc("save_private_board", {
+                    p_room_id: room.id,
+                    p_ciphertext: encrypted.ciphertext,
+                    p_iv: encrypted.iv,
+                    p_salt: encrypted.salt,
+                    p_ttl_days: room.ttl
+                });
 
-            const { data, error } = await client.rpc("save_private_board", {
-                p_room_id: privateRoomId,
-                p_ciphertext: encrypted.ciphertext,
-                p_iv: encrypted.iv,
-                p_salt: encrypted.salt,
-                p_ttl_days: privateTtlDays
-            });
-
-            if (error) throw error;
-
-            if (revision === privateRevision) {
+                if (error) throw error;
+                if (!isCurrentRoom()) return false;
                 privateRoomExists = true;
                 privateLastSavedContent = content;
-                privateDirty = false;
-                setPrivateSaveStatus("status.savedEncrypted");
+                privateSaveFailed = false;
+                privateDirty = privateBoardEditor.value !== content;
                 privateRoomExpiryText.dataset.timestamp = data || "";
                 privateRoomExpiryText.textContent = formatExpiry(data);
+                if (!privateDirty) {
+                    setPrivateSaveStatus("status.savedEncrypted");
+                    return true;
+                }
             }
-
-            return true;
-        } catch (error) {
-            setPrivateSaveStatus("status.saveFailed");
             return false;
-        }
+        })().catch(() => {
+            if (isCurrentRoom()) {
+                privateDirty = true;
+                privateSaveFailed = true;
+                setPrivateSaveStatus("status.saveFailed");
+            }
+            return false;
+        });
+        privateSavePromise = saving.finally(() => {
+            room.salt.fill(0);
+            privateSavePromise = null;
+            updateSaveActions();
+        });
+        updateSaveActions();
+        return privateSavePromise;
     }
 
     function schedulePrivateSave() {
-        privateRevision += 1;
-        const revision = privateRevision;
         clearTimeout(privateSaveTimer);
+        privateDirty = !privateRoomExists || privateSaveFailed || privateBoardEditor.value !== privateLastSavedContent;
+        if (!privateDirty && !privateSavePromise) {
+            setPrivateSaveStatus("status.savedEncrypted");
+            return;
+        }
         setPrivateSaveStatus("status.waitEncrypt");
-        privateSaveTimer = window.setTimeout(() => savePrivateBoard(revision), 700);
+        privateSaveTimer = window.setTimeout(savePrivateBoard, 700);
     }
 
-    async function lockPrivateRoom(saveFirst) {
+    async function lockPrivateRoom() {
+        if (privateLockPending || privateOpening) return false;
+        privateLockPending = true;
         clearTimeout(privateSaveTimer);
-        if (saveFirst && privateDirty) {
-            await savePrivateBoard(privateRevision);
+        updateSaveActions();
+        try {
+            const saved = await savePrivateBoard();
+            if (!saved || privateDirty || privateBoardEditor.value !== privateLastSavedContent) {
+                privateBoardEditor.focus();
+                return false;
+            }
+            clearPrivateSession();
+            return true;
+        } finally {
+            privateLockPending = false;
+            updateSaveActions();
         }
-        clearPrivateSession();
     }
 
     async function enterPrivateRoom(event) {
         event.preventDefault();
+        if (privateOpening || privateLockPending || privateRoomKey) return;
 
         const pin = privateRoomPassword.value;
 
@@ -400,6 +473,8 @@
         }
 
         enterRoomButton.disabled = true;
+        privateOpening = true;
+        updateSaveActions();
         setFormMessage(tr("status.verifying"));
 
         try {
@@ -435,11 +510,14 @@
             setFormMessage(tr("status.joinFailed"), "error");
         } finally {
             enterRoomButton.disabled = false;
+            privateOpening = false;
+            updateSaveActions();
         }
     }
 
     async function createNewPrivateRoom(event) {
         event.preventDefault();
+        if (privateOpening || privateLockPending || privateRoomKey) return;
 
         const pin = newRoomPassword.value;
         const confirmation = confirmRoomPassword.value;
@@ -457,6 +535,8 @@
         }
 
         createRoomButton.disabled = true;
+        privateOpening = true;
+        updateSaveActions();
         setCreateMessage(tr("status.creatingRoom"));
 
         try {
@@ -480,59 +560,74 @@
             privateRoomKey = credentials.key;
             privateRoomSalt = credentials.salt;
             privateTtlDays = Number(newRoomExpiry.value);
-            privateRevision = 1;
-            privateDirty = true;
             openPrivateWorkspace("", null, false);
 
-            const saved = await savePrivateBoard(privateRevision);
-            if (!saved) {
-                clearPrivateSession();
-                showCreatePanel();
-                setCreateMessage(tr("status.createFailed"), "error");
-            }
+            // A failed first save must also keep anything typed while the room was being created.
+            await savePrivateBoard();
         } catch (error) {
             clearPrivateCredentials();
             setCreateMessage(tr("status.createFailed"), "error");
         } finally {
             createRoomButton.disabled = false;
+            privateOpening = false;
+            updateSaveActions();
         }
     }
 
-    async function saveBoard(revision) {
-        const content = editor.value;
-        if (content === lastSavedContent) {
-            setStatus("saved", tr("status.saved"));
-            return;
-        }
-
-        setStatus("saving", tr("status.saving"));
-        const { data, error } = await client
-            .from("public_boards")
-            .update({ content })
-            .eq("id", config.boardId)
-            .select("content, updated_at")
-            .single();
-
-        if (error) {
-            setStatus("error", tr("status.saveRetry"));
-            return;
-        }
-
-        if (revision === localRevision) {
-            lastSavedContent = data.content;
+    function saveBoard() {
+        clearTimeout(saveTimer);
+        if (publicSavePromise) return publicSavePromise;
+        if (!publicSaveFailed && editor.value === lastSavedContent) {
             localDirty = false;
-            updatedAt.dataset.timestamp = data.updated_at || "";
-            updatedAt.textContent = formatTime(data.updated_at);
             setStatus("saved", tr("status.saved"));
+            return Promise.resolve(true);
         }
+
+        localDirty = true;
+        const saving = (async () => {
+            do {
+                const content = editor.value;
+                setStatus("saving", tr("status.saving"));
+                const { data, error } = await client
+                    .from("public_boards")
+                    .update({ content })
+                    .eq("id", config.boardId)
+                    .select("content, updated_at")
+                    .single();
+
+                if (error) throw error;
+                lastSavedContent = data.content;
+                publicSaveFailed = false;
+                localDirty = editor.value !== lastSavedContent;
+                updatedAt.dataset.timestamp = data.updated_at || "";
+                updatedAt.textContent = formatTime(data.updated_at);
+            } while (localDirty);
+            setStatus("saved", tr("status.saved"));
+            return true;
+        })().catch(() => {
+            // A failed response does not prove the server rejected the write; retry the current text.
+            localDirty = true;
+            publicSaveFailed = true;
+            setStatus("error", tr("status.saveRetry"));
+            return false;
+        });
+        publicSavePromise = saving.finally(() => {
+            publicSavePromise = null;
+            updateSaveActions();
+        });
+        updateSaveActions();
+        return publicSavePromise;
     }
 
     function scheduleSave() {
-        localRevision += 1;
-        const revision = localRevision;
         clearTimeout(saveTimer);
+        localDirty = publicSaveFailed || editor.value !== lastSavedContent;
+        if (!localDirty && !publicSavePromise) {
+            setStatus("saved", tr("status.saved"));
+            return;
+        }
         setStatus("saving", tr("status.waitSave"));
-        saveTimer = window.setTimeout(() => saveBoard(revision), 650);
+        saveTimer = window.setTimeout(saveBoard, 650);
     }
 
     async function loadBoard() {
@@ -566,7 +661,7 @@
                 },
                 (payload) => {
                     const incoming = payload.new;
-                    if (!incoming || incoming.content === editor.value || localDirty) return;
+                    if (!incoming || incoming.content === editor.value || localDirty || publicSavePromise) return;
 
                     editor.value = incoming.content || "";
                     lastSavedContent = editor.value;
@@ -607,23 +702,22 @@
     }
 
     editor.addEventListener("input", () => {
-        localDirty = true;
         updateCount();
         scheduleSave();
     });
 
     privateBoardEditor.addEventListener("input", () => {
-        privateDirty = true;
         updatePrivateCount();
         schedulePrivateSave();
     });
 
     modeTabs.forEach((tab) => {
         tab.addEventListener("click", async () => {
+            if (privateOpening || privateLockPending) return;
             const mode = tab.dataset.mode;
 
             if (mode === "public" && privateRoomKey) {
-                await lockPrivateRoom(true);
+                if (!await lockPrivateRoom()) return;
             }
 
             setMode(mode);
@@ -635,12 +729,16 @@
     createRoomForm.addEventListener("submit", createNewPrivateRoom);
     showCreateRoomButton.addEventListener("click", showCreatePanel);
     backToJoin.addEventListener("click", showJoinPanel);
-    lockPrivateRoomButton.addEventListener("click", () => lockPrivateRoom(true));
+    lockPrivateRoomButton.addEventListener("click", lockPrivateRoom);
+    retryPublicSaveButton.addEventListener("click", saveBoard);
+    retryPrivateSaveButton.addEventListener("click", savePrivateBoard);
+    document.getElementById("copy-public-draft").addEventListener("click", () => copyDraft(editor, publicCopyStatus));
+    document.getElementById("copy-private-draft").addEventListener("click", () => copyDraft(privateBoardEditor, privateCopyStatus));
 
     window.addEventListener("site-language-change", () => {
         updateCount();
         updatePrivateCount();
-        [statusText, roomMessage, createRoomMessage, privateSaveStatus].forEach((element) => {
+        [statusText, roomMessage, createRoomMessage, privateSaveStatus, publicCopyStatus, privateCopyStatus].forEach((element) => {
             if (element.dataset.messageKey) element.textContent = tr(element.dataset.messageKey);
         });
         if (updatedAt.dataset.timestamp) updatedAt.textContent = formatTime(updatedAt.dataset.timestamp);
@@ -651,9 +749,15 @@
         }
     });
 
-    window.addEventListener("beforeunload", () => {
-        clearTimeout(saveTimer);
-        clearTimeout(privateSaveTimer);
+    window.addEventListener("beforeunload", (event) => {
+        if (!localDirty && !publicSavePromise && !privateDirty && !privateSavePromise) return;
+        event.preventDefault();
+        event.returnValue = "";
+    });
+
+    window.addEventListener("online", () => {
+        if (localDirty) saveBoard();
+        if (privateDirty && privateRoomKey) savePrivateBoard();
     });
 
     start();

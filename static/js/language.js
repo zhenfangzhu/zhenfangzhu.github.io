@@ -29,6 +29,10 @@
         const title = nextLanguage === "zh" ? document.body.dataset.titleZh : document.body.dataset.titleEn;
         if (title) document.title = title;
 
+        document.querySelectorAll(".bio-view-tabs").forEach((tabs) => {
+            tabs.setAttribute("aria-label", nextLanguage === "zh" ? "关于" : "About");
+        });
+
         document.querySelectorAll(".language-toggle").forEach((button) => {
             const label = nextLanguage === "zh" ? "选择语言" : "Choose language";
             button.setAttribute("aria-label", label);

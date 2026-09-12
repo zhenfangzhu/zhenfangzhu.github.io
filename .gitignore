@@ -3,3 +3,7 @@
 .agents/
 reference/
 eval-out/
+
+# Python-generated cache files
+__pycache__/
+*.py[cod]

@@ -426,7 +426,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('data-action="add-founder"', app)
         self.assertIn("data-remove-founder", app)
         self.assertIn("refreshTeamEvaluations(team)", app)
-        self.assertIn("x.formal.evaluations.length===n*n", app)
+        self.assertIn("team.evaluations.length!==n*n", app)
         self.assertIn("total=data().evaluations.length", app)
         self.assertIn('"创始人 F": "Founder F"', translations)
         self.assertNotIn("founders.length===3", app)
@@ -536,7 +536,7 @@ class SiteContractTests(unittest.TestCase):
         index = read("index.html")
         css = read("static/css/home.css")
         self.assertIn('static/css/home.css?v=2026090501', index)
-        self.assertIn('static/js/language.js?v=2026090502', index)
+        self.assertIn('static/js/language.js?v=2026091201', index)
         self.assertIn('--cjk-reading-font: "PingFang SC"', css)
         self.assertIn('html[data-language="zh"] .bio-view-panel [data-lang="zh"]', css)
 
@@ -667,7 +667,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('id="busuanzi_value_site_uv"', index)
         self.assertIn(".footer-stats", css)
 
-    def test_dream_pages_have_busuanzi_site_stats(self):
+    def test_dream_pages_keep_counting_without_visible_stats(self):
         dreams_css = read("static/css/dream-forum.css")
         self.assertIn(".dream-footer", dreams_css)
         self.assertIn(".footer-stats", dreams_css)
@@ -683,10 +683,10 @@ class SiteContractTests(unittest.TestCase):
                 'src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"',
                 page,
             )
-            self.assertIn('id="busuanzi_container_site_pv"', page)
-            self.assertIn('id="busuanzi_value_site_pv"', page)
-            self.assertIn('id="busuanzi_container_site_uv"', page)
-            self.assertIn('id="busuanzi_value_site_uv"', page)
+            self.assertNotIn('id="busuanzi_container_site_pv"', page)
+            self.assertNotIn('id="busuanzi_value_site_pv"', page)
+            self.assertNotIn('id="busuanzi_container_site_uv"', page)
+            self.assertNotIn('id="busuanzi_value_site_uv"', page)
             self.assertIn('class="dream-footer"', page)
 
     def test_contact_section_uses_editorial_index_rows(self):
@@ -775,7 +775,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('data-bio-view="default"', index)
         self.assertIn('data-bio-view="long"', index)
         self.assertIn('id="bio-long" role="tabpanel"', index)
-        self.assertIn('<span data-lang="en">Long</span>', index)
+        self.assertIn('<span data-lang="en">About here</span>', index)
         self.assertIn('class="bio-thesis"', default_panel.group(0))
         self.assertIn('class="bio-closing"', default_panel.group(0))
         self.assertIn("What truly matters is whether an experience changes who you become afterward.", long_panel.group(0))
