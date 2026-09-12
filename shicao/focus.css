@@ -207,3 +207,6 @@ header .more[open]{z-index:30}
  .result-image{border-color:var(--line)}
 }
 @media print{:root{color-scheme:light}body,body.focus-reading{background:white;color:#282828}}
+
+.reading-guidance>summary,.layout>aside>.reading-guidance>summary{font-size:15px;min-height:44px;line-height:24px;padding:10px 0}
+.reading-guidance>.small,.reading-guidance p,.reading-guidance a{font-size:14px;line-height:1.8}
