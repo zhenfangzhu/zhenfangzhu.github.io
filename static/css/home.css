@@ -335,9 +335,6 @@ article.content-frame {
 
 #bio-default .bio-thesis {
     margin-block: 1.45em;
-    color: var(--ink);
-    font-size: 1.04em;
-    line-height: 1.68;
 }
 
 #bio-default .bio-closing {
@@ -346,12 +343,6 @@ article.content-frame {
 
 #bio-default .bio-closing p:first-child {
     margin-bottom: 0.45em;
-}
-
-#bio-default .bio-closing-question {
-    color: var(--ink);
-    font-size: 1.05em;
-    line-height: 1.65;
 }
 
 .bio-more {
@@ -411,11 +402,6 @@ html[data-language="zh"] .bio-view-panel [data-lang="zh"] {
     font-weight: 400;
     letter-spacing: 0;
     line-height: 1.82;
-}
-
-html[data-language="zh"] .bio-view-panel [data-lang="zh"] strong {
-    color: var(--ink);
-    font-weight: 600;
 }
 
 .world-section {
