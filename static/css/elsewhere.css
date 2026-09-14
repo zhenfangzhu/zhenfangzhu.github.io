@@ -1,68 +1,70 @@
-/* A quiet archive, with years in the margin and space between memories. */
+/* A compact reading index with a shared left edge. */
 body .elsewhere-page {
-    width: min(100%, 760px);
-    padding: clamp(64px, 10vh, 112px) 32px 64px;
+    width: min(100%, 600px);
+    padding: 56px 28px 48px;
 }
-.elsewhere-page .essay-header {
-    margin: 0 0 76px 88px;
-}
+.elsewhere-page .essay-header { margin: 0 0 40px; }
 .elsewhere-page .essay-title {
     font-family: var(--cjk-reading-font);
-    font-size: clamp(28px, 4vw, 34px);
-    font-weight: 400;
-    letter-spacing: .12em;
-    line-height: 1.6;
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    line-height: 1.5;
 }
 .elsewhere-page .essay-header p {
-    margin: 16px 0 0;
+    margin: 10px 0 0;
     color: var(--nav);
-    font-size: 14px;
-    letter-spacing: .06em;
+    font-size: 13px;
+    line-height: 1.8;
 }
-.elsewhere-page section {
-    display: grid;
-    grid-template-columns: 56px minmax(0, 1fr);
-    gap: 32px;
-    margin-bottom: 40px;
-}
+.elsewhere-page section { margin: 0 0 28px; }
 .elsewhere-page section h2 {
-    margin: 0;
-    padding-top: 17px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 8px;
     color: var(--nav);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 20px;
     letter-spacing: .08em;
     font-variant-numeric: tabular-nums;
 }
+.elsewhere-page section h2::after {
+    content: "";
+    width: 32px;
+    height: 1px;
+    background: var(--divider);
+}
 .elsewhere-page .index-list { border: 0; margin: 0; padding: 0; }
 .elsewhere-page .index-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    min-height: 58px;
-    padding: 16px 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    min-height: 44px;
+    padding: 10px 0;
     border: 0;
-    gap: 24px;
-    font-size: 16px;
-    line-height: 26px;
+    gap: 18px;
+    font-size: 15px;
+    line-height: 24px;
     opacity: 1;
 }
-.elsewhere-page .row-copy { font-weight: 400; }
+.elsewhere-page .row-copy { font-weight: 400; text-align: left; }
 .elsewhere-page .row-meta {
-    font-size: 11px;
+    flex: 0 0 auto;
+    font-size: 10px;
     color: var(--nav);
     font-variant-numeric: tabular-nums;
 }
 .elsewhere-page .index-row:hover .row-copy {
     text-decoration: underline;
-    text-underline-offset: 7px;
-    text-decoration-color: var(--divider);
+    text-underline-offset: 5px;
+    text-decoration-color: currentColor;
 }
-.elsewhere-page .essay-footer { margin: 72px 0 0 88px; font-size: 11px; }
+.elsewhere-page .essay-footer { margin: 40px 0 0; font-size: 11px; }
 @media (max-width: 520px) {
-    body .elsewhere-page { padding: 48px 24px; }
-    .elsewhere-page .essay-header { margin: 0 0 48px; }
-    .elsewhere-page section { grid-template-columns: 1fr; gap: 8px; margin-bottom: 32px; }
-    .elsewhere-page section h2 { padding-top: 0; }
-    .elsewhere-page .index-row { gap: 16px; font-size: 15px; }
-    .elsewhere-page .essay-footer { margin: 48px 0 0; }
+    body .elsewhere-page { padding: 32px 24px 40px; }
+    .elsewhere-page .essay-title { font-size: 28px; }
+    .elsewhere-page .essay-header { margin-bottom: 32px; }
+    .elsewhere-page .index-row { gap: 12px; }
 }
