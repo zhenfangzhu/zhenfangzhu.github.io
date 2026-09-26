@@ -746,13 +746,13 @@ class SiteContractTests(unittest.TestCase):
         self.assertIsNotNone(long_panel)
         for phrase in (
             "我是朱振方，本科毕业于中国科学技术大学。",
-            "现在，我在做 AI Agent Coding 方向的创业。",
+            "</a> 联合创始人。",
             "2026 年暑假，我见过几百个孩子",
             "从少数人的能力，变成每个人都能拥有的可能。",
             "从软件的使用者，变成软件的创造者。",
             "最后只剩下一个问题——你到底想做什么？",
             "I am Zhenfang Zhu (Chinese: 朱振方). I earned my bachelor's degree from the University of Science and Technology of China.",
-            "I am now building a startup focused on AI Agent Coding.",
+            "I am a co-founder of",
             "During the summer of 2026, I watched hundreds of children",
             "a possibility open to everyone.",
             "what do you actually want to build?",

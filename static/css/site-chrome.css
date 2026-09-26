@@ -107,3 +107,17 @@ body:has(.site-chrome) > #main-content { padding-top: 32px; }
 @media print { .site-chrome { display: none; } }
 
 body:has(.site-chrome) .topbar { top: 72px; }
+
+/* Keep the product reference quiet within the personal bio. */
+a.bio-product-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a.bio-product-link:hover,
+a.bio-product-link:focus-visible {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+}
