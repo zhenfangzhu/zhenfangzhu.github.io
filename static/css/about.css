@@ -1,52 +1,98 @@
-/* About-specific spacing, independent of the archive layout. */
-.about-page #main-content {
-    width: min(100% - 3rem, 880px);
-    margin: 4rem auto 5rem;
+/* A quiet reading page using the homepage palette and typography. */
+.about-page { font-family: var(--reading-font); }
+html[data-language="zh"] .about-page { font-family: var(--cjk-reading-font); }
+.about-page #main-content,
+.about-page .site-footer {
+    width: min(100% - 3rem, 680px);
+    margin-inline: auto;
 }
+.about-page #main-content { padding-top: 64px; }
+.about-page .profile-intro { position: relative; padding: 0; margin: 0 0 72px; }
+.about-page .portrait-wrap { float: right; width: 144px; margin: 0 0 24px 32px; }
+.about-page .portrait-wrap img { display: block; width: 100%; height: auto; border-radius: 2px; }
+.about-page .profile-intro__body { padding: 0; }
+.about-page h1 { margin: 0 0 12px; font-size: 32px; font-weight: 500; line-height: 1.4; letter-spacing: -.025em; }
+.about-page .profile-role { margin: 0 0 28px; color: var(--nav); font: 12px/1.7 var(--ui-font); }
+.about-page .profile-bio { margin: 0 0 18px; color: var(--secondary); font-size: 15px; line-height: 2; }
+.about-page .profile-bio:last-child { font-size: 12px; color: var(--nav); }
+.about-page .section,
+.about-page .profile-contact { clear: both; margin: 0 0 56px; padding: 0; border: 0; background: none; }
+.about-page .site-container { width: 100%; padding: 0; }
+.about-page .section-heading { margin: 0 0 18px; padding: 0; }
+.about-page h2 { display: flex; align-items: center; gap: 16px; margin: 0 0 18px; color: var(--nav); font: 12px/1.6 var(--ui-font); letter-spacing: .06em; }
+.about-page h2::after { content: ""; width: 32px; height: 1px; background: var(--divider); }
+.about-page .section > .site-container > p { margin: 0 0 20px; color: var(--nav); font-size: 12px; line-height: 1.9; }
+.about-page .education-list { margin: 0 0 20px; padding: 0; list-style: none; }
+.about-page .education-row { display: grid; grid-template-columns: 94px minmax(0, 1fr); gap: 24px; align-items: baseline; padding: 12px 0; border: 0; font-size: 14px; line-height: 1.8; }
+.about-page .education-row time { color: var(--nav); font: 11px/1.8 var(--ui-font); font-variant-numeric: tabular-nums; }
+.about-page .education-row p { margin: 0; }
+.about-page .education-row strong { font-weight: 400; }
+.about-page .education-row p + p { margin-top: 4px; color: var(--nav); font-size: 12px; }
+.about-page .education-row a,
+.about-page .contact-strip a { color: var(--secondary); text-decoration: none; }
+.about-page .education-row a:hover,
+.about-page .contact-strip a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.about-page .contact-strip { display: flex; flex-wrap: wrap; gap: 12px 28px; font: 12px/1.8 var(--ui-font); }
+.about-page .contact-strip i { display: none; }
+.about-page .site-footer { padding: 0 0 40px; color: var(--nav); font: 11px/1.8 var(--ui-font); }
+.about-page .footer-inner { display: flex; justify-content: space-between; gap: 16px; }
+.about-page .site-footer p { margin: 0; }
+@media (max-width: 520px) {
+    .about-page #main-content { padding-top: 36px; }
+    .about-page .profile-intro { margin-bottom: 48px; }
+    .about-page h1 { font-size: 28px; }
+    .about-page .portrait-wrap { width: 104px; margin-left: 20px; }
+    .about-page .education-row { grid-template-columns: 76px minmax(0, 1fr); gap: 16px; }
+    .about-page .section, .about-page .profile-contact { margin-bottom: 44px; }
+}
+
+/* Editorial layout: a full portrait, then clearly aligned information. */
+.about-page #main-content,
+.about-page .site-footer { width: min(100% - 64px, 1040px); }
+.about-page #main-content { padding-top: 56px; }
 .about-page .profile-intro {
     display: grid;
-    grid-template-columns: 160px minmax(0, 1fr);
-    gap: 2.5rem;
-    padding: 0 0 3.5rem;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-    overflow: visible;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 38%);
+    align-items: center;
+    gap: clamp(40px, 6vw, 88px);
+    margin-bottom: 88px;
 }
-.about-page .portrait-wrap { width: 160px; margin: 0; }
-.about-page .portrait-wrap img { width: 100%; height: auto; border-radius: 8px; box-shadow: none; }
-.about-page .profile-intro__body { padding: 0; min-width: 0; }
-.about-page .profile-intro h1 { margin: 0 0 1rem; font-size: clamp(1.9rem, 4vw, 2.5rem); }
-.about-page .profile-role { margin-bottom: 1.25rem; }
-.about-page .profile-bio + .profile-bio { margin-top: 1rem; }
+.about-page .portrait-wrap { grid-column: 2; grid-row: 1; float: none; width: 100%; margin: 0; }
+.about-page .portrait-wrap img { width: 100%; height: auto; border-radius: 3px; }
+.about-page .profile-intro__body { grid-column: 1; grid-row: 1; min-width: 0; }
+.about-page h1 { font-size: clamp(36px, 4vw, 48px); margin-bottom: 16px; }
+.about-page .profile-role { margin-bottom: 32px; font-size: 13px; }
+.about-page .profile-bio { font-size: 16px; line-height: 2; }
+.about-page .profile-bio:last-child { margin-top: 28px; font-size: 13px; }
 .about-page .section,
-.about-page .profile-contact {
-    margin: 0;
-    padding: 2.75rem 0;
-    border: 0;
-    border-top: 1px solid var(--color-border);
-    background: transparent;
+.about-page .profile-contact { padding: 40px 0; margin: 0; border-top: 1px solid var(--divider); }
+.about-page .section > .site-container,
+.about-page .contact-layout {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    column-gap: 48px;
 }
-.about-page .site-container { width: 100%; max-width: none; padding: 0; }
-.about-page .section-heading { min-height: 0; padding: 0; margin: 0 0 1.5rem; border: 0; background: none; }
-.about-page .section-heading h2,
-.about-page .profile-contact h2 { font-size: 1.2rem; color: var(--color-heading); }
-.about-page .section p { line-height: 1.85; margin-bottom: 1.5rem; }
-.about-page .education-list { margin: 1.5rem 0; }
-.about-page .education-row { grid-template-columns: 115px minmax(0, 1fr); gap: 2rem; min-height: 0; padding: 1.4rem 0; align-items: baseline; }
-.about-page .education-row time { color: var(--color-muted); font-size: 0.85rem; font-weight: 400; }
-.about-page .education-row a { color: var(--color-body); text-decoration: none; line-height: 1.7; }
-.about-page .education-row a:hover,
-.about-page .education-row a:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
-.about-page .education-row p { margin-bottom: 0; }
-.about-page .contact-layout { gap: 1.5rem; }
-.about-page .contact-strip { flex-wrap: wrap; }
-@media (max-width: 600px) {
-    .about-page #main-content { width: calc(100% - 2.5rem); margin-top: 2.5rem; }
-    .about-page .profile-intro { grid-template-columns: 1fr; gap: 1.75rem; padding-bottom: 2.5rem; }
-    .about-page .portrait-wrap { width: 112px; }
-    .about-page .section, .about-page .profile-contact { padding: 2.25rem 0; }
-    .about-page .education-row { grid-template-columns: 1fr; gap: 0.45rem; padding: 1.2rem 0; }
-    .about-page .contact-layout { display: block; }
-    .about-page .contact-strip { margin-top: 1.25rem; }
+.about-page .section-heading { grid-column: 1; grid-row: 1 / span 3; margin: 0; }
+.about-page h2 { margin: 0; font-size: 13px; line-height: 1.9; color: var(--secondary); }
+.about-page h2::after { display: none; }
+.about-page .section > .site-container > p,
+.about-page .education-list { grid-column: 2; }
+.about-page .education-list { margin: 0 0 20px; border: 0; }
+.about-page .education-row { padding: 14px 0; font-size: 15px; }
+.about-page .education-row:first-child { padding-top: 0; }
+.about-page .education-row time { font-size: 12px; text-align: left; }
+.about-page .contact-strip { font-size: 13px; padding: 0; }
+.about-page .site-footer { padding-top: 36px; padding-bottom: 40px; }
+@media (max-width: 720px) {
+    .about-page #main-content, .about-page .site-footer { width: calc(100% - 48px); }
+    .about-page #main-content { padding-top: 24px; }
+    .about-page .profile-intro { grid-template-columns: 1fr; gap: 32px; margin-bottom: 48px; }
+    .about-page .portrait-wrap { grid-column: 1; grid-row: 1; width: min(100%, 420px); margin: 0; }
+    .about-page .profile-intro__body { grid-column: 1; grid-row: 2; }
+    .about-page h1 { font-size: 34px; }
+    .about-page .profile-role { margin-bottom: 24px; }
+    .about-page .section > .site-container, .about-page .contact-layout { display: block; }
+    .about-page .section, .about-page .profile-contact { padding: 32px 0; }
+    .about-page .section-heading, .about-page .profile-contact h2 { margin-bottom: 24px; }
+    .about-page .education-row { grid-template-columns: 86px minmax(0, 1fr); gap: 16px; }
 }
